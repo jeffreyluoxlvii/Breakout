@@ -3,11 +3,11 @@ game
 
 This project implements the game of Breakout.
 
-Name: 
+Names: Jeffrey Luo and Roy Xiong
 
 ### Timeline
 
-Start Date: 
+Start Date: 30 January 2020
 
 Finish Date: 
 
