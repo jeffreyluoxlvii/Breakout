@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -28,6 +30,7 @@ public class BreakoutGame extends Application {
     // some things needed to remember during game
     private Scene myScene;
     private Platform myPlatform;
+    private Ball myBall;
 
 
     /**
@@ -54,8 +57,10 @@ public class BreakoutGame extends Application {
         Group root = new Group();
 
         myPlatform = new Platform(width, height);
+        myBall = new Ball(30, 300);
 
         root.getChildren().add(myPlatform);
+        root.getChildren().add(myBall);
 
         // create a place to see the shapes
         Scene scene = new Scene(root, width, height, background);
@@ -70,6 +75,37 @@ public class BreakoutGame extends Application {
     // Change properties of shapes in small ways to animate them over time
     // Note, there are more sophisticated ways to animate shapes, but these simple ways work fine to start
     private void step (double elapsedTime) {
+        myBall.setCenterX(myBall.getCenterX() + myBall.NORMAL_BALL_SPEED * myBall.getXDirection() * elapsedTime);
+        myBall.setCenterY(myBall.getCenterY() + myBall.NORMAL_BALL_SPEED * myBall.getYDirection() * elapsedTime);
+
+        // Check for collisions
+        handleCollision(myBall, myPlatform);
+    }
+
+    // Handle a collision between ball and a shape object
+    private void handleCollision(Ball ball, Rectangle object) {
+        if(Shape.intersect(ball, object).getBoundsInLocal().getWidth() != -1) {
+            // hit was below the object
+            if(ball.getCenterY() >= object.getY() - (object.getHeight() / 2)) {
+                ball.changeYDirection();
+                return;
+            }
+            // hit was above the object
+            if(ball.getCenterY() <= object.getY() - (object.getHeight() / 2)) {
+                ball.changeYDirection();
+                return;
+            }
+            // hit was to the left of object
+            if(ball.getCenterX() < object.getX()) {
+                ball.changeXDirection();
+                return;
+            }
+            // hit was to the right of object
+            if(ball.getCenterX() > object.getX()) {
+                ball.changeYDirection();
+                return;
+            }
+        }
     }
 
     // What to do each time a key is pressed
