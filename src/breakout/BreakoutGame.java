@@ -27,6 +27,7 @@ public class BreakoutGame extends Application {
 
     // some things needed to remember during game
     private Scene myScene;
+    private Platform myPlatform;
 
 
     /**
@@ -51,6 +52,10 @@ public class BreakoutGame extends Application {
     private Scene setupGame (int width, int height, Paint background) {
         // create one top level collection to organize the things in the scene
         Group root = new Group();
+
+        myPlatform = new Platform(width, height);
+
+        root.getChildren().add(myPlatform);
 
         // create a place to see the shapes
         Scene scene = new Scene(root, width, height, background);
