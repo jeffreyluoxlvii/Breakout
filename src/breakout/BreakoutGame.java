@@ -63,6 +63,7 @@ public class BreakoutGame extends Application {
 
         scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         scene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
+        scene.setOnMouseMoved(e -> handleMouseMoved(e.getX(), e.getY()));
         return scene;
     }
 
@@ -77,6 +78,11 @@ public class BreakoutGame extends Application {
 
     // What to do each time a key is pressed
     private void handleMouseInput (double x, double y) {
+    }
+
+    //What to do when mouse moves
+    private void handleMouseMoved(double x, double y) {
+        myPlatform.setX(x - myPlatform.getWidth() / 2);
     }
 
     /**
