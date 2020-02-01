@@ -27,6 +27,7 @@ public class BreakoutGame extends Application {
 
     // some things needed to remember during game
     private Scene myScene;
+    private Platform myPlatform;
 
 
     /**
@@ -52,12 +53,17 @@ public class BreakoutGame extends Application {
         // create one top level collection to organize the things in the scene
         Group root = new Group();
 
+        myPlatform = new Platform(width, height);
+
+        root.getChildren().add(myPlatform);
+
         // create a place to see the shapes
         Scene scene = new Scene(root, width, height, background);
         // respond to input
 
         scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         scene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
+        scene.setOnMouseMoved(e -> handleMouseMoved(e.getX(), e.getY()));
         return scene;
     }
 
@@ -72,6 +78,11 @@ public class BreakoutGame extends Application {
 
     // What to do each time a key is pressed
     private void handleMouseInput (double x, double y) {
+    }
+
+    //What to do when mouse moves
+    private void handleMouseMoved(double x, double y) {
+        myPlatform.setX(x - myPlatform.getWidth() / 2);
     }
 
     /**
