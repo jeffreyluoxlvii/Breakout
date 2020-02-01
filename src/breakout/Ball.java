@@ -11,8 +11,8 @@ import javafx.scene.shape.Circle;
 public class Ball extends Circle {
 
     public static final double BALL_RADIUS = 5;
-    public static final int NORMAL_BALL_SPEED = 50;
-    public static final int SLOW_BALL_SPEED = 20;
+    public static final int NORMAL_BALL_SPEED = 200;
+    public static final int SLOW_BALL_SPEED = 40;
 
     private int xDirection;
     private int yDirection;
@@ -25,17 +25,24 @@ public class Ball extends Circle {
     public Ball(int x, int y) {
         super(x, y, BALL_RADIUS);
         this.setFill(Color.RED);
-        // Ball will initially shoot up and to the right.
         xDirection = 1;
         yDirection = 1;
     }
 
-    public void changeXDirection() {
-        xDirection = -xDirection;
+    public void moveLeft() {
+        xDirection = -1;
     }
 
-    public void changeYDirection() {
-        yDirection = -yDirection;
+    public void moveRight() {
+        xDirection = 1;
+    }
+
+    public void moveUp() {
+        yDirection = -1;
+    }
+
+    public void moveDown() {
+        yDirection = 1;
     }
 
     public int getXDirection() {
