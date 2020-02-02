@@ -13,6 +13,7 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -34,8 +35,6 @@ public class BreakoutGame extends Application {
     private Scene myScene;
     private Platform myPlatform;
     private Ball myBall;
-
-    // TODO: Add more bricks
     private List<Brick> myBricks;
 
 
@@ -88,35 +87,39 @@ public class BreakoutGame extends Application {
 
         // Check for collisions
         handlePlatformCollision(myBall, myPlatform);
-        for(Brick b: myBricks)
-            handleBrickCollision(myBall, b);
+        for(Iterator<Brick> iterator = myBricks.iterator(); iterator.hasNext();) {
+            Brick currentBrick = iterator.next();
+            if(isBrickCollision(myBall, currentBrick))
+            {
+                iterator.remove();
+                ((Group)myScene.getRoot()).getChildren().remove(currentBrick);
+            }
+        }
         handleWallCollision(myBall);
     }
 
     // Handle a collision between ball and a brick
-    private void handleBrickCollision(Ball ball, Brick brick) {
+    private boolean isBrickCollision(Ball ball, Brick brick) {
         if(Shape.intersect(ball, brick).getBoundsInLocal().getWidth() != -1) {
             // hit was to the left of brick
             if(ball.getCenterX() < brick.getX()) {
                 ball.moveLeft();
-                return;
             }
             // hit was to the right of brick
-            if(ball.getCenterX() > brick.getX() + brick.getWidth()) {
+            else if(ball.getCenterX() > brick.getX() + brick.getWidth()) {
                 ball.moveRight();
-                return;
             }
             // hit was below the brick
-            if(ball.getCenterY() > brick.getY() + (brick.getHeight() / 2)) {
+            else if(ball.getCenterY() > brick.getY() + (brick.getHeight() / 2)) {
                 ball.moveDown();
-                return;
             }
             // hit was above the brick
-            if(ball.getCenterY() < brick.getY() + (brick.getHeight() / 2)) {
+            else if(ball.getCenterY() < brick.getY() + (brick.getHeight() / 2)) {
                 ball.moveUp();
-                return;
             }
+            return true;
         }
+        return false;
     }
 
     // Handle collision between ball and platform
