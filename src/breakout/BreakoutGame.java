@@ -13,6 +13,9 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.List;
+import java.util.logging.Level;
+
 
 /**
  * A basic example JavaFX program for the first lab.
@@ -33,7 +36,7 @@ public class BreakoutGame extends Application {
     private Ball myBall;
 
     // TODO: Add more bricks
-    private Brick myBrick;
+    private List<Brick> myBricks;
 
 
     /**
@@ -61,11 +64,11 @@ public class BreakoutGame extends Application {
 
         myPlatform = new Platform(width, height);
         myBall = new Ball(30, 300);
-        myBrick = new Brick(300, 30);
+        myBricks = LevelCreator.setupBricksForLevel("levelOne", width, height);
 
         root.getChildren().add(myPlatform);
         root.getChildren().add(myBall);
-        root.getChildren().add(myBrick);
+        root.getChildren().addAll(myBricks);
 
         // create a place to see the shapes
         Scene scene = new Scene(root, width, height, background);
@@ -85,7 +88,8 @@ public class BreakoutGame extends Application {
 
         // Check for collisions
         handlePlatformCollision(myBall, myPlatform);
-        handleBrickCollision(myBall, myBrick);
+        for(Brick b: myBricks)
+            handleBrickCollision(myBall, b);
         handleWallCollision(myBall);
     }
 
