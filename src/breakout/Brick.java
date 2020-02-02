@@ -14,4 +14,9 @@ public class Brick extends Rectangle {
         super(x, y, BRICK_WIDTH, BRICK_HEIGHT);
         this.setFill(BRICK_COLOR);
     }
+
+    public Brick(int x, int y, int width, int height) {
+        super(x, y, width, height);
+        this.setFill(BRICK_COLOR);
+    }
 }
