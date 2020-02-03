@@ -138,8 +138,7 @@ public class BreakoutGame extends Application {
         }
         // hit bottom wall
         if(ball.getCenterY() - ball.getRadius() >= myScene.getHeight()) {
-            ball.setCenterX(30);
-            ball.setCenterY(300);
+            resetBall(ball);
         }
         // hit right wall
         if(ball.getCenterX() + ball.getRadius() >= myScene.getWidth()) {
@@ -162,6 +161,17 @@ public class BreakoutGame extends Application {
                 animation.play();
             }
         }
+        // Resets ball position
+        if(code == KeyCode.R) {
+            resetBall(myBall);
+        }
+    }
+
+    private void resetBall(Ball ball) {
+        ball.setCenterX(30);
+        ball.setCenterY(300);
+        ball.moveDown();
+        ball.moveRight();
     }
 
     // What to do each time a key is pressed
