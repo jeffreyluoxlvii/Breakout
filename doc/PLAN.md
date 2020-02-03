@@ -27,9 +27,6 @@
 ### Cheat Key Ideas
 
 - 'space' to pause the game
-- ',' to have ball travel to a corner
-- '.' to have ball move towards a specific object
-- '/' to have ball move off a specific area of screen
 - Cheat keys to give different powerups
 
 ### Something Extra
