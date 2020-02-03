@@ -30,19 +30,20 @@ public class Ball extends Circle {
     }
 
     public void moveLeft() {
-        xDirection = -1;
+        // I'm using the negative of Math.abs because I want to later add that the ball moves in different angles
+        xDirection = - Math.abs(xDirection);
     }
 
     public void moveRight() {
-        xDirection = 1;
+        xDirection = Math.abs(xDirection);
     }
 
     public void moveUp() {
-        yDirection = -1;
+        yDirection = - Math.abs(yDirection);
     }
 
     public void moveDown() {
-        yDirection = 1;
+        yDirection = Math.abs(yDirection);
     }
 
     public int getXDirection() {
