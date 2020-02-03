@@ -1,5 +1,6 @@
 package breakout;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -36,6 +37,7 @@ public class BreakoutGame extends Application {
     private Platform myPlatform;
     private Ball myBall;
     private List<Brick> myBricks;
+    private Timeline animation;
 
 
     /**
@@ -50,7 +52,7 @@ public class BreakoutGame extends Application {
         stage.show();
         // attach "game loop" to timeline to play it (basically just calling step() method repeatedly forever)
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
-        Timeline animation = new Timeline();
+        animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
         animation.play();
@@ -136,8 +138,7 @@ public class BreakoutGame extends Application {
         }
         // hit bottom wall
         if(ball.getCenterY() - ball.getRadius() >= myScene.getHeight()) {
-            ball.setCenterX(30);
-            ball.setCenterY(300);
+            resetBall(ball);
         }
         // hit right wall
         if(ball.getCenterX() + ball.getRadius() >= myScene.getWidth()) {
@@ -151,6 +152,26 @@ public class BreakoutGame extends Application {
 
     // What to do each time a key is pressed
     private void handleKeyInput (KeyCode code) {
+        // Pause / unpause game when space pressed
+        if(code == KeyCode.SPACE) {
+            if(animation.getStatus() == Animation.Status.RUNNING) {
+                animation.pause();
+            }
+            else {
+                animation.play();
+            }
+        }
+        // Resets ball position
+        if(code == KeyCode.R) {
+            resetBall(myBall);
+        }
+    }
+
+    private void resetBall(Ball ball) {
+        ball.setCenterX(30);
+        ball.setCenterY(300);
+        ball.moveDown();
+        ball.moveRight();
     }
 
     // What to do each time a key is pressed
