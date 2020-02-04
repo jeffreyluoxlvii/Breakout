@@ -20,6 +20,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     // keep any useful elements whose values you want to test directly in multiple tests
     private Ball myBall;
     private Platform myPlatform;
+    private Brick myBrick;
 
     /**
      * Start special test version of application that does not animate on its own before each test.
@@ -34,5 +35,6 @@ public class BreakoutGameTest extends DukeApplicationTest {
         // find individual items within game by ID (must have been set in your code using setID())
         myBall = lookup("#ball").query();
         myPlatform = lookup("#platform").query();
+        myBrick = lookup("#brick_0").query();
     }
 }

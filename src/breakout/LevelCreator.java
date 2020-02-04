@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class LevelCreator {
 
-    public static final double BRICKS_RATIO_TO_SCREEN = 0.1;
+    public static final double BRICKS_RATIO_TO_SCREEN = 0.7;
 
     public static List<Brick> setupBricksForLevel(String path, int gameWidth, int gameHeight) {
         int numRows = getNumberRows(path);
