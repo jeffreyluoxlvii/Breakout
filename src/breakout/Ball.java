@@ -27,6 +27,7 @@ public class Ball extends Circle {
         this.setFill(Color.RED);
         xDirection = 1;
         yDirection = 1;
+        this.setId("ball");
     }
 
     public void moveLeft() {
