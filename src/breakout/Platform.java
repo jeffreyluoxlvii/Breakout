@@ -16,6 +16,7 @@ public class Platform extends Rectangle {
         this.setFill(PLATFORM_COLOR);
         this.setX(gameWidth / 2 - this.getWidth() / 2);
         this.setY(gameHeight * (1 - PLATFORM_DISTANCE_FROM_BOTTOM));
+        this.setId("platform");
     }
 
 

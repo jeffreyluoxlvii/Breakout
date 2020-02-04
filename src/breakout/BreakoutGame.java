@@ -59,7 +59,7 @@ public class BreakoutGame extends Application {
     }
 
     // Create the game's "scene": what shapes will be in the game and their starting properties
-    private Scene setupGame (int width, int height, Paint background) {
+    Scene setupGame (int width, int height, Paint background) {
         // create one top level collection to organize the things in the scene
         Group root = new Group();
 

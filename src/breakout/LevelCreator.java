@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class LevelCreator {
 
-    public static final double BRICKS_RATIO_TO_SCREEN = 0.6;
+    public static final double BRICKS_RATIO_TO_SCREEN = 0.7;
 
     public static List<Brick> setupBricksForLevel(String path, int gameWidth, int gameHeight) {
         int numRows = getNumberRows(path);
@@ -14,12 +14,17 @@ public class LevelCreator {
         List<Brick> bricks = new ArrayList<>();
 
         Scanner scan = getScannerForFile(path);
+        int counter = 0;
         for(int i = 0; i < numRows; i++) {
             String line = scan.nextLine();
             for(int j = 0; j < numColumns; j++) {
-                if(line.substring(j, j + 1).equals("1"))
-                    bricks.add(new Brick((gameWidth / numColumns) * j, (gameHeight * BRICKS_RATIO_TO_SCREEN) * i / numRows,
-                            gameWidth / numColumns, gameHeight * BRICKS_RATIO_TO_SCREEN / numRows));
+                if(line.substring(j, j + 1).equals("1")) {
+                    Brick brick = new Brick((gameWidth / numColumns) * j, (gameHeight * BRICKS_RATIO_TO_SCREEN) * i / numRows,
+                            gameWidth / numColumns, gameHeight * BRICKS_RATIO_TO_SCREEN / numRows);
+                    brick.setId("brick_" + counter);
+                    bricks.add(brick);
+                    counter++;
+                }
             }
         }
         return bricks;
