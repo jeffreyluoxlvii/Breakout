@@ -56,8 +56,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
     // check initial stats of the ball
     @Test
     public void testBallInitialStats() {
-        assertEquals(30, myBall.getCenterX());
-        assertEquals(300, myBall.getCenterY());
+        assertEquals(BreakoutGame.BALL_STARTING_X, myBall.getCenterX());
+        assertEquals(BreakoutGame.BALL_STARTING_Y, myBall.getCenterY());
         assertEquals(Ball.BALL_RADIUS, myBall.getRadius());
         assertEquals(Ball.NORMAL_BALL_SPEED, myBall.getVelocity());
     }
@@ -89,6 +89,16 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myGame.step(0.05);
         assertEquals(BreakoutGame.SIZE - myBall.getRadius() - myBall.getVelocity() * 0.05, myBall.getCenterX());
         assertEquals(myBall.getRadius() + myBall.getVelocity() * 0.05, myBall.getCenterY());
+    }
+
+    @Test
+    public void testBallBouncesCorrectly() {
+        myBall.setCenterX(myPlatform.getX() + myPlatform.getWidth() / 2 - myBall.getVelocity() * 0.2);
+        myBall.setCenterY(myPlatform.getY() - myBall.getVelocity() * 0.2);
+        myGame.step(0.2);
+        myGame.step(0.2);
+        assertEquals(myPlatform.getX() + myPlatform.getWidth() / 2 + myBall.getVelocity() * 0.2, myBall.getCenterX());
+        assertEquals(myPlatform.getY() - myBall.getVelocity() * 0.2, myBall.getCenterY());
     }
 
     @Test
