@@ -79,11 +79,24 @@ public class BreakoutGameTest extends DukeApplicationTest {
     }
 
     @Test
+    public void testBallHitCorner() {
+        myBall.moveUp();
+        myBall.moveRight();
+        myBall.setCenterX(BreakoutGame.SIZE - myBall.getRadius() - myBall.getVelocity() * 0.05);
+        myBall.setCenterY(myBall.getRadius() + myBall.getVelocity() * 0.05);
+        sleep(2, TimeUnit.SECONDS);
+        myGame.step(0.05);
+        myGame.step(0.05);
+        assertEquals(BreakoutGame.SIZE - myBall.getRadius() - myBall.getVelocity() * 0.05, myBall.getCenterX());
+        assertEquals(myBall.getRadius() + myBall.getVelocity() * 0.05, myBall.getCenterY());
+    }
+
+    @Test
     public void testBallReset() {
         myBall.setCenterX(BreakoutGame.SIZE  - 1);
         myBall.setCenterY(BreakoutGame.SIZE - 1);
         myGame.step(1);
-        assertEquals(30, myBall.getCenterX());
-        assertEquals(300, myBall.getCenterY());
+        assertEquals(BreakoutGame.BALL_STARTING_X, myBall.getCenterX());
+        assertEquals(BreakoutGame.BALL_STARTING_Y, myBall.getCenterY());
     }
 }
