@@ -54,4 +54,9 @@ public class Ball extends Circle {
     public int getYDirection() {
         return yDirection;
     }
+
+    public void move(double elapsedTime) {
+        this.setCenterX(this.getCenterX() + NORMAL_BALL_SPEED * this.getXDirection() * elapsedTime);
+        this.setCenterY(this.getCenterY() + NORMAL_BALL_SPEED * this.getYDirection() * elapsedTime);
+    }
 }

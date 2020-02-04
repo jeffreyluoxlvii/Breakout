@@ -28,7 +28,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     @Override
     public void start (Stage stage) {
         // create game's scene with all shapes in their initial positions and show it
-        myScene = myGame.setupGame(BreakoutGame.SIZE, BreakoutGame.SIZE, BreakoutGame.BACKGROUND);
+        myScene = myGame.setupGame(BreakoutGame.SIZE, BreakoutGame.SIZE, BreakoutGame.BACKGROUND, "levelOne");
         stage.setScene(myScene);
         stage.show();
 
@@ -36,5 +36,13 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myBall = lookup("#ball").query();
         myPlatform = lookup("#platform").query();
         myBrick = lookup("#brick_0").query();
+    }
+
+    // check initial stats of the ball
+    @Test
+    public void testBallInitialStats () {
+        assertEquals(30, myBall.getCenterX());
+        assertEquals(300, myBall.getCenterY());
+        assertEquals(Ball.BALL_RADIUS, myBall.getRadius());
     }
 }
