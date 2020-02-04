@@ -31,6 +31,8 @@ public class BreakoutGame extends Application {
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public static final Paint BACKGROUND = Color.AZURE;
+    public static final int BALL_STARTING_X = 30;
+    public static final int BALL_STARTING_Y = 300;
 
     // some things needed to remember during game
     private Scene myScene;
@@ -64,7 +66,7 @@ public class BreakoutGame extends Application {
         Group root = new Group();
 
         myPlatform = new Platform(width, height);
-        myBall = new Ball(30, 300);
+        myBall = new Ball(BALL_STARTING_X, BALL_STARTING_Y);
         myBricks = LevelCreator.setupBricksForLevel(path, width, height);
 
         root.getChildren().add(myPlatform);
@@ -136,11 +138,11 @@ public class BreakoutGame extends Application {
             ball.moveDown();
         }
         // hit bottom wall
-        if(ball.getCenterY() - ball.getRadius() >= myScene.getHeight()) {
+        if(ball.getCenterY() - ball.getRadius() >= SIZE) {
             resetBall(ball);
         }
         // hit right wall
-        if(ball.getCenterX() + ball.getRadius() >= myScene.getWidth()) {
+        if(ball.getCenterX() + ball.getRadius() >= SIZE) {
             ball.moveLeft();
         }
         // hit left wall
@@ -167,8 +169,8 @@ public class BreakoutGame extends Application {
     }
 
     private void resetBall(Ball ball) {
-        ball.setCenterX(30);
-        ball.setCenterY(300);
+        ball.setCenterX(BALL_STARTING_X);
+        ball.setCenterY(BALL_STARTING_Y);
         ball.moveDown();
         ball.moveRight();
     }
