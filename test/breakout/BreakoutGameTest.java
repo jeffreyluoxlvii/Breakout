@@ -44,5 +44,6 @@ public class BreakoutGameTest extends DukeApplicationTest {
         assertEquals(30, myBall.getCenterX());
         assertEquals(300, myBall.getCenterY());
         assertEquals(Ball.BALL_RADIUS, myBall.getRadius());
+        assertEquals(Ball.NORMAL_BALL_SPEED, myBall.getVelocity());
     }
 }
