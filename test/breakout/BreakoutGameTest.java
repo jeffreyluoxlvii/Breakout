@@ -22,18 +22,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     private Ball myBall;
     private Platform myPlatform;
     private Brick myBrick_0;
-    private Brick myBrick_4;
-    private Brick myBrick_8;
-    private Brick myBrick_12;
-    private Brick myBrick_16;
-    private Brick myBrick_20;
-    private Brick myBrick_24;
-    private Brick myBrick_28;
-    private Brick myBrick_32;
-    private Brick myBrick_36;
-    private Brick myBrick_40;
-    private Brick myBrick_44;
-    private Brick myBrick_48;
+    private Brick myBrick_1;
 
 
 
@@ -43,7 +32,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     @Override
     public void start (Stage stage) {
         // create game's scene with all shapes in their initial positions and show it
-        myScene = myGame.setupGame(BreakoutGame.SIZE, BreakoutGame.SIZE, BreakoutGame.BACKGROUND, "levelOne");
+        myScene = myGame.setupGame(BreakoutGame.SIZE, BreakoutGame.SIZE, BreakoutGame.BACKGROUND, "testOne");
         stage.setScene(myScene);
         stage.show();
 
@@ -51,6 +40,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myBall = lookup("#ball").query();
         myPlatform = lookup("#platform").query();
         myBrick_0 = lookup("#brick_0").query();
+        myBrick_1 = lookup("#brick_1").query();
     }
 
     // check initial stats of the ball
@@ -68,14 +58,15 @@ public class BreakoutGameTest extends DukeApplicationTest {
         assertEquals(myGame.SIZE * Platform.PLATFORM_HEIGHT, myPlatform.getHeight());
         assertEquals(myGame.SIZE * Platform.PLATFORM_WIDTH, myPlatform.getWidth());
         sleep(1, TimeUnit.SECONDS);
-        moveTo(myBrick_0);
-        assertEquals(myBrick_0.getX() + myBrick_0.getWidth() / 2, myPlatform.getX());
     }
 
     // check the positions of the first block of every row
     @Test
     public void testBrickPositions() {
-        
+        assertEquals(0, myBrick_0.getX());
+        assertEquals(0, myBrick_0.getY());
+        assertEquals(myBrick_0.getWidth(), myBrick_1.getX());
+        assertEquals(myBrick_0.getHeight(), myBrick_1.getY());
     }
 
     @Test
