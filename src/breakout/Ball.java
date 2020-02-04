@@ -16,6 +16,7 @@ public class Ball extends Circle {
 
     private int xDirection;
     private int yDirection;
+    private int velocity;
 
     /**
      * Creates a ball at the given x and y coordinates of the center of the circle.
@@ -27,6 +28,7 @@ public class Ball extends Circle {
         this.setFill(Color.RED);
         xDirection = 1;
         yDirection = 1;
+        velocity = NORMAL_BALL_SPEED;
         this.setId("ball");
     }
 
@@ -55,8 +57,12 @@ public class Ball extends Circle {
         return yDirection;
     }
 
+    public int getVelocity() {
+        return velocity;
+    }
+
     public void move(double elapsedTime) {
-        this.setCenterX(this.getCenterX() + NORMAL_BALL_SPEED * this.getXDirection() * elapsedTime);
-        this.setCenterY(this.getCenterY() + NORMAL_BALL_SPEED * this.getYDirection() * elapsedTime);
+        this.setCenterX(this.getCenterX() + velocity * this.getXDirection() * elapsedTime);
+        this.setCenterY(this.getCenterY() + velocity * this.getYDirection() * elapsedTime);
     }
 }
