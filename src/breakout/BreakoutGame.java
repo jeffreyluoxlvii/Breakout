@@ -136,11 +136,11 @@ public class BreakoutGame extends Application {
             ball.moveDown();
         }
         // hit bottom wall
-        if(ball.getCenterY() - ball.getRadius() >= myScene.getHeight()) {
+        if(ball.getCenterY() - ball.getRadius() >= SIZE) {
             resetBall(ball);
         }
         // hit right wall
-        if(ball.getCenterX() + ball.getRadius() >= myScene.getWidth()) {
+        if(ball.getCenterX() + ball.getRadius() >= SIZE) {
             ball.moveLeft();
         }
         // hit left wall

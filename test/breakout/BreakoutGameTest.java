@@ -77,4 +77,13 @@ public class BreakoutGameTest extends DukeApplicationTest {
     public void testBrickPositions() {
         
     }
+
+    @Test
+    public void testBallReset() {
+        myBall.setCenterX(BreakoutGame.SIZE  - 1);
+        myBall.setCenterY(BreakoutGame.SIZE - 1);
+        myGame.step(1);
+        assertEquals(30, myBall.getCenterX());
+        assertEquals(300, myBall.getCenterY());
+    }
 }
