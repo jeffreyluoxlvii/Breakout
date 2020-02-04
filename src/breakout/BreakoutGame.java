@@ -46,7 +46,7 @@ public class BreakoutGame extends Application {
     @Override
     public void start (Stage stage) {
         // attach scene to the stage and display it
-        myScene = setupGame(SIZE, SIZE, BACKGROUND);
+        myScene = setupGame(SIZE, SIZE, BACKGROUND, "levelOne");
         stage.setScene(myScene);
         stage.setTitle(TITLE);
         stage.show();
@@ -59,13 +59,13 @@ public class BreakoutGame extends Application {
     }
 
     // Create the game's "scene": what shapes will be in the game and their starting properties
-    Scene setupGame (int width, int height, Paint background) {
+    Scene setupGame (int width, int height, Paint background, String path) {
         // create one top level collection to organize the things in the scene
         Group root = new Group();
 
         myPlatform = new Platform(width, height);
         myBall = new Ball(30, 300);
-        myBricks = LevelCreator.setupBricksForLevel("levelOne", width, height);
+        myBricks = LevelCreator.setupBricksForLevel(path, width, height);
 
         root.getChildren().add(myPlatform);
         root.getChildren().add(myBall);
@@ -84,8 +84,7 @@ public class BreakoutGame extends Application {
     // Change properties of shapes in small ways to animate them over time
     // Note, there are more sophisticated ways to animate shapes, but these simple ways work fine to start
     private void step (double elapsedTime) {
-        myBall.setCenterX(myBall.getCenterX() + myBall.NORMAL_BALL_SPEED * myBall.getXDirection() * elapsedTime);
-        myBall.setCenterY(myBall.getCenterY() + myBall.NORMAL_BALL_SPEED * myBall.getYDirection() * elapsedTime);
+        myBall.move(elapsedTime);
 
         // Check for collisions
         handlePlatformCollision(myBall, myPlatform);
@@ -181,7 +180,7 @@ public class BreakoutGame extends Application {
     //What to do when mouse moves
     private void handleMouseMoved(double x, double y) {
         if(animation.getStatus() == Animation.Status.RUNNING) {
-            myPlatform.setX(x - myPlatform.getWidth() / 2);
+            myPlatform.move(x);
         }
     }
 

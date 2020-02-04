@@ -19,6 +19,8 @@ public class Platform extends Rectangle {
         this.setId("platform");
     }
 
-
+    public void move(double x) {
+        this.setX(x - this.getWidth() / 2);
+    }
 
 }
