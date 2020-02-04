@@ -83,7 +83,7 @@ public class BreakoutGame extends Application {
 
     // Change properties of shapes in small ways to animate them over time
     // Note, there are more sophisticated ways to animate shapes, but these simple ways work fine to start
-    private void step (double elapsedTime) {
+    void step (double elapsedTime) {
         myBall.move(elapsedTime);
 
         // Check for collisions
