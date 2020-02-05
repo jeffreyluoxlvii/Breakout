@@ -52,12 +52,12 @@ public class BreakoutGameTest extends DukeApplicationTest {
         assertEquals(Ball.NORMAL_BALL_SPEED, myBall.getVelocity());
     }
 
-    // check initial stats of the platform
+    // check initial stats of the platform. Waiting on Professor Duvall to add a method to the DukeApplicationTest
+    // so that we can test movement (since we use the mouse) (look at Piazza question #58).
     @Test
     public void testPlatformInitialStats() {
         assertEquals(myGame.SIZE * Platform.PLATFORM_HEIGHT, myPlatform.getHeight());
         assertEquals(myGame.SIZE * Platform.PLATFORM_WIDTH, myPlatform.getWidth());
-        sleep(1, TimeUnit.SECONDS);
     }
 
     // check the positions of the first block of every row
