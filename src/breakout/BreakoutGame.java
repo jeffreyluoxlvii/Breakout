@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -38,6 +39,9 @@ public class BreakoutGame extends Application {
     private Ball myBall;
     private List<Brick> myBricks;
     private Timeline animation;
+    private GameManager gameManager;
+    private Text myScore;
+    private Text myLives;
 
 
     /**
@@ -60,16 +64,23 @@ public class BreakoutGame extends Application {
 
     // Create the game's "scene": what shapes will be in the game and their starting properties
     Scene setupGame (int width, int height, Paint background, String path) {
+
         // create one top level collection to organize the things in the scene
         Group root = new Group();
 
         myPlatform = new Platform(width, height);
         myBall = new Ball(BALL_STARTING_X, BALL_STARTING_Y);
         myBricks = LevelCreator.setupBricksForLevel(path, width, height);
+        gameManager = new GameManager();
+        myScore = gameManager.getScore();
+        myLives = gameManager.getLives();
+
 
         root.getChildren().add(myPlatform);
         root.getChildren().add(myBall);
         root.getChildren().addAll(myBricks);
+        root.getChildren().add(myScore);
+        root.getChildren().add(myLives);
 
         // create a place to see the shapes
         Scene scene = new Scene(root, width, height, background);
@@ -102,6 +113,7 @@ public class BreakoutGame extends Application {
     // Handle a collision between ball and a brick
     private boolean isBrickCollision(Ball ball, Brick brick) {
         if(Shape.intersect(ball, brick).getBoundsInLocal().getWidth() != -1) {
+            gameManager.addScore(1);
             // hit was to the left of brick
             if(ball.getCenterX() < brick.getX()) {
                 ball.moveLeft();
@@ -137,6 +149,11 @@ public class BreakoutGame extends Application {
         }
         // hit bottom wall
         if(ball.getCenterY() - ball.getRadius() >= SIZE) {
+            gameManager.loseLife();
+            if(gameManager.checkGameOver()) {
+                // TODO: End game here
+                animation.pause();
+            }
             resetBall(ball);
         }
         // hit right wall

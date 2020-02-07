@@ -1,6 +1,7 @@
 package breakout;
 
 import javafx.scene.Scene;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -23,6 +24,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
     private Platform myPlatform;
     private Brick myBrick_0;
     private Brick myBrick_1;
+    private Text myScore;
+    private Text myLives;
 
 
 
@@ -41,6 +44,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myPlatform = lookup("#platform").query();
         myBrick_0 = lookup("#brick_0").query();
         myBrick_1 = lookup("#brick_1").query();
+        myScore = lookup("#score").query();
+        myLives = lookup("#lives").query();
     }
 
     // check initial stats of the ball
@@ -99,5 +104,14 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myGame.step(1);
         assertEquals(BreakoutGame.BALL_STARTING_X, myBall.getCenterX());
         assertEquals(BreakoutGame.BALL_STARTING_Y, myBall.getCenterY());
+    }
+
+    // Check that life gets lost when hitting bottom wall
+    @Test
+    public void testLostLife() {
+        myBall.setCenterX(BreakoutGame.SIZE  - 1);
+        myBall.setCenterY(BreakoutGame.SIZE - 1);
+        myGame.step(1);
+        assertEquals("LIVES: 2", myLives.getText());
     }
 }
