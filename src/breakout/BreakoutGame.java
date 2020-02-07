@@ -152,6 +152,7 @@ public class BreakoutGame extends Application {
             gameManager.loseLife();
             if(gameManager.checkGameOver()) {
                 // TODO: End game here
+
                 animation.pause();
             }
             resetBall(ball);
@@ -180,6 +181,9 @@ public class BreakoutGame extends Application {
         // Resets ball position
         if(code == KeyCode.R) {
             resetBall(myBall);
+        }
+        if(code == KeyCode.L) {
+            gameManager.addLife();
         }
     }
 

@@ -114,4 +114,13 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myGame.step(1);
         assertEquals("LIVES: 2", myLives.getText());
     }
+
+    @Test
+    public void testAddScore() {
+        myBall.setCenterX(myBrick_0.getX() - 1);
+        myBall.setCenterX(myBrick_0.getY() + 1);
+        myBall.moveUp();
+        myGame.step(3);
+        assertEquals("SCORE: 1", myScore.getText());
+    }
 }
