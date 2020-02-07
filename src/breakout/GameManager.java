@@ -18,9 +18,11 @@ public class GameManager {
         myScore = new Text("SCORE: " + score);
         myScore.setX(0);
         myScore.setY(BreakoutGame.SIZE * (1 - TEXT_DISTANCE_FROM_BOTTOM));
+        myScore.setId("score");
         myLives = new Text("LIVES: " + lives);
         myLives.setX(BreakoutGame.SIZE - 100);
         myLives.setY(BreakoutGame.SIZE * (1 - TEXT_DISTANCE_FROM_BOTTOM));
+        myLives.setId("lives");
     }
 
     public void addScore(int points) {
