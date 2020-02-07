@@ -24,7 +24,11 @@ import java.util.List;
  * @author Robert C. Duvall
  */
 public class BreakoutGame extends Application {
+
     public static final String TITLE = "Breakout";
+    public static final String WIN_MESSAGE = "Congratulations, you winner!";
+    public static final String LOSE_MESSAGE = "Maybe next time you will be a winner.";
+
     public static final int SIZE = 400;
     public static final int FRAMES_PER_SECOND = 60;
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
@@ -34,6 +38,7 @@ public class BreakoutGame extends Application {
     public static final int BALL_STARTING_Y = 300;
 
     // some things needed to remember during game
+    private Stage myStage;
     private Scene myScene;
     private Platform myPlatform;
     private Ball myBall;
@@ -49,6 +54,7 @@ public class BreakoutGame extends Application {
      */
     @Override
     public void start (Stage stage) {
+        myStage = stage;
         // attach scene to the stage and display it
         myScene = setupGame(SIZE, SIZE, BACKGROUND, "levelOne");
         stage.setScene(myScene);
@@ -60,6 +66,26 @@ public class BreakoutGame extends Application {
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
         animation.play();
+    }
+
+    private void end() {
+        myStage.setScene(endGame(SIZE, SIZE, BACKGROUND));
+        myStage.show();
+    }
+
+    private Scene endGame(int width, int height, Paint background) {
+
+        Group root = new Group();
+
+        Text text = new Text();
+        text.setText(LOSE_MESSAGE);
+        text.setX(SIZE / 2 - text.getLayoutBounds().getWidth() / 2);
+        text.setY(SIZE / 2 - text.getLayoutBounds().getHeight() / 2);
+
+        root.getChildren().add(text);
+        Scene scene = new Scene(root, width, height);
+        return scene;
+
     }
 
     // Create the game's "scene": what shapes will be in the game and their starting properties
@@ -152,8 +178,7 @@ public class BreakoutGame extends Application {
             gameManager.loseLife();
             if(gameManager.checkGameOver()) {
                 // TODO: End game here
-
-                animation.pause();
+                end();
             }
             resetBall(ball);
         }
