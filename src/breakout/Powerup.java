@@ -1,10 +1,10 @@
 package breakout;
 
+import javafx.scene.Scene;
 import javafx.scene.shape.Shape;
 
-public abstract class Powerup {
-    private Shape myShape;
+public interface Powerup {
 
-    public abstract void usePowerup();
+    public void usePowerUp(Scene scene);
 
 }
