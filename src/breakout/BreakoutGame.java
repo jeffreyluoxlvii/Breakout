@@ -59,7 +59,7 @@ public class BreakoutGame extends Application {
     public void start (Stage stage) {
         myStage = stage;
         // attach scene to the stage and display it
-        myScene = setupGame(SIZE, SIZE, BACKGROUND, "testOne");
+        myScene = setupGame(SIZE, SIZE, BACKGROUND, "levelOne");
         stage.setScene(myScene);
         stage.setTitle(TITLE);
         stage.show();
@@ -126,6 +126,11 @@ public class BreakoutGame extends Application {
         scene.setOnMouseMoved(e -> handleMouseMoved(e.getX(), e.getY()));
     }
 
+    private void addPowerup(Powerup p) {
+        myPowerups.add(p);
+        ((Group)myScene.getRoot()).getChildren().add(p.getShape());
+    }
+
     // Change properties of shapes in small ways to animate them over time
     // Note, there are more sophisticated ways to animate shapes, but these simple ways work fine to start
     void step (Scene scene, double elapsedTime) {
@@ -136,12 +141,20 @@ public class BreakoutGame extends Application {
 
         // Check for collisions
         List<Powerup> p = myCollisionManager.handlePowerupCollisions(myPowerups, myPlatform);
-        for(Powerup powerup: p)
+        for(Powerup powerup: p) {
             powerup.usePowerUp(myScene);
+            ((Group)myScene.getRoot()).getChildren().remove(powerup.getShape());
+        }
         myCollisionManager.handlePlatformCollision(myBall, myPlatform);
         List<Brick> hitBricks = myCollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator());
         gameManager.addScore(hitBricks.size());
         myBricks.removeAll(hitBricks);
+        for(Brick b: hitBricks) {
+            Powerup temp = PowerupGenerator.getPowerup(b.getX() + b.getWidth() / 2, b.getY() + b.getHeight());
+            if(temp != null) {
+                addPowerup(temp);
+            }
+        }
 
         if(myCollisionManager.handleWallCollision(myBall)) {
             gameManager.loseLife();

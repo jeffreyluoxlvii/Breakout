@@ -3,27 +3,26 @@ package breakout;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class PlatformExtenderPowerup implements Powerup {
 
-    public static final int POWERUP_WIDTH = 50;
-    public static final int POWERUP_HEIGHT = 50;
+    public static final int POWERUP_WIDTH = 15;
+    public static final int POWERUP_HEIGHT = 15;
     public static final int POWERUP_EXTENSION_LENGTH = 20;
-    public static final double DROP_CHANCE = 0.05;
-    public static final double VELOCITY = 250;
+    public static final double DROP_CHANCE = 0.1;
+    public static final double VELOCITY = 50;
+    public static final Paint myFill = Color.BLUEVIOLET;
     private Rectangle myShape;
 
-    public PlatformExtenderPowerup(int centerX, int topY) {
+    public PlatformExtenderPowerup(double centerX, double topY) {
         myShape = new Rectangle(POWERUP_WIDTH, POWERUP_HEIGHT);
         myShape.setX(centerX - myShape.getWidth() / 2.0);
         myShape.setY(topY);
-    }
-
-    @Override
-    public double getDropChance() {
-        return DROP_CHANCE;
+        myShape.setFill(myFill);
     }
 
     @Override
@@ -37,7 +36,6 @@ public class PlatformExtenderPowerup implements Powerup {
 
     @Override
     public void move(double elapsedTime) {
-        myShape.setX(myShape.getX() + VELOCITY * elapsedTime);
         myShape.setY(myShape.getY() + VELOCITY * elapsedTime);
     }
 

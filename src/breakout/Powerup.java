@@ -5,8 +5,6 @@ import javafx.scene.shape.Shape;
 
 public interface Powerup {
 
-    public double getDropChance();
-
     public void usePowerUp(Scene scene);
 
     public void move(double elapsedTime);
