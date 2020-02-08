@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class BreakoutGame extends Application {
     private Platform myPlatform;
     private Ball myBall;
     private List<Brick> myBricks;
+    private List<Powerup> myPowerups;
     private Timeline animation;
     private GameManager gameManager;
     private CollisionManager myCollisionManager;
@@ -57,7 +59,7 @@ public class BreakoutGame extends Application {
     public void start (Stage stage) {
         myStage = stage;
         // attach scene to the stage and display it
-        myScene = setupGame(SIZE, SIZE, BACKGROUND, "testOne");
+        myScene = setupGame(SIZE, SIZE, BACKGROUND, "levelOne");
         stage.setScene(myScene);
         stage.setTitle(TITLE);
         stage.show();
@@ -100,6 +102,7 @@ public class BreakoutGame extends Application {
         myPlatform = new Platform(width, height);
         myBall = new Ball(BALL_STARTING_X, BALL_STARTING_Y);
         myBricks = LevelCreator.setupBricksForLevel(path, width, height);
+        myPowerups = new ArrayList<>();
         gameManager = new GameManager();
         myScore = gameManager.getScore();
         myLives = gameManager.getLives();
@@ -123,16 +126,35 @@ public class BreakoutGame extends Application {
         scene.setOnMouseMoved(e -> handleMouseMoved(e.getX(), e.getY()));
     }
 
+    private void addPowerup(Powerup p) {
+        myPowerups.add(p);
+        ((Group)myScene.getRoot()).getChildren().add(p.getShape());
+    }
+
     // Change properties of shapes in small ways to animate them over time
     // Note, there are more sophisticated ways to animate shapes, but these simple ways work fine to start
     void step (Scene scene, double elapsedTime) {
         myBall.move(elapsedTime);
 
+        for(Powerup p: myPowerups)
+            p.move(elapsedTime);
+
         // Check for collisions
+        List<Powerup> p = myCollisionManager.handlePowerupCollisions(myPowerups, myPlatform);
+        for(Powerup powerup: p) {
+            powerup.usePowerUp(myScene);
+            ((Group)myScene.getRoot()).getChildren().remove(powerup.getShape());
+        }
         myCollisionManager.handlePlatformCollision(myBall, myPlatform);
         List<Brick> hitBricks = myCollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator());
         gameManager.addScore(hitBricks.size());
         myBricks.removeAll(hitBricks);
+        for(Brick b: hitBricks) {
+            Powerup temp = PowerupGenerator.getPowerup(b.getX() + b.getWidth() / 2, b.getY() + b.getHeight());
+            if(temp != null) {
+                addPowerup(temp);
+            }
+        }
 
         if(myCollisionManager.handleWallCollision(myBall)) {
             gameManager.loseLife();

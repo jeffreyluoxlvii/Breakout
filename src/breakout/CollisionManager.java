@@ -11,6 +11,22 @@ import java.util.List;
 
 public class CollisionManager {
 
+    public List<Powerup> handlePowerupCollisions(List<Powerup> powerups, Platform platform) {
+        List<Powerup> collisionPowerups = new ArrayList<>();
+        for(Iterator<Powerup> iter = powerups.iterator(); iter.hasNext();) {
+            Powerup p = iter.next();
+            if(isPowerupCollision(p, platform)) {
+                collisionPowerups.add(p);
+                iter.remove();
+            }
+        }
+        return collisionPowerups;
+    }
+
+    private boolean isPowerupCollision(Powerup p, Platform platform) {
+        return Shape.intersect(p.getShape(), platform).getBoundsInLocal().getWidth() != -1;
+    }
+
     // Handle collision between ball and platform
     public void handlePlatformCollision(Ball ball, Platform platform) {
         if(Shape.intersect(ball, platform).getBoundsInLocal().getWidth() != -1) {

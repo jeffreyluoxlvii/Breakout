@@ -23,4 +23,8 @@ public class Platform extends Rectangle {
         this.setX(x - this.getWidth() / 2);
     }
 
+    public void updateWidth(double x) {
+        this.setWidth(this.getWidth() + x);
+    }
+
 }
