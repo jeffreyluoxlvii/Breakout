@@ -5,7 +5,9 @@ import breakout.Platform;
 import javafx.scene.Node;
 import javafx.scene.shape.Shape;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class CollisionManager {
 
@@ -36,19 +38,19 @@ public class CollisionManager {
         return false;
     }
 
-    public boolean handleBrickCollision(Ball ball, Iterator<Node> iterator) {
-        boolean hitBrick = false;
+    public List<Brick> handleBrickCollision(Ball ball, Iterator<Node> iterator) {
+        List<Brick> hitBricks = new ArrayList<>();
         while(iterator.hasNext()) {
             Node node = iterator.next();
             if(node instanceof Brick) {
                 Brick brick = (Brick) node;
                 if (isBrickCollision(ball, brick)) {
-                    hitBrick = true;
+                    hitBricks.add(brick);
                     iterator.remove();
                 }
             }
         }
-        return hitBrick;
+        return hitBricks;
     }
 
     // Handle a collision between ball and a brick
