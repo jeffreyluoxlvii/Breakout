@@ -123,4 +123,12 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myGame.step(myScene,3);
         assertEquals("SCORE: 1", myScore.getText());
     }
+
+    @Test
+    public void testPlatformExtenderPowerup() {
+        double prevWidth = myPlatform.getWidth();
+        Powerup p = new PlatformExtenderPowerup(0, 0);
+        p.usePowerUp(myScene);
+        assertEquals(prevWidth + PlatformExtenderPowerup.POWERUP_EXTENSION_LENGTH, myPlatform.getWidth());
+    }
 }
