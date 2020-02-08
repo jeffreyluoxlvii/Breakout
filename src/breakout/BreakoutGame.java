@@ -45,6 +45,7 @@ public class BreakoutGame extends Application {
     private List<Brick> myBricks;
     private Timeline animation;
     private GameManager gameManager;
+    private CollisionManager myCollisionManager;
     private Text myScore;
     private Text myLives;
 
@@ -94,13 +95,14 @@ public class BreakoutGame extends Application {
         // create one top level collection to organize the things in the scene
         Group root = new Group();
 
+        myCollisionManager = new CollisionManager();
+
         myPlatform = new Platform(width, height);
         myBall = new Ball(BALL_STARTING_X, BALL_STARTING_Y);
         myBricks = LevelCreator.setupBricksForLevel(path, width, height);
         gameManager = new GameManager();
         myScore = gameManager.getScore();
         myLives = gameManager.getLives();
-
 
         root.getChildren().add(myPlatform);
         root.getChildren().add(myBall);
@@ -124,71 +126,17 @@ public class BreakoutGame extends Application {
         myBall.move(elapsedTime);
 
         // Check for collisions
-        handlePlatformCollision(myBall, myPlatform);
-        for(Iterator<Brick> iterator = myBricks.iterator(); iterator.hasNext();) {
-            Brick currentBrick = iterator.next();
-            if(isBrickCollision(myBall, currentBrick))
-            {
-                iterator.remove();
-                ((Group)myScene.getRoot()).getChildren().remove(currentBrick);
-            }
-        }
-        handleWallCollision(myBall);
-    }
-
-    // Handle a collision between ball and a brick
-    private boolean isBrickCollision(Ball ball, Brick brick) {
-        if(Shape.intersect(ball, brick).getBoundsInLocal().getWidth() != -1) {
+        myCollisionManager.handlePlatformCollision(myBall, myPlatform);
+        if(myCollisionManager.handleBrickCollision(myBall, ((Group)myScene.getRoot()).getChildren().iterator())) {
             gameManager.addScore(1);
-            // hit was to the left of brick
-            if(ball.getCenterX() < brick.getX()) {
-                ball.moveLeft();
-            }
-            // hit was to the right of brick
-            else if(ball.getCenterX() > brick.getX() + brick.getWidth()) {
-                ball.moveRight();
-            }
-            // hit was below the brick
-            else if(ball.getCenterY() > brick.getY() + (brick.getHeight() / 2)) {
-                ball.moveDown();
-            }
-            // hit was above the brick
-            else if(ball.getCenterY() < brick.getY() + (brick.getHeight() / 2)) {
-                ball.moveUp();
-            }
-            return true;
         }
-        return false;
-    }
 
-    // Handle collision between ball and platform
-    private void handlePlatformCollision(Ball ball, Platform platform) {
-        if(Shape.intersect(ball, platform).getBoundsInLocal().getWidth() != -1) {
-            ball.moveUp();
-        }
-    }
-
-    private void handleWallCollision(Ball ball) {
-        // hit top wall
-        if(ball.getCenterY() - ball.getRadius() <= 0) {
-            ball.moveDown();
-        }
-        // hit bottom wall
-        if(ball.getCenterY() - ball.getRadius() >= SIZE) {
+        if(myCollisionManager.handleWallCollision(myBall)) {
             gameManager.loseLife();
             if(gameManager.checkGameOver()) {
-                // TODO: End game here
                 end();
             }
-            resetBall(ball);
-        }
-        // hit right wall
-        if(ball.getCenterX() + ball.getRadius() >= SIZE) {
-            ball.moveLeft();
-        }
-        // hit left wall
-        if(ball.getCenterX() - ball.getRadius() <= 0) {
-            ball.moveRight();
+            resetBall(myBall);
         }
     }
 
