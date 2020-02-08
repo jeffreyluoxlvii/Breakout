@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests for BreakoutGame class.
  */
 public class BreakoutGameTest extends DukeApplicationTest {
-    // create an instance of our game to be able to call in tests (like step())
+    // create an instance of our game to be able to call in tests (like stexp())
     private final BreakoutGame myGame = new BreakoutGame();
     // keep created scene to allow mouse and keyboard events
     private Scene myScene;
@@ -83,8 +83,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myBall.setCenterX(BreakoutGame.SIZE - myBall.getRadius() - myBall.getVelocity() * 0.05);
         myBall.setCenterY(myBall.getRadius() + myBall.getVelocity() * 0.05);
         sleep(2, TimeUnit.SECONDS);
-        myGame.step(0.05);
-        myGame.step(0.05);
+        myGame.step(myScene, 0.05);
+        myGame.step(myScene, 0.05);
         assertEquals(BreakoutGame.SIZE - myBall.getRadius() - myBall.getVelocity() * 0.05, myBall.getCenterX());
         assertEquals(myBall.getRadius() + myBall.getVelocity() * 0.05, myBall.getCenterY());
     }
@@ -93,8 +93,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
     public void testBallBouncesCorrectly() {
         myBall.setCenterX(myPlatform.getX() + myPlatform.getWidth() / 2 - myBall.getVelocity() * 0.2);
         myBall.setCenterY(myPlatform.getY() - myBall.getVelocity() * 0.2);
-        myGame.step(0.2);
-        myGame.step(0.2);
+        myGame.step(myScene, 0.2);
+        myGame.step(myScene, 0.2);
         assertEquals(myPlatform.getX() + myPlatform.getWidth() / 2 + myBall.getVelocity() * 0.2, myBall.getCenterX());
         assertEquals(myPlatform.getY() - myBall.getVelocity() * 0.2, myBall.getCenterY());
     }
@@ -103,7 +103,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     public void testBallReset() {
         myBall.setCenterX(BreakoutGame.SIZE  - 1);
         myBall.setCenterY(BreakoutGame.SIZE - 1);
-        myGame.step(1);
+        myGame.step(myScene, 1);
         assertEquals(BreakoutGame.BALL_STARTING_X, myBall.getCenterX());
         assertEquals(BreakoutGame.BALL_STARTING_Y, myBall.getCenterY());
     }
@@ -113,13 +113,25 @@ public class BreakoutGameTest extends DukeApplicationTest {
     public void testLostLife() {
         myBall.setCenterX(BreakoutGame.SIZE  - 1);
         myBall.setCenterY(BreakoutGame.SIZE - 1);
-        myGame.step(1);
+        myGame.step(myScene, 1);
         assertEquals("LIVES: 2", myLives.getText());
     }
 
     // Test to check that score gets added
     @Test
     public void testAddScore() {
+        myBall.setCenterX(myBrick_0.getX() - 1);
+        myBall.setCenterX(myBrick_0.getY() + 1);
+        myBall.moveUp();
+        myGame.step(myScene,3);
+        assertEquals("SCORE: 1", myScore.getText());
+    }
 
+    @Test
+    public void testPlatformExtenderPowerup() {
+        double prevWidth = myPlatform.getWidth();
+        Powerup p = new PlatformExtenderPowerup(0, 0);
+        p.usePowerUp(myScene);
+        assertEquals(prevWidth + PlatformExtenderPowerup.POWERUP_EXTENSION_LENGTH, myPlatform.getWidth());
     }
 }
