@@ -57,7 +57,7 @@ public class BreakoutGame extends Application {
     public void start (Stage stage) {
         myStage = stage;
         // attach scene to the stage and display it
-        myScene = setupGame(SIZE, SIZE, BACKGROUND, "levelOne");
+        myScene = setupGame(SIZE, SIZE, BACKGROUND, "testOne");
         stage.setScene(myScene);
         stage.setTitle(TITLE);
         stage.show();
@@ -69,17 +69,17 @@ public class BreakoutGame extends Application {
         animation.play();
     }
 
-    private void end() {
-        myStage.setScene(endGame(SIZE, SIZE, BACKGROUND));
+    private void end(String displayText) {
+        myStage.setScene(endGame(SIZE, SIZE, BACKGROUND, displayText));
         myStage.show();
     }
 
-    private Scene endGame(int width, int height, Paint background) {
+    private Scene endGame(int width, int height, Paint background, String displayText) {
 
         Group root = new Group();
 
         Text text = new Text();
-        text.setText(LOSE_MESSAGE);
+        text.setText(displayText);
         text.setX(SIZE / 2 - text.getLayoutBounds().getWidth() / 2);
         text.setY(SIZE / 2 - text.getLayoutBounds().getHeight() / 2);
 
@@ -113,11 +113,14 @@ public class BreakoutGame extends Application {
         // create a place to see the shapes
         Scene scene = new Scene(root, width, height, background);
         // respond to input
+        setupSceneEventListeners(scene);
+        return scene;
+    }
 
+    private void setupSceneEventListeners(Scene scene) {
         scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         scene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
         scene.setOnMouseMoved(e -> handleMouseMoved(e.getX(), e.getY()));
-        return scene;
     }
 
     // Change properties of shapes in small ways to animate them over time
@@ -127,16 +130,24 @@ public class BreakoutGame extends Application {
 
         // Check for collisions
         myCollisionManager.handlePlatformCollision(myBall, myPlatform);
-        if(myCollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator())) {
-            gameManager.addScore(1);
-        }
+        List<Brick> hitBricks = myCollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator());
+        gameManager.addScore(hitBricks.size());
+        myBricks.removeAll(hitBricks);
 
         if(myCollisionManager.handleWallCollision(myBall)) {
             gameManager.loseLife();
-            if(gameManager.checkGameOver()) {
-                end();
-            }
             resetBall(myBall);
+        }
+
+        checkGameEnded();
+    }
+
+    private void checkGameEnded() {
+        if(gameManager.checkGameOver()) {
+            end(LOSE_MESSAGE);
+        }
+        else if(myBricks.size() == 0) {
+            end(WIN_MESSAGE);
         }
     }
 
