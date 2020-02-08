@@ -82,7 +82,6 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myBall.moveRight();
         myBall.setCenterX(BreakoutGame.SIZE - myBall.getRadius() - myBall.getVelocity() * 0.05);
         myBall.setCenterY(myBall.getRadius() + myBall.getVelocity() * 0.05);
-        sleep(2, TimeUnit.SECONDS);
         myGame.step(myScene, 0.05);
         myGame.step(myScene, 0.05);
         assertEquals(BreakoutGame.SIZE - myBall.getRadius() - myBall.getVelocity() * 0.05, myBall.getCenterX());
@@ -120,10 +119,9 @@ public class BreakoutGameTest extends DukeApplicationTest {
     // Test to check that score gets added
     @Test
     public void testAddScore() {
-        myBall.setCenterX(myBrick_0.getX() - 1);
-        myBall.setCenterX(myBrick_0.getY() + 1);
-        myBall.moveUp();
-        myGame.step(myScene,3);
+        myBall.setCenterX(myBrick_0.getX() + myBrick_0.getWidth() / 2 - myBall.getVelocity() * 1);
+        myBall.setCenterY(myBrick_0.getY() - myBall.getVelocity() * 1);
+        javafxRun(() -> myGame.step(myScene, 1));
         assertEquals("SCORE: 1", myScore.getText());
     }
 
