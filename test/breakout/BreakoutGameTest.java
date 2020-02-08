@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests for BreakoutGame class.
  */
 public class BreakoutGameTest extends DukeApplicationTest {
-    // create an instance of our game to be able to call in tests (like step())
+    // create an instance of our game to be able to call in tests (like stexp())
     private final BreakoutGame myGame = new BreakoutGame();
     // keep created scene to allow mouse and keyboard events
     private Scene myScene;
