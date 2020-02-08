@@ -62,7 +62,7 @@ public class BreakoutGame extends Application {
         stage.setTitle(TITLE);
         stage.show();
         // attach "game loop" to timeline to play it (basically just calling step() method repeatedly forever)
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(myScene, SECOND_DELAY));
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
@@ -122,12 +122,12 @@ public class BreakoutGame extends Application {
 
     // Change properties of shapes in small ways to animate them over time
     // Note, there are more sophisticated ways to animate shapes, but these simple ways work fine to start
-    void step (double elapsedTime) {
+    void step (Scene scene, double elapsedTime) {
         myBall.move(elapsedTime);
 
         // Check for collisions
         myCollisionManager.handlePlatformCollision(myBall, myPlatform);
-        if(myCollisionManager.handleBrickCollision(myBall, ((Group)myScene.getRoot()).getChildren().iterator())) {
+        if(myCollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator())) {
             gameManager.addScore(1);
         }
 
