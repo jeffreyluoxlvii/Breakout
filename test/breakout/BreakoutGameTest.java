@@ -1,5 +1,6 @@
 package breakout;
 
+import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -57,12 +58,13 @@ public class BreakoutGameTest extends DukeApplicationTest {
         assertEquals(Ball.NORMAL_BALL_SPEED, myBall.getVelocity());
     }
 
-    // check initial stats of the platform. Waiting on Professor Duvall to add a method to the DukeApplicationTest
-    // so that we can test movement (since we use the mouse) (look at Piazza question #58).
+    // check initial stats of the platform
     @Test
     public void testPlatformInitialStats() {
         assertEquals(myGame.SIZE * Platform.PLATFORM_HEIGHT, myPlatform.getHeight());
         assertEquals(myGame.SIZE * Platform.PLATFORM_WIDTH, myPlatform.getWidth());
+        moveTo(myBrick_0);
+        assertEquals(myBrick_0.getX() + (myBrick_0.getWidth() / 2) - (myPlatform.getWidth() / 2), myPlatform.getX());
     }
 
     // check the positions of the first block of every row
@@ -115,12 +117,9 @@ public class BreakoutGameTest extends DukeApplicationTest {
         assertEquals("LIVES: 2", myLives.getText());
     }
 
+    // Test to check that score gets added
     @Test
     public void testAddScore() {
-        myBall.setCenterX(myBrick_0.getX() - 1);
-        myBall.setCenterX(myBrick_0.getY() + 1);
-        myBall.moveUp();
-        myGame.step(3);
-        assertEquals("SCORE: 1", myScore.getText());
+
     }
 }

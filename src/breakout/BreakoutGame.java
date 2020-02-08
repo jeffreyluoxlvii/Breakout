@@ -200,7 +200,7 @@ public class BreakoutGame extends Application {
 
     //What to do when mouse moves
     private void handleMouseMoved(double x, double y) {
-        if(animation.getStatus() == Animation.Status.RUNNING) {
+        if(animation == null || animation.getStatus() == Animation.Status.RUNNING) {
             myPlatform.move(x);
         }
     }
