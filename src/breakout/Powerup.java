@@ -11,4 +11,6 @@ public interface Powerup {
 
     public void move(double elapsedTime);
 
+    public Shape getShape();
+
 }

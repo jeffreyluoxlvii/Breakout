@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class BreakoutGame extends Application {
     private Platform myPlatform;
     private Ball myBall;
     private List<Brick> myBricks;
+    private List<Powerup> myPowerups;
     private Timeline animation;
     private GameManager gameManager;
     private CollisionManager myCollisionManager;
@@ -100,6 +102,7 @@ public class BreakoutGame extends Application {
         myPlatform = new Platform(width, height);
         myBall = new Ball(BALL_STARTING_X, BALL_STARTING_Y);
         myBricks = LevelCreator.setupBricksForLevel(path, width, height);
+        myPowerups = new ArrayList<>();
         gameManager = new GameManager();
         myScore = gameManager.getScore();
         myLives = gameManager.getLives();
@@ -128,7 +131,13 @@ public class BreakoutGame extends Application {
     void step (Scene scene, double elapsedTime) {
         myBall.move(elapsedTime);
 
+        for(Powerup p: myPowerups)
+            p.move(elapsedTime);
+
         // Check for collisions
+        List<Powerup> p = myCollisionManager.handlePowerupCollisions(myPowerups, myPlatform);
+        for(Powerup powerup: p)
+            powerup.usePowerUp(myScene);
         myCollisionManager.handlePlatformCollision(myBall, myPlatform);
         List<Brick> hitBricks = myCollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator());
         gameManager.addScore(hitBricks.size());

@@ -4,6 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 public class PlatformExtenderPowerup implements Powerup {
 
@@ -38,6 +39,11 @@ public class PlatformExtenderPowerup implements Powerup {
     public void move(double elapsedTime) {
         myShape.setX(myShape.getX() + VELOCITY * elapsedTime);
         myShape.setY(myShape.getY() + VELOCITY * elapsedTime);
+    }
+
+    @Override
+    public Shape getShape() {
+        return myShape;
     }
 
 }
