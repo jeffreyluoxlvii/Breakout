@@ -1,13 +1,11 @@
 package breakout;
 
-import javafx.animation.Timeline;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
-
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -131,5 +129,13 @@ public class BreakoutGameTest extends DukeApplicationTest {
         Powerup p = new PlatformExtenderPowerup(0, 0);
         p.usePowerUp(myScene);
         assertEquals(prevWidth + PlatformExtenderPowerup.POWERUP_EXTENSION_LENGTH, myPlatform.getWidth());
+    }
+
+    @Test
+    public void testCheatKeys() {
+        press(myScene, KeyCode.S);
+        assertEquals(Ball.NORMAL_BALL_SPEED + Ball.SPEED_INCREASE, myBall.getVelocity());
+        press(myScene, KeyCode.L);
+        assertEquals("LIVES: 4", myLives.getText());
     }
 }
