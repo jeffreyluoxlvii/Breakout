@@ -12,7 +12,7 @@ public class Ball extends Circle {
 
     public static final double BALL_RADIUS = 5;
     public static final int NORMAL_BALL_SPEED = 200;
-    public static final int SLOW_BALL_SPEED = 40;
+    public static final int SPEED_INCREASE = 40;
 
     private int xDirection;
     private int yDirection;
@@ -64,5 +64,9 @@ public class Ball extends Circle {
     public void move(double elapsedTime) {
         this.setCenterX(this.getCenterX() + velocity * this.getXDirection() * elapsedTime);
         this.setCenterY(this.getCenterY() + velocity * this.getYDirection() * elapsedTime);
+    }
+
+    public void increaseSpeed() {
+        velocity += SPEED_INCREASE;
     }
 }

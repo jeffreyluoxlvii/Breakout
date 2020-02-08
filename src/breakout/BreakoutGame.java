@@ -165,11 +165,11 @@ public class BreakoutGame extends Application {
     }
 
     private void checkGameEnded() {
-        if(gameManager.checkGameOver()) {
-            end(LOSE_MESSAGE);
-        }
-        else if(myBricks.size() == 0) {
+        if(myBricks.size() == 0) {
             end(WIN_MESSAGE);
+        }
+        else if(gameManager.checkGameOver()) {
+            end(LOSE_MESSAGE);
         }
     }
 
@@ -190,6 +190,9 @@ public class BreakoutGame extends Application {
         }
         if(code == KeyCode.L) {
             gameManager.addLife();
+        }
+        if(code == KeyCode.S) {
+            myBall.increaseSpeed();
         }
     }
 
