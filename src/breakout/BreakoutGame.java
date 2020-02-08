@@ -9,14 +9,13 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 
 
 /**
@@ -25,7 +24,11 @@ import java.util.logging.Level;
  * @author Robert C. Duvall
  */
 public class BreakoutGame extends Application {
+
     public static final String TITLE = "Breakout";
+    public static final String WIN_MESSAGE = "Congratulations, you winner!";
+    public static final String LOSE_MESSAGE = "Maybe next time you will be a winner.";
+
     public static final int SIZE = 400;
     public static final int FRAMES_PER_SECOND = 60;
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
@@ -35,11 +38,16 @@ public class BreakoutGame extends Application {
     public static final int BALL_STARTING_Y = 300;
 
     // some things needed to remember during game
+    private Stage myStage;
     private Scene myScene;
     private Platform myPlatform;
     private Ball myBall;
     private List<Brick> myBricks;
     private Timeline animation;
+    private GameManager gameManager;
+    private CollisionManager myCollisionManager;
+    private Text myScore;
+    private Text myLives;
 
 
     /**
@@ -47,31 +55,60 @@ public class BreakoutGame extends Application {
      */
     @Override
     public void start (Stage stage) {
+        myStage = stage;
         // attach scene to the stage and display it
         myScene = setupGame(SIZE, SIZE, BACKGROUND, "levelOne");
         stage.setScene(myScene);
         stage.setTitle(TITLE);
         stage.show();
         // attach "game loop" to timeline to play it (basically just calling step() method repeatedly forever)
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(myScene, SECOND_DELAY));
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
         animation.play();
     }
 
+    private void end() {
+        myStage.setScene(endGame(SIZE, SIZE, BACKGROUND));
+        myStage.show();
+    }
+
+    private Scene endGame(int width, int height, Paint background) {
+
+        Group root = new Group();
+
+        Text text = new Text();
+        text.setText(LOSE_MESSAGE);
+        text.setX(SIZE / 2 - text.getLayoutBounds().getWidth() / 2);
+        text.setY(SIZE / 2 - text.getLayoutBounds().getHeight() / 2);
+
+        root.getChildren().add(text);
+        Scene scene = new Scene(root, width, height);
+        return scene;
+
+    }
+
     // Create the game's "scene": what shapes will be in the game and their starting properties
     Scene setupGame (int width, int height, Paint background, String path) {
+
         // create one top level collection to organize the things in the scene
         Group root = new Group();
+
+        myCollisionManager = new CollisionManager();
 
         myPlatform = new Platform(width, height);
         myBall = new Ball(BALL_STARTING_X, BALL_STARTING_Y);
         myBricks = LevelCreator.setupBricksForLevel(path, width, height);
+        gameManager = new GameManager();
+        myScore = gameManager.getScore();
+        myLives = gameManager.getLives();
 
         root.getChildren().add(myPlatform);
         root.getChildren().add(myBall);
         root.getChildren().addAll(myBricks);
+        root.getChildren().add(myScore);
+        root.getChildren().add(myLives);
 
         // create a place to see the shapes
         Scene scene = new Scene(root, width, height, background);
@@ -85,69 +122,21 @@ public class BreakoutGame extends Application {
 
     // Change properties of shapes in small ways to animate them over time
     // Note, there are more sophisticated ways to animate shapes, but these simple ways work fine to start
-    void step (double elapsedTime) {
+    void step (Scene scene, double elapsedTime) {
         myBall.move(elapsedTime);
 
         // Check for collisions
-        handlePlatformCollision(myBall, myPlatform);
-        for(Iterator<Brick> iterator = myBricks.iterator(); iterator.hasNext();) {
-            Brick currentBrick = iterator.next();
-            if(isBrickCollision(myBall, currentBrick))
-            {
-                iterator.remove();
-                ((Group)myScene.getRoot()).getChildren().remove(currentBrick);
-            }
+        myCollisionManager.handlePlatformCollision(myBall, myPlatform);
+        if(myCollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator())) {
+            gameManager.addScore(1);
         }
-        handleWallCollision(myBall);
-    }
 
-    // Handle a collision between ball and a brick
-    private boolean isBrickCollision(Ball ball, Brick brick) {
-        if(Shape.intersect(ball, brick).getBoundsInLocal().getWidth() != -1) {
-            // hit was to the left of brick
-            if(ball.getCenterX() < brick.getX()) {
-                ball.moveLeft();
+        if(myCollisionManager.handleWallCollision(myBall)) {
+            gameManager.loseLife();
+            if(gameManager.checkGameOver()) {
+                end();
             }
-            // hit was to the right of brick
-            else if(ball.getCenterX() > brick.getX() + brick.getWidth()) {
-                ball.moveRight();
-            }
-            // hit was below the brick
-            else if(ball.getCenterY() > brick.getY() + (brick.getHeight() / 2)) {
-                ball.moveDown();
-            }
-            // hit was above the brick
-            else if(ball.getCenterY() < brick.getY() + (brick.getHeight() / 2)) {
-                ball.moveUp();
-            }
-            return true;
-        }
-        return false;
-    }
-
-    // Handle collision between ball and platform
-    private void handlePlatformCollision(Ball ball, Platform platform) {
-        if(Shape.intersect(ball, platform).getBoundsInLocal().getWidth() != -1) {
-            ball.moveUp();
-        }
-    }
-
-    private void handleWallCollision(Ball ball) {
-        // hit top wall
-        if(ball.getCenterY() - ball.getRadius() <= 0) {
-            ball.moveDown();
-        }
-        // hit bottom wall
-        if(ball.getCenterY() - ball.getRadius() >= SIZE) {
-            resetBall(ball);
-        }
-        // hit right wall
-        if(ball.getCenterX() + ball.getRadius() >= SIZE) {
-            ball.moveLeft();
-        }
-        // hit left wall
-        if(ball.getCenterX() - ball.getRadius() <= 0) {
-            ball.moveRight();
+            resetBall(myBall);
         }
     }
 
@@ -165,6 +154,9 @@ public class BreakoutGame extends Application {
         // Resets ball position
         if(code == KeyCode.R) {
             resetBall(myBall);
+        }
+        if(code == KeyCode.L) {
+            gameManager.addLife();
         }
     }
 

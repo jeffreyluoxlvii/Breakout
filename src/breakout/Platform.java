@@ -8,7 +8,7 @@ public class Platform extends Rectangle {
 
     public static final double PLATFORM_WIDTH = 0.3;
     public static final double PLATFORM_HEIGHT = 0.02;
-    public static final double PLATFORM_DISTANCE_FROM_BOTTOM = 0.08;
+    public static final double PLATFORM_DISTANCE_FROM_BOTTOM = 0.1;
     public static final Paint PLATFORM_COLOR = Color.BLUEVIOLET;
 
     public Platform(double gameWidth, double gameHeight) {

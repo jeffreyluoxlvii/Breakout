@@ -1,6 +1,7 @@
 package breakout;
 
 import javafx.scene.Scene;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -22,18 +23,9 @@ public class BreakoutGameTest extends DukeApplicationTest {
     private Ball myBall;
     private Platform myPlatform;
     private Brick myBrick_0;
-    private Brick myBrick_4;
-    private Brick myBrick_8;
-    private Brick myBrick_12;
-    private Brick myBrick_16;
-    private Brick myBrick_20;
-    private Brick myBrick_24;
-    private Brick myBrick_28;
-    private Brick myBrick_32;
-    private Brick myBrick_36;
-    private Brick myBrick_40;
-    private Brick myBrick_44;
-    private Brick myBrick_48;
+    private Brick myBrick_1;
+    private Text myScore;
+    private Text myLives;
 
 
 
@@ -43,7 +35,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     @Override
     public void start (Stage stage) {
         // create game's scene with all shapes in their initial positions and show it
-        myScene = myGame.setupGame(BreakoutGame.SIZE, BreakoutGame.SIZE, BreakoutGame.BACKGROUND, "levelOne");
+        myScene = myGame.setupGame(BreakoutGame.SIZE, BreakoutGame.SIZE, BreakoutGame.BACKGROUND, "testOne");
         stage.setScene(myScene);
         stage.show();
 
@@ -51,6 +43,9 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myBall = lookup("#ball").query();
         myPlatform = lookup("#platform").query();
         myBrick_0 = lookup("#brick_0").query();
+        myBrick_1 = lookup("#brick_1").query();
+        myScore = lookup("#score").query();
+        myLives = lookup("#lives").query();
     }
 
     // check initial stats of the ball
@@ -62,20 +57,21 @@ public class BreakoutGameTest extends DukeApplicationTest {
         assertEquals(Ball.NORMAL_BALL_SPEED, myBall.getVelocity());
     }
 
-    // check initial stats of the platform
+    // check initial stats of the platform. Waiting on Professor Duvall to add a method to the DukeApplicationTest
+    // so that we can test movement (since we use the mouse) (look at Piazza question #58).
     @Test
     public void testPlatformInitialStats() {
         assertEquals(myGame.SIZE * Platform.PLATFORM_HEIGHT, myPlatform.getHeight());
         assertEquals(myGame.SIZE * Platform.PLATFORM_WIDTH, myPlatform.getWidth());
-        sleep(1, TimeUnit.SECONDS);
-        moveTo(myBrick_0);
-        assertEquals(myBrick_0.getX() + myBrick_0.getWidth() / 2, myPlatform.getX());
     }
 
     // check the positions of the first block of every row
     @Test
     public void testBrickPositions() {
-        
+        assertEquals(0, myBrick_0.getX());
+        assertEquals(0, myBrick_0.getY());
+        assertEquals(myBrick_0.getWidth(), myBrick_1.getX());
+        assertEquals(myBrick_0.getHeight(), myBrick_1.getY());
     }
 
     @Test
@@ -85,8 +81,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myBall.setCenterX(BreakoutGame.SIZE - myBall.getRadius() - myBall.getVelocity() * 0.05);
         myBall.setCenterY(myBall.getRadius() + myBall.getVelocity() * 0.05);
         sleep(2, TimeUnit.SECONDS);
-        myGame.step(0.05);
-        myGame.step(0.05);
+        myGame.step(myScene, 0.05);
+        myGame.step(myScene, 0.05);
         assertEquals(BreakoutGame.SIZE - myBall.getRadius() - myBall.getVelocity() * 0.05, myBall.getCenterX());
         assertEquals(myBall.getRadius() + myBall.getVelocity() * 0.05, myBall.getCenterY());
     }
@@ -95,8 +91,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
     public void testBallBouncesCorrectly() {
         myBall.setCenterX(myPlatform.getX() + myPlatform.getWidth() / 2 - myBall.getVelocity() * 0.2);
         myBall.setCenterY(myPlatform.getY() - myBall.getVelocity() * 0.2);
-        myGame.step(0.2);
-        myGame.step(0.2);
+        myGame.step(myScene, 0.2);
+        myGame.step(myScene, 0.2);
         assertEquals(myPlatform.getX() + myPlatform.getWidth() / 2 + myBall.getVelocity() * 0.2, myBall.getCenterX());
         assertEquals(myPlatform.getY() - myBall.getVelocity() * 0.2, myBall.getCenterY());
     }
@@ -105,8 +101,26 @@ public class BreakoutGameTest extends DukeApplicationTest {
     public void testBallReset() {
         myBall.setCenterX(BreakoutGame.SIZE  - 1);
         myBall.setCenterY(BreakoutGame.SIZE - 1);
-        myGame.step(1);
+        myGame.step(myScene, 1);
         assertEquals(BreakoutGame.BALL_STARTING_X, myBall.getCenterX());
         assertEquals(BreakoutGame.BALL_STARTING_Y, myBall.getCenterY());
+    }
+
+    // Check that life gets lost when hitting bottom wall
+    @Test
+    public void testLostLife() {
+        myBall.setCenterX(BreakoutGame.SIZE  - 1);
+        myBall.setCenterY(BreakoutGame.SIZE - 1);
+        myGame.step(myScene, 1);
+        assertEquals("LIVES: 2", myLives.getText());
+    }
+
+    @Test
+    public void testAddScore() {
+        myBall.setCenterX(myBrick_0.getX() - 1);
+        myBall.setCenterX(myBrick_0.getY() + 1);
+        myBall.moveUp();
+        myGame.step(myScene,3);
+        assertEquals("SCORE: 1", myScore.getText());
     }
 }
