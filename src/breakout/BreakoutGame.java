@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Preloader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -120,15 +121,19 @@ public class BreakoutGame extends Application {
         return scene;
     }
 
+    public int getNumPowerups() {
+        return myPowerups.size();
+    }
+
     private void setupSceneEventListeners(Scene scene) {
-        scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
+        scene.setOnKeyPressed(e -> handleKeyInput(scene, e.getCode()));
         scene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
         scene.setOnMouseMoved(e -> handleMouseMoved(e.getX(), e.getY()));
     }
 
-    private void addPowerup(Powerup p) {
+    private void addPowerup(Scene scene, Powerup p) {
         myPowerups.add(p);
-        ((Group)myScene.getRoot()).getChildren().add(p.getShape());
+        ((Group)scene.getRoot()).getChildren().add(p.getShape());
     }
 
     // Change properties of shapes in small ways to animate them over time
@@ -150,9 +155,9 @@ public class BreakoutGame extends Application {
         gameManager.addScore(hitBricks.size());
         myBricks.removeAll(hitBricks);
         for(Brick b: hitBricks) {
-            Powerup temp = PowerupGenerator.getPowerup(b.getX() + b.getWidth() / 2, b.getY() + b.getHeight());
+            Powerup temp = PowerupGenerator.getPowerup(b.getX() + b.getWidth() / 2, b.getY() + b.getHeight(), Math.random());
             if(temp != null) {
-                addPowerup(temp);
+                addPowerup(scene, temp);
             }
         }
 
@@ -174,7 +179,7 @@ public class BreakoutGame extends Application {
     }
 
     // What to do each time a key is pressed
-    private void handleKeyInput (KeyCode code) {
+    private void handleKeyInput (Scene scene, KeyCode code) {
         // Pause / unpause game when space pressed
         if(code == KeyCode.SPACE) {
             if(animation.getStatus() == Animation.Status.RUNNING) {
@@ -193,6 +198,10 @@ public class BreakoutGame extends Application {
         }
         if(code == KeyCode.S) {
             myBall.increaseSpeed();
+        }
+        if(code == KeyCode.P) {
+            Powerup temp = PowerupGenerator.getPowerup(myBall.getCenterX(), myBall.getCenterY() - myBall.getRadius(), 0);
+            addPowerup(scene, temp);
         }
     }
 
