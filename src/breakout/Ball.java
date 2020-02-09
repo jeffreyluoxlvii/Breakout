@@ -5,8 +5,6 @@ import javafx.scene.shape.Circle;
 
 /**
  * Ball that the player wants to keep bouncing.
- *
- * @author Jeffrey Luo
  */
 public class Ball extends Circle {
 
