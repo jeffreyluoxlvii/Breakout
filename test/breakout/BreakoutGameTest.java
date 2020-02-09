@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -137,5 +139,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
         assertEquals(Ball.NORMAL_BALL_SPEED + Ball.SPEED_INCREASE, myBall.getVelocity());
         press(myScene, KeyCode.L);
         assertEquals("LIVES: 4", myLives.getText());
+        int numPowerups = myGame.getNumPowerups();
+        press(myScene, KeyCode.P);
+        assertEquals(numPowerups + 1, myGame.getNumPowerups());
     }
 }
