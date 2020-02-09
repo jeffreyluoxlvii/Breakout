@@ -123,6 +123,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myBall.setCenterY(myBrick_0.getY() - myBall.getVelocity() * 1);
         javafxRun(() -> myGame.step(myScene, 1));
         assertEquals("SCORE: 1", myScore.getText());
+        // check that brick was deleted
+        assertEquals(null, myBrick_0.getScene());
     }
 
     @Test
