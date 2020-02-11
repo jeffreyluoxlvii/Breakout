@@ -27,4 +27,9 @@ public abstract class Brick extends Rectangle {
     public boolean isBroken() {
         return durability <= 0;
     }
+
+    public int getDurability() {
+        return durability;
+    }
+
 }
