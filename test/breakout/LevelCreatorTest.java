@@ -30,4 +30,13 @@ public class LevelCreatorTest {
         assertEquals(100 * LevelCreator.BRICKS_RATIO_TO_SCREEN / 5, bricks.get(2).getY());
         assertEquals(20, bricks.get(2).getX());
     }
+
+    // Checks that different types of bricks can be read
+    @Test
+    public void testBrickSetup3() {
+        List<Brick> bricks = LevelCreator.setupBricksForLevel("testThree", 40, 100);
+        assertEquals(1, bricks.get(0).getDurability());
+        assertEquals(2, bricks.get(1).getDurability());
+        assertEquals(3, bricks.get(2).getDurability());
+    }
 }

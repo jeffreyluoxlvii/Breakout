@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LevelCreator {
-
     public static final double BRICKS_RATIO_TO_SCREEN = 0.7;
 
     public static List<Brick> setupBricksForLevel(String path, int gameWidth, int gameHeight) {
@@ -18,9 +17,9 @@ public class LevelCreator {
         for(int i = 0; i < numRows; i++) {
             String line = scan.nextLine();
             for(int j = 0; j < numColumns; j++) {
-                if(line.substring(j, j + 1).equals("1")) {
-                    Brick brick = new WeakBrick((gameWidth / numColumns) * j, (gameHeight * BRICKS_RATIO_TO_SCREEN) * i / numRows,
-                            gameWidth / numColumns, gameHeight * BRICKS_RATIO_TO_SCREEN / numRows);
+                Brick brick = createBrick(line.substring(j, j+1),(gameWidth / numColumns) * j, (gameHeight * BRICKS_RATIO_TO_SCREEN) * i / numRows,
+                        gameWidth / numColumns, gameHeight * BRICKS_RATIO_TO_SCREEN / numRows);
+                if(brick != null) {
                     brick.setId("brick_" + counter);
                     bricks.add(brick);
                     counter++;
@@ -45,5 +44,18 @@ public class LevelCreator {
     }
     private static Scanner getScannerForFile(String path) {
         return new Scanner(LevelCreator.class.getClassLoader().getResourceAsStream(path));
+    }
+
+    private static Brick createBrick(String brickType, double x, double y, double width, double height) {
+        if(brickType.equals("1")) {
+            return new WeakBrick(x, y, width, height);
+        }
+        if(brickType.equals("2")) {
+            return new MediumBrick(x, y, width, height);
+        }
+        if(brickType.equals("3")) {
+            return new StrongBrick(x, y, width, height);
+        }
+        return null;
     }
 }
