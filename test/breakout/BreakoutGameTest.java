@@ -64,6 +64,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
         assertEquals(myGame.SIZE * Platform.PLATFORM_HEIGHT, myPlatform.getHeight());
         assertEquals(myGame.SIZE * Platform.PLATFORM_WIDTH, myPlatform.getWidth());
         moveTo(myBrick_0);
+        sleep(1);
         assertEquals(myBrick_0.getX() + (myBrick_0.getWidth() / 2) - (myPlatform.getWidth() / 2), myPlatform.getX());
     }
 

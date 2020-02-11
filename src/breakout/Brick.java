@@ -1,22 +1,30 @@
 package breakout;
 
 import javafx.scene.paint.Paint;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 
-public class Brick extends Rectangle {
+public abstract class Brick extends Rectangle {
     public static final double BRICK_WIDTH = 30;
     public static final double BRICK_HEIGHT = 15;
-    public static final Paint BRICK_COLOR = Color.GREEN;
+    private int durability;
+    private Paint color;
 
-    public Brick(double x, double y) {
+    public Brick(double x, double y, int durability, Paint color) {
         super(x, y, BRICK_WIDTH, BRICK_HEIGHT);
-        this.setFill(BRICK_COLOR);
+        this.durability = durability;
+        this.color = color;
+        this.setFill(color);
     }
 
-    public Brick(double x, double y, double width, double height) {
+    public Brick(double x, double y, double width, double height, int durability, Paint color) {
         super(x, y, width, height);
-        this.setFill(BRICK_COLOR);
+        this.durability = durability;
+        this.color = color;
+        this.setFill(color);
+    }
+
+    public boolean isBroken() {
+        return durability <= 0;
     }
 }

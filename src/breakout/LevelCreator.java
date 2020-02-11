@@ -19,7 +19,7 @@ public class LevelCreator {
             String line = scan.nextLine();
             for(int j = 0; j < numColumns; j++) {
                 if(line.substring(j, j + 1).equals("1")) {
-                    Brick brick = new Brick((gameWidth / numColumns) * j, (gameHeight * BRICKS_RATIO_TO_SCREEN) * i / numRows,
+                    Brick brick = new WeakBrick((gameWidth / numColumns) * j, (gameHeight * BRICKS_RATIO_TO_SCREEN) * i / numRows,
                             gameWidth / numColumns, gameHeight * BRICKS_RATIO_TO_SCREEN / numRows);
                     brick.setId("brick_" + counter);
                     bricks.add(brick);
