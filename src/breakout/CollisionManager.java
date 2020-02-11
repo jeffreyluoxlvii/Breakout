@@ -60,7 +60,7 @@ public class CollisionManager {
             Node node = iterator.next();
             if(node instanceof Brick) {
                 Brick brick = (Brick) node;
-                if (isBrickCollision(ball, brick)) {
+                if (isBrickCollision(ball, brick) && brick.isBroken()) {
                     hitBricks.add(brick);
                     iterator.remove();
                 }
@@ -72,6 +72,8 @@ public class CollisionManager {
     // Handle a collision between ball and a brick
     private boolean isBrickCollision(Ball ball, Brick brick) {
         if(Shape.intersect(ball, brick).getBoundsInLocal().getWidth() != -1) {
+            // TODO: Ball needs a damage instance variable
+            brick.hit(1);
             // hit was to the left of brick
             if(ball.getCenterX() < brick.getX()) {
                 ball.moveLeft();
