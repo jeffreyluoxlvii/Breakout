@@ -8,7 +8,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-public class PlatformExtenderPowerup implements Powerup {
+public class PlatformExtenderPowerup extends Powerup {
 
     public static final int POWERUP_WIDTH = 15;
     public static final int POWERUP_HEIGHT = 15;

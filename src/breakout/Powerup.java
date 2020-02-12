@@ -3,12 +3,12 @@ package breakout;
 import javafx.scene.Scene;
 import javafx.scene.shape.Shape;
 
-public interface Powerup {
+public abstract class Powerup {
 
-    public void usePowerUp(Scene scene);
+    public abstract void usePowerUp(Scene scene);
 
-    public void move(double elapsedTime);
+    public abstract void move(double elapsedTime);
 
-    public Shape getShape();
+    public abstract Shape getShape();
 
 }
