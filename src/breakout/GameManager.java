@@ -10,10 +10,10 @@ public class GameManager {
     private Text myLives;
 
     public static final double TEXT_DISTANCE_FROM_BOTTOM = 0.03;
+    public static final int STARTING_LIVES = 3;
 
     public GameManager() {
-        // Game starts with 3 lives by default
-        lives = 3;
+        lives = STARTING_LIVES;
         score = 0;
         myScore = new Text("SCORE: " + score);
         myScore.setX(0);
