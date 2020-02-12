@@ -102,12 +102,14 @@ public class BreakoutGame extends Application {
         myPowerups = new ArrayList<>();
         gameManager = new GameManager();
         Text myScore = gameManager.getScore();
+        Text myLevel = gameManager.getLevel();
         Text myLives = gameManager.getLives();
 
         root.getChildren().add(myPlatform);
         root.getChildren().add(myBall);
         root.getChildren().addAll(myBricks);
         root.getChildren().add(myScore);
+        root.getChildren().add(myLevel);
         root.getChildren().add(myLives);
 
         // create a place to see the shapes

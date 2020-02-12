@@ -6,22 +6,27 @@ import javafx.scene.text.Text;
 public class GameManager {
     private int lives;
     private int score;
+    private Text myLevel;
     private Text myScore;
     private Text myLives;
 
-    public static final double TEXT_DISTANCE_FROM_BOTTOM = 0.03;
+    public static final double TEXT_DISTANCE_FROM_TOP = 0.05;
     public static final int STARTING_LIVES = 3;
 
     public GameManager() {
         lives = STARTING_LIVES;
         score = 0;
         myScore = new Text("SCORE: " + score);
-        myScore.setX(0);
-        myScore.setY(BreakoutGame.SIZE * (1 - TEXT_DISTANCE_FROM_BOTTOM));
+        myScore.setX(20);
+        myScore.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP);
         myScore.setId("score");
+        // TODO: get the level stuff working
+        myLevel = new Text("LEVEL: ");
+        myLevel.setX(BreakoutGame.SIZE / 2 - 10);
+        myLevel.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP);
         myLives = new Text("LIVES: " + lives);
         myLives.setX(BreakoutGame.SIZE - 100);
-        myLives.setY(BreakoutGame.SIZE * (1 - TEXT_DISTANCE_FROM_BOTTOM));
+        myLives.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP);
         myLives.setId("lives");
     }
 
@@ -59,4 +64,6 @@ public class GameManager {
     public Text getLives() {
         return myLives;
     }
+
+    public Text getLevel() { return myLevel; }
 }
