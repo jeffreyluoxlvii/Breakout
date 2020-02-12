@@ -49,9 +49,6 @@ public class BreakoutGame extends Application {
     private Timeline animation;
     private GameManager gameManager;
     private CollisionManager myCollisionManager;
-    private Text myScore;
-    private Text myLives;
-
 
     /**
      * Initialize what will be displayed and how it will be updated.
@@ -87,8 +84,7 @@ public class BreakoutGame extends Application {
         text.setY(SIZE / 2 - text.getLayoutBounds().getHeight() / 2);
 
         root.getChildren().add(text);
-        Scene scene = new Scene(root, width, height);
-        return scene;
+        return new Scene(root, width, height);
 
     }
 
@@ -105,8 +101,8 @@ public class BreakoutGame extends Application {
         myBricks = LevelCreator.setupBricksForLevel(path, width, height);
         myPowerups = new ArrayList<>();
         gameManager = new GameManager();
-        myScore = gameManager.getScore();
-        myLives = gameManager.getLives();
+        Text myScore = gameManager.getScore();
+        Text myLives = gameManager.getLives();
 
         root.getChildren().add(myPlatform);
         root.getChildren().add(myBall);
@@ -141,8 +137,9 @@ public class BreakoutGame extends Application {
     void step (Scene scene, double elapsedTime) {
         myBall.move(elapsedTime);
 
-        for(Powerup p: myPowerups)
+        for(Powerup p: myPowerups) {
             p.move(elapsedTime);
+        }
 
         // Check for collisions
         List<Powerup> p = myCollisionManager.handlePowerupCollisions(myPowerups, myPlatform);
