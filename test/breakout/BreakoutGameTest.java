@@ -70,9 +70,9 @@ public class BreakoutGameTest extends DukeApplicationTest {
     @Test
     public void testBrickPositions() {
         assertEquals(0, myBrick_0.getX());
-        assertEquals(0, myBrick_0.getY());
+        assertEquals(LevelCreator.BRICKS_STARTING_POINT, myBrick_0.getY());
         assertEquals(myBrick_0.getWidth(), myBrick_1.getX());
-        assertEquals(myBrick_0.getHeight(), myBrick_1.getY());
+        assertEquals(myBrick_0.getHeight() + LevelCreator.BRICKS_STARTING_POINT, myBrick_1.getY());
     }
 
     @Test

@@ -20,14 +20,16 @@ public class LevelCreatorTest {
         List<Brick> bricks = LevelCreator.setupBricksForLevel("testOne", 80, 80);
         assertEquals(10, bricks.get(0).getWidth());
         assertEquals(10, bricks.get(1).getX());
-        assertEquals(80 / 2.0 * LevelCreator.BRICKS_RATIO_TO_SCREEN ,bricks.get(1).getY());
+        assertEquals(80 / 2.0 * LevelCreator.BRICKS_RATIO_TO_SCREEN + LevelCreator.BRICKS_STARTING_POINT
+                ,bricks.get(1).getY());
     }
 
     @Test
     public void testBrickSetup2() {
         List<Brick> bricks = LevelCreator.setupBricksForLevel("testTwo", 40, 100);
         assertEquals(10, bricks.get(1).getWidth());
-        assertEquals(100 * LevelCreator.BRICKS_RATIO_TO_SCREEN / 5, bricks.get(2).getY());
+        assertEquals(100 * LevelCreator.BRICKS_RATIO_TO_SCREEN / 5 + LevelCreator.BRICKS_STARTING_POINT,
+                bricks.get(2).getY());
         assertEquals(20, bricks.get(2).getX());
     }
 
