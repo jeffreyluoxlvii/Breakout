@@ -167,7 +167,7 @@ public class BreakoutGame extends Application {
     }
 
     private void checkGameEnded() {
-        if(myBricks.size() == 0) {
+        if(myBricks.isEmpty()) {
             end(WIN_MESSAGE);
         }
         else if(gameManager.checkGameOver()) {

@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
+import java.util.Objects;
+
 
 public abstract class Brick extends Rectangle {
     public static final double BRICK_WIDTH = 30;
@@ -34,6 +36,20 @@ public abstract class Brick extends Rectangle {
     public void hit(int damage) {
         durability -= damage;
         changeColor();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if(!super.equals(o)) return false;
+        Brick brick = (Brick) o;
+        return durability == brick.durability;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), durability);
     }
 
     private void changeColor() {
