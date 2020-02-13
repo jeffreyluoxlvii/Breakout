@@ -103,12 +103,14 @@ public class BreakoutGame extends Application {
         gameManager = new GameManager();
         Text myScore = gameManager.getScore();
         Text myLevel = gameManager.getLevel();
+        Text highScore = gameManager.getHighScore();
         Text myLives = gameManager.getLives();
 
         root.getChildren().add(myPlatform);
         root.getChildren().add(myBall);
         root.getChildren().addAll(myBricks);
         root.getChildren().add(myScore);
+        root.getChildren().add(highScore);
         root.getChildren().add(myLevel);
         root.getChildren().add(myLives);
 
