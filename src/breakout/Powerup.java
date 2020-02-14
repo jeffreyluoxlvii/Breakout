@@ -5,7 +5,7 @@ import javafx.scene.shape.Shape;
 
 public abstract class Powerup {
 
-    public abstract void usePowerUp(Scene scene);
+    public abstract void usePowerUp(Scene scene, GameManager manager);
 
     public abstract void move(double elapsedTime);
 

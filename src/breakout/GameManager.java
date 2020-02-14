@@ -6,6 +6,7 @@ import javafx.scene.text.Text;
 public class GameManager {
     private int lives;
     private int score;
+    private String level;
     public static final int HIGH_SCORE = 10000;
     private Text myLevel;
     private Text myScore;
@@ -15,9 +16,10 @@ public class GameManager {
     public static final double TEXT_DISTANCE_FROM_TOP = 0.05;
     public static final int STARTING_LIVES = 3;
 
-    public GameManager() {
+    public GameManager(String levelName) {
         lives = STARTING_LIVES;
         score = 0;
+        level = levelName;
         myScore = new Text("SCORE: " + score);
         myScore.setX(20);
         myScore.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP);
@@ -26,7 +28,7 @@ public class GameManager {
         highScore.setX(20);
         highScore.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP + 15);
         // TODO: get the level stuff working
-        myLevel = new Text("LEVEL: ");
+        myLevel = new Text("LEVEL: " + level);
         myLevel.setX(BreakoutGame.SIZE / 2 - 20);
         myLevel.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP);
         myLives = new Text("LIVES: " + lives);

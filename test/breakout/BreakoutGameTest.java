@@ -18,6 +18,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     private final BreakoutGame myGame = new BreakoutGame();
     // keep created scene to allow mouse and keyboard events
     private Scene myScene;
+    private GameManager gameManager;
     // keep any useful elements whose values you want to test directly in multiple tests
     private Ball myBall;
     private Platform myPlatform;
@@ -130,8 +131,15 @@ public class BreakoutGameTest extends DukeApplicationTest {
     public void testPlatformExtenderPowerup() {
         double prevWidth = myPlatform.getWidth();
         Powerup p = new PlatformExtenderPowerup(0, 0);
-        p.usePowerUp(myScene);
+        p.usePowerUp(myScene, null);
         assertEquals(prevWidth + PlatformExtenderPowerup.POWERUP_EXTENSION_LENGTH, myPlatform.getWidth());
+    }
+
+    @Test
+    public void testLifeUpPowerup() {
+        Powerup p = new LifeUpPowerup(0, 0);
+        p.usePowerUp(myScene, myGame.getGameManager());
+        assertEquals("LIVES: 4", myLives.getText());
     }
 
     @Test
