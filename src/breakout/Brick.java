@@ -38,20 +38,6 @@ public abstract class Brick extends Rectangle {
         changeColor();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if(!super.equals(o)) return false;
-        Brick brick = (Brick) o;
-        return durability == brick.durability;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), durability);
-    }
-
     private void changeColor() {
         for(int i = 0; i < BRICK_COLORS.length; i++) {
             if(i + 1 == this.durability) {
