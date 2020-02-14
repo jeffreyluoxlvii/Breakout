@@ -100,7 +100,7 @@ public class BreakoutGame extends Application {
         myBall = new Ball(BALL_STARTING_X, BALL_STARTING_Y);
         myBricks = LevelCreator.setupBricksForLevel(path, width, height);
         myPowerups = new ArrayList<>();
-        gameManager = new GameManager();
+        gameManager = new GameManager(path);
         Text myScore = gameManager.getScore();
         Text myLevel = gameManager.getLevel();
         Text highScore = gameManager.getHighScore();
@@ -148,7 +148,7 @@ public class BreakoutGame extends Application {
         // Check for collisions
         List<Powerup> p = myCollisionManager.handlePowerupCollisions(myPowerups, myPlatform);
         for(Powerup powerup: p) {
-            powerup.usePowerUp(myScene);
+            powerup.usePowerUp(myScene, gameManager);
             ((Group)myScene.getRoot()).getChildren().remove(powerup.getShape());
         }
         myCollisionManager.handlePlatformCollision(myBall, myPlatform);
@@ -224,6 +224,9 @@ public class BreakoutGame extends Application {
         }
     }
 
+    public GameManager getGameManager() {
+        return gameManager;
+    }
     /**
      * Start the program.
      */
