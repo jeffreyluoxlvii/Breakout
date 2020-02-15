@@ -22,18 +22,18 @@ public class GameManager {
         level = levelName;
         myScore = new Text("SCORE: " + score);
         myScore.setX(20);
-        myScore.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP);
+        myScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
         myScore.setId("score");
         highScore = new Text("HIGH SCORE: " + HIGH_SCORE);
         highScore.setX(20);
-        highScore.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP + 15);
+        highScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP + 15);
         // TODO: get the level stuff working
         myLevel = new Text("LEVEL: " + level);
-        myLevel.setX(BreakoutGame.SIZE / 2 - 20);
-        myLevel.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP);
+        myLevel.setX(BreakoutGame.GAME_WIDTH / 2 - 20);
+        myLevel.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
         myLives = new Text("LIVES: " + lives);
-        myLives.setX(BreakoutGame.SIZE - 80);
-        myLives.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP);
+        myLives.setX(BreakoutGame.GAME_WIDTH - 80);
+        myLives.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
         myLives.setId("lives");
     }
 

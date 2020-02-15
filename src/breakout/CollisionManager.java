@@ -40,11 +40,11 @@ public class CollisionManager {
             ball.moveDown();
         }
         // hit bottom wall
-        if(ball.getCenterY() - ball.getRadius() >= BreakoutGame.SIZE) {
+        if(ball.getCenterY() - ball.getRadius() >= BreakoutGame.GAME_HEIGHT) {
             return true;
         }
         // hit right wall
-        if(ball.getCenterX() + ball.getRadius() >= BreakoutGame.SIZE) {
+        if(ball.getCenterX() + ball.getRadius() >= BreakoutGame.GAME_WIDTH) {
             ball.moveLeft();
         }
         // hit left wall

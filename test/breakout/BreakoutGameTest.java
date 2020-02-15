@@ -35,7 +35,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     @Override
     public void start (Stage stage) {
         // create game's scene with all shapes in their initial positions and show it
-        myScene = myGame.setupGame(BreakoutGame.SIZE, BreakoutGame.SIZE, BreakoutGame.BACKGROUND, "testOne");
+        myScene = myGame.setupGame(BreakoutGame.SIZE, BreakoutGame.SIZE, BreakoutGame.BACKGROUND, "test1");
         stage.setScene(myScene);
         stage.show();
 

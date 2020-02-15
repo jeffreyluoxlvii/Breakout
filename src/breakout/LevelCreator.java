@@ -13,31 +13,33 @@ public class LevelCreator {
     public static final double[] PLATFORM_WIDTHS_FOR_LEVELS = {0.3, 0.25, 0.2};
     public static final int[] BALL_SPEEDS_FOR_LEVELS = {200, 250, 300};
     private int myLevel;
+    private String myLevelPath;
 
-    public LevelCreator(int myLevel) {
+    public LevelCreator(int myLevel, String myLevelPath) {
         this.myLevel = myLevel;
+        this.myLevelPath = myLevelPath;
     }
 
     public Platform getPlatform() {
-        return new Platform(BreakoutGame.SIZE, BreakoutGame.SIZE, PLATFORM_WIDTHS_FOR_LEVELS[myLevel]);
+        return new Platform(BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, PLATFORM_WIDTHS_FOR_LEVELS[myLevel]);
     }
 
     public Ball getBall() {
         return new Ball(BreakoutGame.BALL_STARTING_X, BreakoutGame.BALL_STARTING_Y, BALL_SPEEDS_FOR_LEVELS[myLevel]);
     }
 
-    public List<Brick> setupBricksForLevel(String path, int gameWidth, int gameHeight) {
-        int numRows = getNumberRows(path);
-        int numColumns = getNumberColumns(path);
+    public List<Brick> setupBricks() {
+        int numRows = getNumberRows(myLevelPath);
+        int numColumns = getNumberColumns(myLevelPath);
         List<Brick> bricks = new ArrayList<>();
 
-        Scanner scan = getScannerForFile(path);
+        Scanner scan = getScannerForFile(myLevelPath);
         int counter = 0;
         for(int i = 0; i < numRows; i++) {
             String line = scan.nextLine();
             for(int j = 0; j < numColumns; j++) {
-                Brick brick = createBrick(line.substring(j, j+1),(gameWidth / numColumns) * j, (gameHeight * BRICKS_HEIGHT_RATIO_TO_SCREEN * i / numRows) + BRICKS_STARTING_HEIGHT,
-                        gameWidth / numColumns, gameHeight * BRICKS_HEIGHT_RATIO_TO_SCREEN / numRows);
+                Brick brick = createBrick(line.substring(j, j+1),(BreakoutGame.GAME_WIDTH / numColumns) * j, (BreakoutGame.GAME_HEIGHT * BRICKS_HEIGHT_RATIO_TO_SCREEN * i / numRows) + BRICKS_STARTING_HEIGHT,
+                        BreakoutGame.GAME_WIDTH / numColumns, BreakoutGame.GAME_HEIGHT * BRICKS_HEIGHT_RATIO_TO_SCREEN / numRows);
                 if(brick != null) {
                     brick.setId("brick_" + counter);
                     bricks.add(brick);

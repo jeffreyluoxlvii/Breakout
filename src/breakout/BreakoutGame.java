@@ -4,19 +4,16 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Preloader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -31,7 +28,8 @@ public class BreakoutGame extends Application {
     public static final String WIN_MESSAGE = "Congratulations, you winner!";
     public static final String LOSE_MESSAGE = "Maybe next time you will be a winner.";
 
-    public static final int SIZE = 400;
+    public static final int GAME_WIDTH = 400;
+    public static final int GAME_HEIGHT = 400;
     public static final int FRAMES_PER_SECOND = 60;
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
@@ -39,12 +37,16 @@ public class BreakoutGame extends Application {
     public static final int BALL_STARTING_X = 30;
     public static final int BALL_STARTING_Y = 300;
 
+    public static final String TEST_PATH = "test";
+    public static final String REAL_PATH = "level";
+
     // some things needed to remember during game
     private Stage myStage;
     private Scene myScene;
     private Platform myPlatform;
     private Ball myBall;
     private List<Brick> myBricks;
+    private String myLevelPath;
     private List<Powerup> myPowerups;
     private Timeline animation;
     private GameManager gameManager;
@@ -57,7 +59,10 @@ public class BreakoutGame extends Application {
     public void start (Stage stage) {
         myStage = stage;
         // attach scene to the stage and display it
-        myScene = setupGame(SIZE, SIZE, BACKGROUND, "levelTwo");
+
+        myScene = setupGame(GAME_WIDTH, GAME_HEIGHT, BACKGROUND, "level2");
+        myCollisionManager = new CollisionManager();
+
         stage.setScene(myScene);
         stage.setTitle(TITLE);
         stage.show();
@@ -70,7 +75,7 @@ public class BreakoutGame extends Application {
     }
 
     private void end(String displayText) {
-        myStage.setScene(endGame(SIZE, SIZE, BACKGROUND, displayText));
+        myStage.setScene(endGame(GAME_WIDTH, GAME_HEIGHT, BACKGROUND, displayText));
         myStage.show();
     }
 
@@ -80,12 +85,42 @@ public class BreakoutGame extends Application {
 
         Text text = new Text();
         text.setText(displayText);
-        text.setX(SIZE / 2 - text.getLayoutBounds().getWidth() / 2);
-        text.setY(SIZE / 2 - text.getLayoutBounds().getHeight() / 2);
+        text.setX(GAME_WIDTH / 2 - text.getLayoutBounds().getWidth() / 2);
+        text.setY(GAME_HEIGHT / 2 - text.getLayoutBounds().getHeight() / 2);
 
         root.getChildren().add(text);
         return new Scene(root, width, height);
 
+    }
+
+    Scene getSceneForLevel(int level) {
+        LevelCreator myLevelCreator = new LevelCreator(level, myLevelPath);
+
+        Group root = new Group();
+
+        myPlatform = myLevelCreator.getPlatform();
+        myBall = myLevelCreator.getBall();
+        myBricks = myLevelCreator.setupBricks();
+        myPowerups = new ArrayList<>();
+
+        Text myScore = gameManager.getScore();
+        Text myLevel = gameManager.getLevel();
+        Text highScore = gameManager.getHighScore();
+        Text myLives = gameManager.getLives();
+
+        root.getChildren().add(myPlatform);
+        root.getChildren().add(myBall);
+        root.getChildren().addAll(myBricks);
+        root.getChildren().add(myScore);
+        root.getChildren().add(highScore);
+        root.getChildren().add(myLevel);
+        root.getChildren().add(myLives);
+
+        // create a place to see the shapes
+        Scene scene = new Scene(root, BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, BreakoutGame.BACKGROUND);
+        // respond to input
+        setupSceneEventListeners(scene);
+        return scene;
     }
 
     // Create the game's "scene": what shapes will be in the game and their starting properties
@@ -94,11 +129,10 @@ public class BreakoutGame extends Application {
         // create one top level collection to organize the things in the scene
         Group root = new Group();
 
-        myCollisionManager = new CollisionManager();
+        gameManager = new GameManager(path);
 
         myPlatform = new Platform(width, height);
         myBall = new Ball(BALL_STARTING_X, BALL_STARTING_Y);
-        myBricks = LevelCreator.setupBricksForLevel(path, width, height);
         myPowerups = new ArrayList<>();
         gameManager = new GameManager(path);
         Text myScore = gameManager.getScore();
