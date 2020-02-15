@@ -6,8 +6,8 @@ import javafx.scene.text.Text;
 public class GameManager {
     private int lives;
     private int score;
-    private String level;
-    public static final int HIGH_SCORE = 10000;
+    private int level;
+    private int gameHighScore;
     private Text myLevel;
     private Text myScore;
     private Text myLives;
@@ -19,22 +19,32 @@ public class GameManager {
     public GameManager(String levelName) {
         lives = STARTING_LIVES;
         score = 0;
-        level = levelName;
+        level = 0;
+        gameHighScore = 0;
         myScore = new Text("SCORE: " + score);
         myScore.setX(20);
-        myScore.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP);
+        myScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
         myScore.setId("score");
-        highScore = new Text("HIGH SCORE: " + HIGH_SCORE);
+        highScore = new Text("HIGH SCORE: " + gameHighScore);
         highScore.setX(20);
-        highScore.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP + 15);
-        // TODO: get the level stuff working
+        highScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP + 15);
         myLevel = new Text("LEVEL: " + level);
-        myLevel.setX(BreakoutGame.SIZE / 2 - 20);
-        myLevel.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP);
+        myLevel.setX(BreakoutGame.GAME_WIDTH / 2 - 20);
+        myLevel.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
         myLives = new Text("LIVES: " + lives);
-        myLives.setX(BreakoutGame.SIZE - 80);
-        myLives.setY(BreakoutGame.SIZE * TEXT_DISTANCE_FROM_TOP);
+        myLives.setX(BreakoutGame.GAME_WIDTH - 80);
+        myLives.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
         myLives.setId("lives");
+    }
+
+    public void restartGame() {
+        lives = STARTING_LIVES;
+        updateHighScore();
+        score = 0;
+        level = 0;
+        updateLevel();
+        updateLives();
+        updateScore();
     }
 
     public void addScore(int points) {
@@ -64,6 +74,11 @@ public class GameManager {
         myScore.setText("SCORE: " + score);
     }
 
+    private void updateHighScore() {
+        gameHighScore = Math.max(gameHighScore, score);
+        highScore.setText("HIGH SCORE: " + gameHighScore);
+    }
+
     public Text getScore() {
         return myScore;
     }
@@ -75,4 +90,17 @@ public class GameManager {
     public Text getLevel() { return myLevel; }
 
     public Text getHighScore() { return highScore; }
+
+    public int getCurrentLevel() { return level; }
+
+    private void updateLevel() {
+        myLevel.setText("LEVEL: " + level);
+    }
+
+    public void advanceLevel() {
+        level++;
+        updateLevel();
+    }
+
+    public int getCurrentScore() { return score; }
 }

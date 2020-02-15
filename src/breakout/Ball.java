@@ -30,6 +30,15 @@ public class Ball extends Circle {
         this.setId("ball");
     }
 
+    public Ball(int x, int y, int velocity) {
+        super(x, y, BALL_RADIUS);
+        this.setFill(Color.RED);
+        xDirection = 1;
+        yDirection = 1;
+        this.velocity = velocity;
+        this.setId("ball");
+    }
+
     public void moveLeft() {
         // I'm using the negative of Math.abs because I want to later add that the ball moves in different angles
         xDirection = - Math.abs(xDirection);

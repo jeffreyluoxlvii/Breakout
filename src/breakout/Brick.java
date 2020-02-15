@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
+import java.util.Objects;
+
 
 public abstract class Brick extends Rectangle {
     public static final double BRICK_WIDTH = 30;

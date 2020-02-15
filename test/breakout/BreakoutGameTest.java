@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 
@@ -19,6 +20,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     // keep created scene to allow mouse and keyboard events
     private Scene myScene;
     private GameManager gameManager;
+    private Stage myStage;
     // keep any useful elements whose values you want to test directly in multiple tests
     private Ball myBall;
     private Platform myPlatform;
@@ -34,11 +36,12 @@ public class BreakoutGameTest extends DukeApplicationTest {
      */
     @Override
     public void start (Stage stage) {
+        myStage = stage;
         // create game's scene with all shapes in their initial positions and show it
-        myScene = myGame.setupGame(BreakoutGame.SIZE, BreakoutGame.SIZE, BreakoutGame.BACKGROUND, "testOne");
+        myGame.setupGame(BreakoutGame.TEST_PATH);
+        myScene = myGame.goToNextLevel();
         stage.setScene(myScene);
         stage.show();
-
         // find individual items within game by ID (must have been set in your code using setID())
         myBall = lookup("#ball").query();
         myPlatform = lookup("#platform").query();
@@ -60,8 +63,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
     // check initial stats of the platform
     @Test
     public void testPlatformInitialStats() {
-        assertEquals(myGame.SIZE * Platform.PLATFORM_HEIGHT, myPlatform.getHeight());
-        assertEquals(myGame.SIZE * Platform.PLATFORM_WIDTH, myPlatform.getWidth());
+        assertEquals(myGame.GAME_HEIGHT * Platform.PLATFORM_HEIGHT, myPlatform.getHeight());
+        assertEquals(myGame.GAME_WIDTH * Platform.PLATFORM_WIDTH, myPlatform.getWidth());
         moveTo(myBrick_0);
         sleep(1);
         assertEquals(myBrick_0.getX() + (myBrick_0.getWidth() / 2) - (myPlatform.getWidth() / 2), myPlatform.getX());
@@ -71,20 +74,20 @@ public class BreakoutGameTest extends DukeApplicationTest {
     @Test
     public void testBrickPositions() {
         assertEquals(0, myBrick_0.getX());
-        assertEquals(LevelCreator.BRICKS_STARTING_POINT, myBrick_0.getY());
+        assertEquals(LevelCreator.BRICKS_STARTING_HEIGHT, myBrick_0.getY());
         assertEquals(myBrick_0.getWidth(), myBrick_1.getX());
-        assertEquals(myBrick_0.getHeight() + LevelCreator.BRICKS_STARTING_POINT, myBrick_1.getY());
+        assertEquals(myBrick_0.getHeight() + LevelCreator.BRICKS_STARTING_HEIGHT, myBrick_1.getY());
     }
 
     @Test
     public void testBallHitCorner() {
         myBall.moveUp();
         myBall.moveRight();
-        myBall.setCenterX(BreakoutGame.SIZE - myBall.getRadius() - myBall.getVelocity() * 0.05);
+        myBall.setCenterX(BreakoutGame.GAME_WIDTH - myBall.getRadius() - myBall.getVelocity() * 0.05);
         myBall.setCenterY(myBall.getRadius() + myBall.getVelocity() * 0.05);
         myGame.step(myScene, 0.05);
         myGame.step(myScene, 0.05);
-        assertEquals(BreakoutGame.SIZE - myBall.getRadius() - myBall.getVelocity() * 0.05, myBall.getCenterX());
+        assertEquals(BreakoutGame.GAME_WIDTH - myBall.getRadius() - myBall.getVelocity() * 0.05, myBall.getCenterX());
         assertEquals(myBall.getRadius() + myBall.getVelocity() * 0.05, myBall.getCenterY());
     }
 
@@ -100,8 +103,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
 
     @Test
     public void testBallReset() {
-        myBall.setCenterX(BreakoutGame.SIZE  - 1);
-        myBall.setCenterY(BreakoutGame.SIZE - 1);
+        myBall.setCenterX(BreakoutGame.GAME_WIDTH  - 1);
+        myBall.setCenterY(BreakoutGame.GAME_HEIGHT - 1);
         myGame.step(myScene, 1);
         assertEquals(BreakoutGame.BALL_STARTING_X, myBall.getCenterX());
         assertEquals(BreakoutGame.BALL_STARTING_Y, myBall.getCenterY());
@@ -110,8 +113,8 @@ public class BreakoutGameTest extends DukeApplicationTest {
     // Check that life gets lost when hitting bottom wall
     @Test
     public void testLostLife() {
-        myBall.setCenterX(BreakoutGame.SIZE  - 1);
-        myBall.setCenterY(BreakoutGame.SIZE - 1);
+        myBall.setCenterX(BreakoutGame.GAME_WIDTH  - 1);
+        myBall.setCenterY(BreakoutGame.GAME_HEIGHT - 1);
         myGame.step(myScene, 1);
         assertEquals("LIVES: 2", myLives.getText());
     }
@@ -138,7 +141,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     @Test
     public void testLifeUpPowerup() {
         Powerup p = new LifeUpPowerup(0, 0);
-        p.usePowerUp(myScene, myGame.getGameManager());
+        p.usePowerUp(myScene, myGame.getMyGameManager());
         assertEquals("LIVES: 4", myLives.getText());
     }
 
