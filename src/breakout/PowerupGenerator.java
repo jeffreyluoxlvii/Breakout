@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class PowerupGenerator {
     public static Powerup getPowerup(double x, double y, double random) {
-        if(random < PlatformExtenderPowerup.DROP_CHANCE) {
+        if(random < Powerup.DROP_CHANCE) {
             return getRandomPowerup(x, y);
         }
         return null;
