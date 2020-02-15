@@ -60,7 +60,7 @@ public class BreakoutGame extends Application {
         myStage = stage;
         // attach scene to the stage and display it
 
-        myScene = setupGame(GAME_WIDTH, GAME_HEIGHT, BACKGROUND, "level2");
+        myScene = setupGame(TEST_PATH);
         myCollisionManager = new CollisionManager();
 
         stage.setScene(myScene);
@@ -77,6 +77,10 @@ public class BreakoutGame extends Application {
     private void end(String displayText) {
         myStage.setScene(endGame(GAME_WIDTH, GAME_HEIGHT, BACKGROUND, displayText));
         myStage.show();
+    }
+
+    public void goToNextLevel() {
+
     }
 
     private Scene endGame(int width, int height, Paint background, String displayText) {
@@ -124,35 +128,18 @@ public class BreakoutGame extends Application {
     }
 
     // Create the game's "scene": what shapes will be in the game and their starting properties
-    Scene setupGame (int width, int height, Paint background, String path) {
+    Scene setupGame (String path) {
 
+        gameManager = new GameManager(path);
+        myLevelPath = path;
         // create one top level collection to organize the things in the scene
         Group root = new Group();
 
-        gameManager = new GameManager(path);
-
-        myPlatform = new Platform(width, height);
-        myBall = new Ball(BALL_STARTING_X, BALL_STARTING_Y);
-        myPowerups = new ArrayList<>();
-        gameManager = new GameManager(path);
-        Text myScore = gameManager.getScore();
-        Text myLevel = gameManager.getLevel();
-        Text highScore = gameManager.getHighScore();
-        Text myLives = gameManager.getLives();
-
-        root.getChildren().add(myPlatform);
-        root.getChildren().add(myBall);
-        root.getChildren().addAll(myBricks);
-        root.getChildren().add(myScore);
-        root.getChildren().add(highScore);
-        root.getChildren().add(myLevel);
-        root.getChildren().add(myLives);
-
         // create a place to see the shapes
-        Scene scene = new Scene(root, width, height, background);
+        //Scene scene = new Scene(root, width, height, background);
         // respond to input
-        setupSceneEventListeners(scene);
-        return scene;
+        //setupSceneEventListeners(scene);
+        return null;
     }
 
     public int getNumPowerups() {
