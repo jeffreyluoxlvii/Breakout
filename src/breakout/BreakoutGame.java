@@ -175,7 +175,7 @@ public class BreakoutGame extends Application {
         // Check for collisions
         List<Powerup> p = CollisionManager.handlePowerupCollisions(myPowerups, myPlatform);
         for(Powerup powerup: p) {
-            powerup.usePowerUp(myScene, gameManager);
+            powerup.usePowerUp(myScene, myGameManager);
             ((Group)myScene.getRoot()).getChildren().remove(powerup);
         }
         CollisionManager.handlePlatformCollision(myBall, myPlatform);
