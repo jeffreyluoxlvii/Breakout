@@ -8,41 +8,41 @@ class GameManagerTest {
 
     @Test
     void testAddScore() {
-        GameManager manager = new GameManager();
+        GameManager manager = new GameManager("levelOne");
         manager.addScore(1);
         assertEquals("SCORE: 1", manager.getScore().getText());
     }
 
     @Test
     void testAddNegativeScore() {
-        GameManager manager = new GameManager();
+        GameManager manager = new GameManager("levelOne");
         manager.addScore(-1);
         assertEquals("SCORE: -1", manager.getScore().getText());
     }
 
     @Test
     void testAddLife() {
-        GameManager manager = new GameManager();
+        GameManager manager = new GameManager("levelOne");
         manager.addLife();
         assertEquals("LIVES: 4", manager.getLives().getText());
     }
 
     @Test
     void testLoseLife() {
-        GameManager manager = new GameManager();
+        GameManager manager = new GameManager("levelOne");
         manager.loseLife();
         assertEquals("LIVES: 2", manager.getLives().getText());
     }
 
     @Test
     void testCheckGameOverFalse() {
-        GameManager manager = new GameManager();
+        GameManager manager = new GameManager("levelOne");
         assertEquals(false, manager.checkGameOver());
     }
 
     @Test
     void testCheckGameOverTrue() {
-        GameManager manager = new GameManager();
+        GameManager manager = new GameManager("levelOne");
         manager.loseLife();
         manager.loseLife();
         manager.loseLife();
