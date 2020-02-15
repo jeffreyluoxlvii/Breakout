@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 
@@ -19,6 +20,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     // keep created scene to allow mouse and keyboard events
     private Scene myScene;
     private GameManager gameManager;
+    private Stage myStage;
     // keep any useful elements whose values you want to test directly in multiple tests
     private Ball myBall;
     private Platform myPlatform;
@@ -34,11 +36,12 @@ public class BreakoutGameTest extends DukeApplicationTest {
      */
     @Override
     public void start (Stage stage) {
+        myStage = stage;
         // create game's scene with all shapes in their initial positions and show it
-        myScene = myGame.setupGame(BreakoutGame.TEST_PATH);
+        myGame.setupGame(BreakoutGame.TEST_PATH);
+        myScene = myGame.goToNextLevel();
         stage.setScene(myScene);
         stage.show();
-
         // find individual items within game by ID (must have been set in your code using setID())
         myBall = lookup("#ball").query();
         myPlatform = lookup("#platform").query();

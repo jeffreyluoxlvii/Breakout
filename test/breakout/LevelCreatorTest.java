@@ -11,34 +11,30 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LevelCreatorTest {
 
-    private LevelCreator levelCreator;
-
-    @BeforeAll
-    private void initializeLevelCreator() {
-        levelCreator = new LevelCreator(1, BreakoutGame.TEST_PATH);
-    }
-
     @Test
     public void testBrickSetup() {
+        LevelCreator levelCreator = new LevelCreator(1, BreakoutGame.TEST_PATH);
         List<Brick> bricks = levelCreator.setupBricks();
-        assertEquals(10, bricks.get(0).getWidth());
-        assertEquals(10, bricks.get(1).getX());
-        assertEquals(80 / 2.0 * LevelCreator.BRICKS_HEIGHT_RATIO_TO_SCREEN + LevelCreator.BRICKS_STARTING_HEIGHT
+        assertEquals(400.0 / 8, bricks.get(0).getWidth());
+        assertEquals(400.0 / 8, bricks.get(1).getX());
+        assertEquals(400.0 / 2.0 * LevelCreator.BRICKS_HEIGHT_RATIO_TO_SCREEN + LevelCreator.BRICKS_STARTING_HEIGHT
                 ,bricks.get(1).getY());
     }
 
     @Test
     public void testBrickSetup2() {
+        LevelCreator levelCreator = new LevelCreator(2, BreakoutGame.TEST_PATH);
         List<Brick> bricks = levelCreator.setupBricks();
-        assertEquals(10, bricks.get(1).getWidth());
-        assertEquals(100 * LevelCreator.BRICKS_HEIGHT_RATIO_TO_SCREEN / 5 + LevelCreator.BRICKS_STARTING_HEIGHT,
+        assertEquals(400.0 / 4, bricks.get(1).getWidth());
+        assertEquals(400.0 * LevelCreator.BRICKS_HEIGHT_RATIO_TO_SCREEN / 5 + LevelCreator.BRICKS_STARTING_HEIGHT,
                 bricks.get(2).getY());
-        assertEquals(20, bricks.get(2).getX());
+        assertEquals(400.0 / 4 * 2, bricks.get(2).getX());
     }
 
     // Checks that different types of bricks can be read
     @Test
     public void testBrickSetup3() {
+        LevelCreator levelCreator = new LevelCreator(3, BreakoutGame.TEST_PATH);
         List<Brick> bricks = levelCreator.setupBricks();
         assertEquals(1, bricks.get(0).getDurability());
         assertEquals(2, bricks.get(1).getDurability());

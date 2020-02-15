@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CollisionManager {
 
-    public List<Powerup> handlePowerupCollisions(List<Powerup> powerups, Platform platform) {
+    public static List<Powerup> handlePowerupCollisions(List<Powerup> powerups, Platform platform) {
         List<Powerup> collisionPowerups = new ArrayList<>();
         for(Iterator<Powerup> iter = powerups.iterator(); iter.hasNext();) {
             Powerup p = iter.next();
@@ -23,18 +23,18 @@ public class CollisionManager {
         return collisionPowerups;
     }
 
-    private boolean isPowerupCollision(Powerup p, Platform platform) {
+    private static boolean isPowerupCollision(Powerup p, Platform platform) {
         return Shape.intersect(p.getShape(), platform).getBoundsInLocal().getWidth() != -1;
     }
 
     // Handle collision between ball and platform
-    public void handlePlatformCollision(Ball ball, Platform platform) {
+    public static void handlePlatformCollision(Ball ball, Platform platform) {
         if(Shape.intersect(ball, platform).getBoundsInLocal().getWidth() != -1) {
             ball.moveUp();
         }
     }
 
-    public boolean handleWallCollision(Ball ball) {
+    public static boolean handleWallCollision(Ball ball) {
         // hit top wall
         if(ball.getCenterY() - ball.getRadius() <= 0) {
             ball.moveDown();
@@ -54,7 +54,7 @@ public class CollisionManager {
         return false;
     }
 
-    public List<Brick> handleBrickCollision(Ball ball, Iterator<Node> iterator) {
+    public static List<Brick> handleBrickCollision(Ball ball, Iterator<Node> iterator) {
         List<Brick> hitBricks = new ArrayList<>();
         while(iterator.hasNext()) {
             Node node = iterator.next();
@@ -70,7 +70,7 @@ public class CollisionManager {
     }
 
     // Handle a collision between ball and a brick
-    private boolean isBrickCollision(Ball ball, Brick brick) {
+    private static boolean isBrickCollision(Ball ball, Brick brick) {
         if(Shape.intersect(ball, brick).getBoundsInLocal().getWidth() != -1) {
             // TODO: Ball needs a damage instance variable
             brick.hit(1);

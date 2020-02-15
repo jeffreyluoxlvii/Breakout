@@ -50,7 +50,6 @@ public class BreakoutGame extends Application {
     private List<Powerup> myPowerups;
     private Timeline animation;
     private GameManager myGameManager;
-    private CollisionManager myCollisionManager;
 
     /**
      * Initialize what will be displayed and how it will be updated.
@@ -61,7 +60,6 @@ public class BreakoutGame extends Application {
         // attach scene to the stage and display it
 
         myScene = setupGame(TEST_PATH);
-        myCollisionManager = new CollisionManager();
 
         stage.setScene(myScene);
         stage.setTitle(TITLE);
@@ -90,11 +88,14 @@ public class BreakoutGame extends Application {
         myStage.setScene(myScene);
     }
 
-    public void goToNextLevel() {
+    public Scene goToNextLevel() {
         myGameManager.advanceLevel();
         myScene = getSceneForLevel(myGameManager.getCurrentLevel());
-        myStage.setScene(myScene);
         // attach "game loop" to timeline to play it (basically just calling step() method repeatedly forever)
+        return myScene;
+    }
+
+    private void animate() {
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(myScene, SECOND_DELAY));
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
@@ -102,7 +103,7 @@ public class BreakoutGame extends Application {
         animation.play();
     }
 
-    private void restartGame() {
+    public void restartGame() {
         myGameManager.restartGame();
         myScene = getStartingScene();
         myStage.setScene(myScene);
@@ -172,14 +173,14 @@ public class BreakoutGame extends Application {
         }
 
         // Check for collisions
-        List<Powerup> p = myCollisionManager.handlePowerupCollisions(myPowerups, myPlatform);
+        List<Powerup> p = CollisionManager.handlePowerupCollisions(myPowerups, myPlatform);
         for(Powerup powerup: p) {
             powerup.usePowerUp(myScene,
                     myGameManager);
             ((Group)myScene.getRoot()).getChildren().remove(powerup.getShape());
         }
-        myCollisionManager.handlePlatformCollision(myBall, myPlatform);
-        List<Brick> hitBricks = myCollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator());
+        CollisionManager.handlePlatformCollision(myBall, myPlatform);
+        List<Brick> hitBricks = CollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator());
         myGameManager.addScore(hitBricks.size());
         myBricks.removeAll(hitBricks);
         for(Brick b: hitBricks) {
@@ -189,7 +190,7 @@ public class BreakoutGame extends Application {
             }
         }
 
-        if(myCollisionManager.handleWallCollision(myBall)) {
+        if(CollisionManager.handleWallCollision(myBall)) {
             myGameManager.loseLife();
             resetBall(myBall);
         }
@@ -240,7 +241,8 @@ public class BreakoutGame extends Application {
 
     private void handleKeyInputForTransitionScreen(Scene scene, KeyCode code) {
         if(code == KeyCode.SPACE) {
-            goToNextLevel();
+            myStage.setScene(goToNextLevel());
+            animate();
         }
     }
 
