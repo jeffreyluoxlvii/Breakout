@@ -74,7 +74,6 @@ public class BreakoutGame extends Application {
     }
 
     private void levelTransition() {
-        animation.stop();
         TransitionScreen screen = new TransitionScreen(myGameManager);
         myScene = screen.getScene();
         myScene.setOnKeyPressed(e -> handleKeyInputForTransitionScreen(myScene, e.getCode()));
@@ -82,7 +81,6 @@ public class BreakoutGame extends Application {
     }
 
     private void finishGame(NonLevelScreen screen) {
-        animation.stop();
         myScene = screen.getScene();
         myScene.setOnKeyPressed(e -> handleKeyInputForFinishingScreen(myScene, e.getCode()));
         myStage.setScene(myScene);
@@ -154,7 +152,6 @@ public class BreakoutGame extends Application {
 
     private void setupSceneEventListeners(Scene scene) {
         scene.setOnKeyPressed(e -> handleKeyInput(scene, e.getCode()));
-        scene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
         scene.setOnMouseMoved(e -> handleMouseMoved(e.getX(), e.getY()));
     }
 
@@ -199,6 +196,7 @@ public class BreakoutGame extends Application {
 
     private void checkLevelFinished() {
         if(myBricks.isEmpty()) {
+            animation.stop();
             if(myGameManager.getCurrentLevel() == LevelCreator.getNumLevels()) {
                 finishGame(new WinningScreen(myGameManager));
             }
@@ -207,6 +205,7 @@ public class BreakoutGame extends Application {
             }
         }
         else if(myGameManager.checkGameOver()) {
+            animation.stop();
             finishGame(new LosingScreen(myGameManager));
         }
     }
@@ -240,6 +239,25 @@ public class BreakoutGame extends Application {
             // TODO: Brick removal cheat
 
         }
+        if(code == KeyCode.DIGIT1 || code == KeyCode.NUMPAD1) {
+            skipToLevel(1);
+        }
+        if(code == KeyCode.DIGIT2 || code == KeyCode.NUMPAD2) {
+            skipToLevel(2);
+        }
+        if(code == KeyCode.DIGIT3 || code == KeyCode.NUMPAD3) {
+            skipToLevel(3);
+        }
+    }
+
+    private void skipToLevel(int level) {
+        if(animation != null) {
+            animation.stop();
+        }
+        myGameManager.setLevel(level);
+        myScene = getSceneForLevel(level);
+        myStage.setScene(myScene);
+        animate();
     }
 
     private void handleKeyInputForTransitionScreen(Scene scene, KeyCode code) {
@@ -260,10 +278,6 @@ public class BreakoutGame extends Application {
         ball.setCenterY(BALL_STARTING_Y);
         ball.moveDown();
         ball.moveRight();
-    }
-
-    // What to do each time a key is pressed
-    private void handleMouseInput (double x, double y) {
     }
 
     //What to do when mouse moves

@@ -47,6 +47,11 @@ public class GameManager {
         updateScore();
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+        updateLevel();
+    }
+
     public void addScore(int points) {
         score += points;
         updateScore();
