@@ -11,15 +11,20 @@ import java.util.List;
 public abstract class NonLevelScreen {
     private List<Text> screenText;
     private BreakoutGame game;
+    public static final String GO_TO_NEXT_SCREEN_TEXT = "Press the [spacebar] to continue";
+    public static final double NEXT_SCREEN_TEXT_Y = 0.8;
 
     public NonLevelScreen(BreakoutGame game) {
         screenText = new ArrayList<>();
     }
 
-    private void handleKeyInput (Scene scene, KeyCode code) {
-        if(code == KeyCode.SPACE) {
-            game.goToNextLevel();
-        }
-    }
+    public abstract Scene getScene();
 
+    protected Text getNextScreenText() {
+        Text nextScreenText = new Text();
+        nextScreenText.setText(NonLevelScreen.GO_TO_NEXT_SCREEN_TEXT);
+        nextScreenText.setX(BreakoutGame.GAME_WIDTH / 2 - nextScreenText.getLayoutBounds().getWidth() / 2);
+        nextScreenText.setY(BreakoutGame.GAME_HEIGHT * NonLevelScreen.NEXT_SCREEN_TEXT_Y);
+        return nextScreenText;
+    }
 }

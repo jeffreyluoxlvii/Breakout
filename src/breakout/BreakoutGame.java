@@ -61,17 +61,18 @@ public class BreakoutGame extends Application {
         // attach scene to the stage and display it
 
         myScene = setupGame(TEST_PATH);
+        myScene.setOnKeyPressed(e -> handleKeyInputForNonLevelScreen(myScene, e.getCode()));
         myCollisionManager = new CollisionManager();
 
         stage.setScene(myScene);
         stage.setTitle(TITLE);
         stage.show();
         // attach "game loop" to timeline to play it (basically just calling step() method repeatedly forever)
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(myScene, SECOND_DELAY));
-        animation = new Timeline();
-        animation.setCycleCount(Timeline.INDEFINITE);
-        animation.getKeyFrames().add(frame);
-        animation.play();
+//        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(myScene, SECOND_DELAY));
+//        animation = new Timeline();
+//        animation.setCycleCount(Timeline.INDEFINITE);
+//        animation.getKeyFrames().add(frame);
+//        animation.play();
     }
 
     private void end(String displayText) {
@@ -80,7 +81,7 @@ public class BreakoutGame extends Application {
     }
 
     public void goToNextLevel() {
-
+        System.out.println("I'm getting there!");
     }
 
     private Scene endGame(int width, int height, Paint background, String displayText) {
@@ -132,14 +133,9 @@ public class BreakoutGame extends Application {
 
         gameManager = new GameManager(path);
         myLevelPath = path;
-        // create one top level collection to organize the things in the scene
-        Group root = new Group();
 
-        // create a place to see the shapes
-        //Scene scene = new Scene(root, width, height, background);
-        // respond to input
-        //setupSceneEventListeners(scene);
-        return null;
+        StartingScreen start = new StartingScreen(this);
+        return start.getScene();
     }
 
     public int getNumPowerups() {
@@ -224,6 +220,12 @@ public class BreakoutGame extends Application {
         if(code == KeyCode.P) {
             Powerup temp = PowerupGenerator.getPowerup(myBall.getCenterX(), myBall.getCenterY() - myBall.getRadius(), 0);
             addPowerup(scene, temp);
+        }
+    }
+
+    private void handleKeyInputForNonLevelScreen(Scene scene, KeyCode code) {
+        if(code == KeyCode.SPACE) {
+            goToNextLevel();
         }
     }
 
