@@ -57,7 +57,7 @@ public class BreakoutGame extends Application {
     public void start (Stage stage) {
         myStage = stage;
         // attach scene to the stage and display it
-        myScene = setupGame(SIZE, SIZE, BACKGROUND, "testOne");
+        myScene = setupGame(SIZE, SIZE, BACKGROUND, "levelTwo");
         stage.setScene(myScene);
         stage.setTitle(TITLE);
         stage.show();

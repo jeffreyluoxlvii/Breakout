@@ -14,8 +14,7 @@ public class Platform extends Rectangle {
     public Platform(double gameWidth, double gameHeight) {
         super(gameWidth * PLATFORM_WIDTH, gameHeight * PLATFORM_HEIGHT);
         this.setFill(PLATFORM_COLOR);
-        this.setX(gameWidth / 2 - this.getWidth() / 2);
-        this.setY(gameHeight * (1 - PLATFORM_DISTANCE_FROM_BOTTOM));
+        this.setToStartingPosition(gameWidth, gameHeight);
         this.setId("platform");
     }
 
@@ -25,6 +24,11 @@ public class Platform extends Rectangle {
 
     public void updateWidth(double x) {
         this.setWidth(this.getWidth() + x);
+    }
+
+    public void setToStartingPosition(double gameWidth, double gameHeight) {
+        this.setX(gameWidth / 2 - this.getWidth() / 2);
+        this.setY(gameHeight * (1 - PLATFORM_DISTANCE_FROM_BOTTOM));
     }
 
 }
