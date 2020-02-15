@@ -133,7 +133,7 @@ public class BreakoutGame extends Application {
 
     private void addPowerup(Scene scene, Powerup p) {
         myPowerups.add(p);
-        ((Group)scene.getRoot()).getChildren().add(p.getShape());
+        ((Group)scene.getRoot()).getChildren().add(p);
     }
 
     // Change properties of shapes in small ways to animate them over time
@@ -149,7 +149,7 @@ public class BreakoutGame extends Application {
         List<Powerup> p = myCollisionManager.handlePowerupCollisions(myPowerups, myPlatform);
         for(Powerup powerup: p) {
             powerup.usePowerUp(myScene, gameManager);
-            ((Group)myScene.getRoot()).getChildren().remove(powerup.getShape());
+            ((Group)myScene.getRoot()).getChildren().remove(powerup);
         }
         myCollisionManager.handlePlatformCollision(myBall, myPlatform);
         List<Brick> hitBricks = myCollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator());
@@ -203,6 +203,10 @@ public class BreakoutGame extends Application {
         if(code == KeyCode.P) {
             Powerup temp = PowerupGenerator.getPowerup(myBall.getCenterX(), myBall.getCenterY() - myBall.getRadius(), 0);
             addPowerup(scene, temp);
+        }
+        if(code == KeyCode.D) {
+            // TODO: Brick removal cheat
+
         }
     }
 

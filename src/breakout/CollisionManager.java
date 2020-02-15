@@ -24,7 +24,7 @@ public class CollisionManager {
     }
 
     private boolean isPowerupCollision(Powerup p, Platform platform) {
-        return Shape.intersect(p.getShape(), platform).getBoundsInLocal().getWidth() != -1;
+        return Shape.intersect(p, platform).getBoundsInLocal().getWidth() != -1;
     }
 
     // Handle collision between ball and platform

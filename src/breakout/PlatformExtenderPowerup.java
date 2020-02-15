@@ -10,19 +10,13 @@ import javafx.scene.shape.Shape;
 
 public class PlatformExtenderPowerup extends Powerup {
 
-    public static final int POWERUP_WIDTH = 15;
-    public static final int POWERUP_HEIGHT = 15;
     public static final int POWERUP_EXTENSION_LENGTH = 20;
     public static final double DROP_CHANCE = 0.1;
-    public static final double VELOCITY = 50;
     public static final Paint myFill = Color.BLUEVIOLET;
-    private Rectangle myShape;
 
-    public PlatformExtenderPowerup(double centerX, double topY) {
-        myShape = new Rectangle(POWERUP_WIDTH, POWERUP_HEIGHT);
-        myShape.setX(centerX - myShape.getWidth() / 2.0);
-        myShape.setY(topY);
-        myShape.setFill(myFill);
+    public PlatformExtenderPowerup(double x, double y) {
+        super(x, y);
+        this.setFill(myFill);
     }
 
     @Override
@@ -33,15 +27,4 @@ public class PlatformExtenderPowerup extends Powerup {
             }
         }
     }
-
-    @Override
-    public void move(double elapsedTime) {
-        myShape.setY(myShape.getY() + VELOCITY * elapsedTime);
-    }
-
-    @Override
-    public Shape getShape() {
-        return myShape;
-    }
-
 }
