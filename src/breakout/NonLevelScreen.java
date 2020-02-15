@@ -13,8 +13,13 @@ public abstract class NonLevelScreen {
 
     public static final String GO_TO_NEXT_SCREEN_TEXT = "Press the [spacebar] to continue";
     public static final double NEXT_SCREEN_TEXT_Y = 0.8;
-    public static final String NEWLINE = "\n";
     public static final double INSTRUCTIONS_STARTING_Y = 0.2;
+
+    public static final String NEWLINE = "\n";
+    public static final String SPACE = " ";
+    public static final String EXCLAMATION = "!";
+    public static final String ADD = "+";
+    public static final String EQUALS = "=";
 
     public NonLevelScreen() {
         screenText = new ArrayList<>();

@@ -61,7 +61,6 @@ public class BreakoutGame extends Application {
         // attach scene to the stage and display it
 
         myScene = setupGame(TEST_PATH);
-        myScene.setOnKeyPressed(e -> handleKeyInputForNonLevelScreen(myScene, e.getCode()));
         myCollisionManager = new CollisionManager();
 
         stage.setScene(myScene);
@@ -69,44 +68,45 @@ public class BreakoutGame extends Application {
         stage.show();
     }
 
+    private Scene getStartingScene() {
+        StartingScreen start = new StartingScreen();
+        Scene temp = start.getScene();
+        temp.setOnKeyPressed(e -> handleKeyInputForTransitionScreen(myScene, e.getCode()));
+        return temp;
+    }
+
     private void levelTransition() {
         animation.stop();
         TransitionScreen screen = new TransitionScreen(myGameManager);
-        Scene scene = screen.getScene();
-        scene.setOnKeyPressed(e -> handleKeyInputForNonLevelScreen(scene, e.getCode()));
-        myStage.setScene(scene);
+        myScene = screen.getScene();
+        myScene.setOnKeyPressed(e -> handleKeyInputForTransitionScreen(myScene, e.getCode()));
+        myStage.setScene(myScene);
     }
 
-    private void end(String displayText) {
+    private void end() {
         animation.stop();
-        myStage.setScene(endGame(GAME_WIDTH, GAME_HEIGHT, BACKGROUND, displayText));
-        myStage.show();
+        LosingScreen lose = new LosingScreen(myGameManager);
+        myScene = lose.getScene();
+        myScene.setOnKeyPressed(e -> handleKeyInputForLosingScreen(myScene, e.getCode()));
+        myStage.setScene(myScene);
     }
 
     public void goToNextLevel() {
         myGameManager.advanceLevel();
-        Scene nextLevelScene = getSceneForLevel(myGameManager.getCurrentLevel());
-        myStage.setScene(nextLevelScene);
+        myScene = getSceneForLevel(myGameManager.getCurrentLevel());
+        myStage.setScene(myScene);
         // attach "game loop" to timeline to play it (basically just calling step() method repeatedly forever)
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(nextLevelScene, SECOND_DELAY));
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(myScene, SECOND_DELAY));
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
         animation.play();
     }
 
-    private Scene endGame(int width, int height, Paint background, String displayText) {
-
-        Group root = new Group();
-
-        Text text = new Text();
-        text.setText(displayText);
-        text.setX(GAME_WIDTH / 2 - text.getLayoutBounds().getWidth() / 2);
-        text.setY(GAME_HEIGHT / 2 - text.getLayoutBounds().getHeight() / 2);
-
-        root.getChildren().add(text);
-        return new Scene(root, width, height);
-
+    private void restartGame() {
+        myGameManager.restartGame();
+        myScene = getStartingScene();
+        myStage.setScene(myScene);
     }
 
     Scene getSceneForLevel(int level) {
@@ -145,8 +145,7 @@ public class BreakoutGame extends Application {
         myGameManager = new GameManager(path);
         myLevelPath = path;
 
-        StartingScreen start = new StartingScreen();
-        return start.getScene();
+        return getStartingScene();
     }
 
     public int getNumPowerups() {
@@ -176,7 +175,8 @@ public class BreakoutGame extends Application {
         // Check for collisions
         List<Powerup> p = myCollisionManager.handlePowerupCollisions(myPowerups, myPlatform);
         for(Powerup powerup: p) {
-            powerup.usePowerUp(myScene, myGameManager);
+            powerup.usePowerUp(myScene,
+                    myGameManager);
             ((Group)myScene.getRoot()).getChildren().remove(powerup.getShape());
         }
         myCollisionManager.handlePlatformCollision(myBall, myPlatform);
@@ -203,7 +203,7 @@ public class BreakoutGame extends Application {
             levelTransition();
         }
         else if(myGameManager.checkGameOver()) {
-            end(LOSE_MESSAGE);
+            end();
         }
     }
 
@@ -234,9 +234,15 @@ public class BreakoutGame extends Application {
         }
     }
 
-    private void handleKeyInputForNonLevelScreen(Scene scene, KeyCode code) {
+    private void handleKeyInputForTransitionScreen(Scene scene, KeyCode code) {
         if(code == KeyCode.SPACE) {
             goToNextLevel();
+        }
+    }
+
+    private void handleKeyInputForLosingScreen(Scene scene, KeyCode code) {
+        if(code == KeyCode.SPACE) {
+            restartGame();
         }
     }
 

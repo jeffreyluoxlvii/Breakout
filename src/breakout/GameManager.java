@@ -7,24 +7,25 @@ public class GameManager {
     private int lives;
     private int score;
     private int level;
-    public static final int HIGH_SCORE = 10000;
+    private int gameHighScore;
     private Text myLevel;
     private Text myScore;
     private Text myLives;
     private Text highScore;
 
     public static final double TEXT_DISTANCE_FROM_TOP = 0.05;
-    public static final int STARTING_LIVES = 10;
+    public static final int STARTING_LIVES = 3;
 
     public GameManager(String levelName) {
         lives = STARTING_LIVES;
         score = 0;
         level = 0;
+        gameHighScore = 0;
         myScore = new Text("SCORE: " + score);
         myScore.setX(20);
         myScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
         myScore.setId("score");
-        highScore = new Text("HIGH SCORE: " + HIGH_SCORE);
+        highScore = new Text("HIGH SCORE: " + gameHighScore);
         highScore.setX(20);
         highScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP + 15);
         myLevel = new Text("LEVEL: " + level);
@@ -36,8 +37,19 @@ public class GameManager {
         myLives.setId("lives");
     }
 
+    public void restartGame() {
+        lives = STARTING_LIVES;
+        updateHighScore();
+        score = 0;
+        level = 0;
+        updateLevel();
+        updateLives();
+        updateScore();
+    }
+
     public void addScore(int points) {
         score += points;
+        updateHighScore();
         updateScore();
     }
 
@@ -61,6 +73,11 @@ public class GameManager {
 
     private void updateScore() {
         myScore.setText("SCORE: " + score);
+    }
+
+    private void updateHighScore() {
+        gameHighScore = Math.max(gameHighScore, score);
+        highScore.setText("HIGH SCORE: " + gameHighScore);
     }
 
     public Text getScore() {
