@@ -10,11 +10,13 @@ import java.util.List;
 
 public abstract class NonLevelScreen {
     private List<Text> screenText;
-    private BreakoutGame game;
+
     public static final String GO_TO_NEXT_SCREEN_TEXT = "Press the [spacebar] to continue";
     public static final double NEXT_SCREEN_TEXT_Y = 0.8;
+    public static final String NEWLINE = "\n";
+    public static final double INSTRUCTIONS_STARTING_Y = 0.2;
 
-    public NonLevelScreen(BreakoutGame game) {
+    public NonLevelScreen() {
         screenText = new ArrayList<>();
     }
 

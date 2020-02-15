@@ -12,6 +12,7 @@ public class LevelCreator {
 
     public static final double[] PLATFORM_WIDTHS_FOR_LEVELS = {0.3, 0.25, 0.2};
     public static final int[] BALL_SPEEDS_FOR_LEVELS = {200, 250, 300};
+    //myLevel is one indexed
     private int myLevel;
     private String myLevelPath;
 
@@ -20,12 +21,16 @@ public class LevelCreator {
         this.myLevelPath = myLevelPath;
     }
 
+    public int getNumLevels() {
+        return BALL_SPEEDS_FOR_LEVELS.length;
+    }
+
     public Platform getPlatform() {
-        return new Platform(BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, PLATFORM_WIDTHS_FOR_LEVELS[myLevel]);
+        return new Platform(BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, PLATFORM_WIDTHS_FOR_LEVELS[myLevel - 1]);
     }
 
     public Ball getBall() {
-        return new Ball(BreakoutGame.BALL_STARTING_X, BreakoutGame.BALL_STARTING_Y, BALL_SPEEDS_FOR_LEVELS[myLevel]);
+        return new Ball(BreakoutGame.BALL_STARTING_X, BreakoutGame.BALL_STARTING_Y, BALL_SPEEDS_FOR_LEVELS[myLevel - 1]);
     }
 
     public List<Brick> setupBricks() {

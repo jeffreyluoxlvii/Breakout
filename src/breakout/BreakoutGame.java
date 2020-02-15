@@ -69,6 +69,14 @@ public class BreakoutGame extends Application {
         stage.show();
     }
 
+    private void levelTransition() {
+        animation.stop();
+        TransitionScreen screen = new TransitionScreen(myGameManager);
+        Scene scene = screen.getScene();
+        scene.setOnKeyPressed(e -> handleKeyInputForNonLevelScreen(scene, e.getCode()));
+        myStage.setScene(scene);
+    }
+
     private void end(String displayText) {
         animation.stop();
         myStage.setScene(endGame(GAME_WIDTH, GAME_HEIGHT, BACKGROUND, displayText));
@@ -76,8 +84,8 @@ public class BreakoutGame extends Application {
     }
 
     public void goToNextLevel() {
-        Scene nextLevelScene = getSceneForLevel(myGameManager.getCurrentLevel());
         myGameManager.advanceLevel();
+        Scene nextLevelScene = getSceneForLevel(myGameManager.getCurrentLevel());
         myStage.setScene(nextLevelScene);
         // attach "game loop" to timeline to play it (basically just calling step() method repeatedly forever)
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(nextLevelScene, SECOND_DELAY));
@@ -137,7 +145,7 @@ public class BreakoutGame extends Application {
         myGameManager = new GameManager(path);
         myLevelPath = path;
 
-        StartingScreen start = new StartingScreen(this);
+        StartingScreen start = new StartingScreen();
         return start.getScene();
     }
 
@@ -187,12 +195,12 @@ public class BreakoutGame extends Application {
             resetBall(myBall);
         }
 
-        checkGameEnded();
+        checkLevelFinished();
     }
 
-    private void checkGameEnded() {
+    private void checkLevelFinished() {
         if(myBricks.isEmpty()) {
-            end(WIN_MESSAGE);
+            levelTransition();
         }
         else if(myGameManager.checkGameOver()) {
             end(LOSE_MESSAGE);

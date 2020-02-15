@@ -11,12 +11,9 @@ public class StartingScreen extends NonLevelScreen {
 
     public static final String INSTRUCTIONS_PATH = "gameInstructions";
     private String myInstructions;
-    public static final double INSTRUCTIONS_STARTING_Y = 0.2;
     public static final double INSTRUCTIONS_WIDTH = 0.8;
-    public static final String NEWLINE = "\n";
 
-    public StartingScreen(BreakoutGame game) {
-        super(game);
+    public StartingScreen() {
         myInstructions = readInstructions();
     }
 

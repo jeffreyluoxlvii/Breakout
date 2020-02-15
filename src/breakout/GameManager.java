@@ -14,12 +14,12 @@ public class GameManager {
     private Text highScore;
 
     public static final double TEXT_DISTANCE_FROM_TOP = 0.05;
-    public static final int STARTING_LIVES = 3;
+    public static final int STARTING_LIVES = 10;
 
     public GameManager(String levelName) {
         lives = STARTING_LIVES;
         score = 0;
-        level = 1;
+        level = 0;
         myScore = new Text("SCORE: " + score);
         myScore.setX(20);
         myScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
@@ -27,7 +27,6 @@ public class GameManager {
         highScore = new Text("HIGH SCORE: " + HIGH_SCORE);
         highScore.setX(20);
         highScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP + 15);
-        // TODO: get the level stuff working
         myLevel = new Text("LEVEL: " + level);
         myLevel.setX(BreakoutGame.GAME_WIDTH / 2 - 20);
         myLevel.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
@@ -78,5 +77,14 @@ public class GameManager {
 
     public int getCurrentLevel() { return level; }
 
-    public void advanceLevel() { level++; }
+    private void updateLevel() {
+        myLevel.setText("LEVEL: " + level);
+    }
+
+    public void advanceLevel() {
+        level++;
+        updateLevel();
+    }
+
+    public int getCurrentScore() { return score; }
 }
