@@ -64,7 +64,7 @@ public class LevelCreator {
         return scan.next().length();
     }
     private Scanner getScannerForFile(String path) {
-        return new Scanner(LevelCreator.class.getClassLoader().getResourceAsStream(path));
+        return new Scanner(LevelCreator.class.getClassLoader().getResourceAsStream(path + myLevel));
     }
 
     private Brick createBrick(String brickType, double x, double y, double width, double height) {

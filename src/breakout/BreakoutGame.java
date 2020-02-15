@@ -49,7 +49,7 @@ public class BreakoutGame extends Application {
     private String myLevelPath;
     private List<Powerup> myPowerups;
     private Timeline animation;
-    private GameManager gameManager;
+    private GameManager myGameManager;
     private CollisionManager myCollisionManager;
 
     /**
@@ -67,21 +67,24 @@ public class BreakoutGame extends Application {
         stage.setScene(myScene);
         stage.setTitle(TITLE);
         stage.show();
-        // attach "game loop" to timeline to play it (basically just calling step() method repeatedly forever)
-//        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(myScene, SECOND_DELAY));
-//        animation = new Timeline();
-//        animation.setCycleCount(Timeline.INDEFINITE);
-//        animation.getKeyFrames().add(frame);
-//        animation.play();
     }
 
     private void end(String displayText) {
+        animation.stop();
         myStage.setScene(endGame(GAME_WIDTH, GAME_HEIGHT, BACKGROUND, displayText));
         myStage.show();
     }
 
     public void goToNextLevel() {
-        System.out.println("I'm getting there!");
+        Scene nextLevelScene = getSceneForLevel(myGameManager.getCurrentLevel());
+        myGameManager.advanceLevel();
+        myStage.setScene(nextLevelScene);
+        // attach "game loop" to timeline to play it (basically just calling step() method repeatedly forever)
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(nextLevelScene, SECOND_DELAY));
+        animation = new Timeline();
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.getKeyFrames().add(frame);
+        animation.play();
     }
 
     private Scene endGame(int width, int height, Paint background, String displayText) {
@@ -108,10 +111,10 @@ public class BreakoutGame extends Application {
         myBricks = myLevelCreator.setupBricks();
         myPowerups = new ArrayList<>();
 
-        Text myScore = gameManager.getScore();
-        Text myLevel = gameManager.getLevel();
-        Text highScore = gameManager.getHighScore();
-        Text myLives = gameManager.getLives();
+        Text myScore = myGameManager.getScore();
+        Text myLevel = myGameManager.getLevel();
+        Text highScore = myGameManager.getHighScore();
+        Text myLives = myGameManager.getLives();
 
         root.getChildren().add(myPlatform);
         root.getChildren().add(myBall);
@@ -131,7 +134,7 @@ public class BreakoutGame extends Application {
     // Create the game's "scene": what shapes will be in the game and their starting properties
     Scene setupGame (String path) {
 
-        gameManager = new GameManager(path);
+        myGameManager = new GameManager(path);
         myLevelPath = path;
 
         StartingScreen start = new StartingScreen(this);
@@ -165,12 +168,12 @@ public class BreakoutGame extends Application {
         // Check for collisions
         List<Powerup> p = myCollisionManager.handlePowerupCollisions(myPowerups, myPlatform);
         for(Powerup powerup: p) {
-            powerup.usePowerUp(myScene, gameManager);
+            powerup.usePowerUp(myScene, myGameManager);
             ((Group)myScene.getRoot()).getChildren().remove(powerup.getShape());
         }
         myCollisionManager.handlePlatformCollision(myBall, myPlatform);
         List<Brick> hitBricks = myCollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator());
-        gameManager.addScore(hitBricks.size());
+        myGameManager.addScore(hitBricks.size());
         myBricks.removeAll(hitBricks);
         for(Brick b: hitBricks) {
             Powerup temp = PowerupGenerator.getPowerup(b.getX() + b.getWidth() / 2, b.getY() + b.getHeight(), Math.random());
@@ -180,7 +183,7 @@ public class BreakoutGame extends Application {
         }
 
         if(myCollisionManager.handleWallCollision(myBall)) {
-            gameManager.loseLife();
+            myGameManager.loseLife();
             resetBall(myBall);
         }
 
@@ -191,7 +194,7 @@ public class BreakoutGame extends Application {
         if(myBricks.isEmpty()) {
             end(WIN_MESSAGE);
         }
-        else if(gameManager.checkGameOver()) {
+        else if(myGameManager.checkGameOver()) {
             end(LOSE_MESSAGE);
         }
     }
@@ -212,7 +215,7 @@ public class BreakoutGame extends Application {
             resetBall(myBall);
         }
         if(code == KeyCode.L) {
-            gameManager.addLife();
+            myGameManager.addLife();
         }
         if(code == KeyCode.S) {
             myBall.increaseSpeed();
@@ -247,8 +250,8 @@ public class BreakoutGame extends Application {
         }
     }
 
-    public GameManager getGameManager() {
-        return gameManager;
+    public GameManager getMyGameManager() {
+        return myGameManager;
     }
     /**
      * Start the program.

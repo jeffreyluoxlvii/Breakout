@@ -138,7 +138,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     @Test
     public void testLifeUpPowerup() {
         Powerup p = new LifeUpPowerup(0, 0);
-        p.usePowerUp(myScene, myGame.getGameManager());
+        p.usePowerUp(myScene, myGame.getMyGameManager());
         assertEquals("LIVES: 4", myLives.getText());
     }
 

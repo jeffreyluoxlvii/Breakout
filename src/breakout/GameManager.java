@@ -19,7 +19,7 @@ public class GameManager {
     public GameManager(String levelName) {
         lives = STARTING_LIVES;
         score = 0;
-        level = 0;
+        level = 1;
         myScore = new Text("SCORE: " + score);
         myScore.setX(20);
         myScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
@@ -77,4 +77,6 @@ public class GameManager {
     public Text getHighScore() { return highScore; }
 
     public int getCurrentLevel() { return level; }
+
+    public void advanceLevel() { level++; }
 }
