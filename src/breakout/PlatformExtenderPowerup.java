@@ -11,7 +11,6 @@ import javafx.scene.shape.Shape;
 public class PlatformExtenderPowerup extends Powerup {
 
     public static final int POWERUP_EXTENSION_LENGTH = 20;
-    public static final double DROP_CHANCE = 0.1;
     public static final Paint myFill = Color.BLUEVIOLET;
 
     public PlatformExtenderPowerup(double x, double y) {

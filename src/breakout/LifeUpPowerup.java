@@ -5,7 +5,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 public class LifeUpPowerup extends Powerup {
-    public static final double DROP_CHANCE = 0.1;
     public static final Paint myFill = Color.ORANGERED;
 
     public LifeUpPowerup(double x, double y) {
