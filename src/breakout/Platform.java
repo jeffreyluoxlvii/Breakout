@@ -11,6 +11,14 @@ public class Platform extends Rectangle {
     public static final double PLATFORM_DISTANCE_FROM_BOTTOM = 0.1;
     public static final Paint PLATFORM_COLOR = Color.BLUEVIOLET;
 
+    public Platform(double gameWidth, double gameHeight, double widthRatio) {
+        super(gameWidth * widthRatio, gameHeight * PLATFORM_HEIGHT);
+        this.setFill(PLATFORM_COLOR);
+        this.setToStartingPosition(gameWidth, gameHeight);
+        this.setId("platform");
+    }
+
+
     public Platform(double gameWidth, double gameHeight) {
         super(gameWidth * PLATFORM_WIDTH, gameHeight * PLATFORM_HEIGHT);
         this.setFill(PLATFORM_COLOR);
