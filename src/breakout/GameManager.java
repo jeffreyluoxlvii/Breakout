@@ -49,7 +49,6 @@ public class GameManager {
 
     public void addScore(int points) {
         score += points;
-        updateHighScore();
         updateScore();
     }
 
