@@ -83,11 +83,10 @@ public class BreakoutGame extends Application {
         myStage.setScene(myScene);
     }
 
-    private void end() {
+    private void finishGame(NonLevelScreen screen) {
         animation.stop();
-        LosingScreen lose = new LosingScreen(myGameManager);
-        myScene = lose.getScene();
-        myScene.setOnKeyPressed(e -> handleKeyInputForLosingScreen(myScene, e.getCode()));
+        myScene = screen.getScene();
+        myScene.setOnKeyPressed(e -> handleKeyInputForFinishingScreen(myScene, e.getCode()));
         myStage.setScene(myScene);
     }
 
@@ -200,10 +199,15 @@ public class BreakoutGame extends Application {
 
     private void checkLevelFinished() {
         if(myBricks.isEmpty()) {
-            levelTransition();
+            if(myGameManager.getCurrentLevel() == LevelCreator.getNumLevels()) {
+                finishGame(new WinningScreen(myGameManager));
+            }
+            else {
+                levelTransition();
+            }
         }
         else if(myGameManager.checkGameOver()) {
-            end();
+            finishGame(new LosingScreen(myGameManager));
         }
     }
 
@@ -240,7 +244,7 @@ public class BreakoutGame extends Application {
         }
     }
 
-    private void handleKeyInputForLosingScreen(Scene scene, KeyCode code) {
+    private void handleKeyInputForFinishingScreen(Scene scene, KeyCode code) {
         if(code == KeyCode.SPACE) {
             restartGame();
         }

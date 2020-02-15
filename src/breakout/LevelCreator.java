@@ -21,7 +21,7 @@ public class LevelCreator {
         this.myLevelPath = myLevelPath;
     }
 
-    public int getNumLevels() {
+    public static int getNumLevels() {
         return BALL_SPEEDS_FOR_LEVELS.length;
     }
 
