@@ -19,7 +19,6 @@ public class BreakoutGameTest extends DukeApplicationTest {
     private final BreakoutGame myGame = new BreakoutGame();
     // keep created scene to allow mouse and keyboard events
     private Scene myScene;
-    private GameManager gameManager;
     private Stage myStage;
     // keep any useful elements whose values you want to test directly in multiple tests
     private Ball myBall;
@@ -28,6 +27,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     private Brick myBrick_1;
     private Text myScore;
     private Text myLives;
+    private Text mySlow;
 
 
 
@@ -49,6 +49,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
         myBrick_1 = lookup("#brick_1").query();
         myScore = lookup("#score").query();
         myLives = lookup("#lives").query();
+        mySlow = lookup("#slow").query();
     }
 
     // check initial stats of the ball
@@ -162,5 +163,9 @@ public class BreakoutGameTest extends DukeApplicationTest {
         int numPowerups = myGame.getNumPowerups();
         press(myScene, KeyCode.P);
         assertEquals(numPowerups + 1, myGame.getNumPowerups());
+        press(myScene, KeyCode.W);
+        assertEquals("SLOW: AVAILABLE", mySlow.getText());
+        press(myScene, KeyCode.D);
+        assertEquals(null, myBrick_0.getScene());
     }
 }

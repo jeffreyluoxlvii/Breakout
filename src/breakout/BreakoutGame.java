@@ -30,14 +30,15 @@ public class BreakoutGame extends Application {
     public static final String WIN_MESSAGE = "Congratulations, you winner!";
     public static final String LOSE_MESSAGE = "Maybe next time you will be a winner.";
 
+    public static final long SLOW_TIME = 3000l;
     public static final int GAME_WIDTH = 400;
     public static final int GAME_HEIGHT = 400;
     public static final int FRAMES_PER_SECOND = 60;
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public static final Paint BACKGROUND = Color.AZURE;
-    public static final int BALL_STARTING_X = 30;
-    public static final int BALL_STARTING_Y = 300;
+    public static final double BALL_STARTING_X = GAME_WIDTH / 2;
+    public static final double BALL_STARTING_Y = GAME_HEIGHT * (1 - Platform.PLATFORM_DISTANCE_FROM_BOTTOM);
 
     public static final String TEST_PATH = "test";
     public static final String REAL_PATH = "level";
@@ -52,6 +53,8 @@ public class BreakoutGame extends Application {
     private List<Powerup> myPowerups;
     private Timeline animation;
     private GameManager myGameManager;
+    private Group myRoot;
+    private List<Brick> hitBricks;
 
     /**
      * Initialize what will be displayed and how it will be updated.
@@ -112,7 +115,7 @@ public class BreakoutGame extends Application {
     Scene getSceneForLevel(int level) {
         LevelCreator myLevelCreator = new LevelCreator(level, myLevelPath);
 
-        Group root = new Group();
+        myRoot = new Group();
 
         myPlatform = myLevelCreator.getPlatform();
         myBall = myLevelCreator.getBall();
@@ -125,17 +128,17 @@ public class BreakoutGame extends Application {
         Text myLives = myGameManager.getLives();
         Text slowActive = myGameManager.getSlowActive();
 
-        root.getChildren().add(myPlatform);
-        root.getChildren().add(myBall);
-        root.getChildren().addAll(myBricks);
-        root.getChildren().add(myScore);
-        root.getChildren().add(highScore);
-        root.getChildren().add(myLevel);
-        root.getChildren().add(myLives);
-        root.getChildren().add(slowActive);
+        myRoot.getChildren().add(myPlatform);
+        myRoot.getChildren().add(myBall);
+        myRoot.getChildren().addAll(myBricks);
+        myRoot.getChildren().add(myScore);
+        myRoot.getChildren().add(highScore);
+        myRoot.getChildren().add(myLevel);
+        myRoot.getChildren().add(myLives);
+        myRoot.getChildren().add(slowActive);
 
         // create a place to see the shapes
-        Scene scene = new Scene(root, BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, BreakoutGame.BACKGROUND);
+        Scene scene = new Scene(myRoot, BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, BreakoutGame.BACKGROUND);
         // respond to input
         setupSceneEventListeners(scene);
         return scene;
@@ -180,8 +183,9 @@ public class BreakoutGame extends Application {
             ((Group)myScene.getRoot()).getChildren().remove(powerup);
         }
         CollisionManager.handlePlatformCollision(myBall, myPlatform);
-        List<Brick> hitBricks = CollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator());
+        hitBricks = CollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator());
         myGameManager.addScore(hitBricks.size());
+        myGameManager.updateHighScore();
         myBricks.removeAll(hitBricks);
         for(Brick b: hitBricks) {
             Powerup temp = PowerupGenerator.getPowerup(b.getX() + b.getWidth() / 2, b.getY() + b.getHeight(), Math.random());
@@ -215,7 +219,7 @@ public class BreakoutGame extends Application {
     }
 
     // What to do each time a key is pressed
-    private void handleKeyInput (Scene scene, KeyCode code) {
+    private void handleKeyInput(Scene scene, KeyCode code) {
         // Pause / unpause game when space pressed
         if(code == KeyCode.SPACE) {
             if(animation.getStatus() == Animation.Status.RUNNING) {
@@ -240,8 +244,8 @@ public class BreakoutGame extends Application {
             addPowerup(scene, temp);
         }
         if(code == KeyCode.D) {
-            // TODO: Brick removal cheat
-
+            myRoot.getChildren().remove(myBricks.get(0));
+            myBricks.remove(0);
         }
         if(code == KeyCode.DIGIT1 || code == KeyCode.NUMPAD1) {
             skipToLevel(1);
@@ -262,7 +266,13 @@ public class BreakoutGame extends Application {
                         myBall.fullSpeed();
                     }
                 };
-                timer.schedule(task, 3000l);
+                timer.schedule(task, SLOW_TIME);
+            }
+        }
+        // Cheat key gives instant slow ability
+        if(code == KeyCode.W) {
+            if(!myGameManager.getCanSlow()) {
+                myGameManager.toggleCanSlow();
             }
         }
     }
@@ -293,7 +303,7 @@ public class BreakoutGame extends Application {
     private void resetBall(Ball ball) {
         ball.setCenterX(BALL_STARTING_X);
         ball.setCenterY(BALL_STARTING_Y);
-        ball.moveDown();
+        ball.moveUp();
         ball.moveRight();
     }
 
