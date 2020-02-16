@@ -2,7 +2,7 @@ package breakout;
 
 import javafx.scene.text.Text;
 
-// Class to keep track of scoring and lives
+// Class to keep track of scoring and lives and ball
 public class GameManager {
     private int lives;
     private int score;
@@ -12,9 +12,14 @@ public class GameManager {
     private Text myScore;
     private Text myLives;
     private Text highScore;
+    private Text slowActive;
+    private boolean canSlow;
+    private Ball myBall;
 
     public static final double TEXT_DISTANCE_FROM_TOP = 0.05;
     public static final int STARTING_LIVES = 3;
+    public static final String SLOW_READY = "AVAILABLE";
+    public static final String SLOW_NOT_READY = "UNAVAILABLE";
 
     public GameManager(String levelName) {
         lives = STARTING_LIVES;
@@ -28,6 +33,9 @@ public class GameManager {
         highScore = new Text("HIGH SCORE: " + gameHighScore);
         highScore.setX(20);
         highScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP + 15);
+        slowActive = new Text("SLOW: " + SLOW_NOT_READY);
+        slowActive.setX(BreakoutGame.GAME_WIDTH / 2 - 30);
+        slowActive.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP + 15);
         myLevel = new Text("LEVEL: " + level);
         myLevel.setX(BreakoutGame.GAME_WIDTH / 2 - 20);
         myLevel.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
@@ -98,6 +106,19 @@ public class GameManager {
 
     public int getCurrentLevel() { return level; }
 
+    public Text getSlowActive() {
+        return slowActive;
+    }
+
+    private void updateSlowActive() {
+        if(canSlow) {
+            slowActive.setText("SLOW: " + SLOW_READY);
+        }
+        else {
+            slowActive.setText("SLOW: " + SLOW_NOT_READY);
+        }
+    }
+
     private void updateLevel() {
         myLevel.setText("LEVEL: " + level);
     }
@@ -105,6 +126,15 @@ public class GameManager {
     public void advanceLevel() {
         level++;
         updateLevel();
+    }
+
+    public void toggleCanSlow() {
+        canSlow = !canSlow;
+        updateSlowActive();
+    }
+
+    public boolean getCanSlow() {
+        return canSlow;
     }
 
     public int getCurrentScore() { return score; }

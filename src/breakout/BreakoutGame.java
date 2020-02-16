@@ -15,6 +15,8 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -59,7 +61,7 @@ public class BreakoutGame extends Application {
         myStage = stage;
         // attach scene to the stage and display it
 
-        myScene = setupGame(TEST_PATH);
+        myScene = setupGame(REAL_PATH);
 
         stage.setScene(myScene);
         stage.setTitle(TITLE);
@@ -121,6 +123,7 @@ public class BreakoutGame extends Application {
         Text myLevel = myGameManager.getLevel();
         Text highScore = myGameManager.getHighScore();
         Text myLives = myGameManager.getLives();
+        Text slowActive = myGameManager.getSlowActive();
 
         root.getChildren().add(myPlatform);
         root.getChildren().add(myBall);
@@ -129,6 +132,7 @@ public class BreakoutGame extends Application {
         root.getChildren().add(highScore);
         root.getChildren().add(myLevel);
         root.getChildren().add(myLives);
+        root.getChildren().add(slowActive);
 
         // create a place to see the shapes
         Scene scene = new Scene(root, BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, BreakoutGame.BACKGROUND);
@@ -247,6 +251,19 @@ public class BreakoutGame extends Application {
         }
         if(code == KeyCode.DIGIT3 || code == KeyCode.NUMPAD3) {
             skipToLevel(3);
+        }
+        if(code == KeyCode.Q) {
+            if(myGameManager.getCanSlow()) {
+                myGameManager.toggleCanSlow();
+                myBall.halfSpeed();
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    public void run() {
+                        myBall.fullSpeed();
+                    }
+                };
+                timer.schedule(task, 3000l);
+            }
         }
     }
 
