@@ -162,5 +162,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
         int numPowerups = myGame.getNumPowerups();
         press(myScene, KeyCode.P);
         assertEquals(numPowerups + 1, myGame.getNumPowerups());
+        press(myScene, KeyCode.D);
+        assertEquals(null, myBrick_0.getScene());
     }
 }
