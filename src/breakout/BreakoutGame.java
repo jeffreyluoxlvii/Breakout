@@ -207,6 +207,7 @@ public class BreakoutGame extends Application {
             animation.stop();
             if(myGameManager.getCurrentLevel() == LevelCreator.getNumLevels()) {
                 finishGame(new WinningScreen(myGameManager));
+                Scorer.writeScore(myGameManager.getGameHighScore());
             }
             else {
                 levelTransition();
@@ -215,6 +216,7 @@ public class BreakoutGame extends Application {
         else if(myGameManager.checkGameOver()) {
             animation.stop();
             finishGame(new LosingScreen(myGameManager));
+            Scorer.writeScore(myGameManager.getGameHighScore());
         }
     }
 
@@ -321,7 +323,6 @@ public class BreakoutGame extends Application {
      * Start the program.
      */
     public static void main (String[] args) {
-        Scorer.writeScore(90);
         launch(args);
     }
 }

@@ -8,8 +8,8 @@ class ScorerTest {
 
     @Test
     void getHighScore() {
-        assertEquals(10, Scorer.getHighScore());
-        Scorer.writeScore(11);
         assertEquals(11, Scorer.getHighScore());
+        Scorer.writeScore(1100);
+        assertEquals(1100, Scorer.getHighScore());
     }
 }
