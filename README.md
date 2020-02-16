@@ -33,6 +33,10 @@ Extra credit:
 
 ### Notes/Assumptions
 
+Substantial feature:  
+Ability to slow down time for three seconds after picking up a certain power-up  
+To do this, a Timer was implemented. 
+
 
 ### Impressions
 
