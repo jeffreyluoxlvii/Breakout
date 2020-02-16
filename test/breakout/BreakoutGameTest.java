@@ -146,6 +146,14 @@ public class BreakoutGameTest extends DukeApplicationTest {
     }
 
     @Test
+    public void testSlowPowerup() {
+        Powerup p = new SlowPowerup(0, 0);
+        p.usePowerUp(myScene, myGame.getMyGameManager());
+        assertEquals(true, myGame.getMyGameManager().getCanSlow());
+    }
+
+
+    @Test
     public void testCheatKeys() {
         press(myScene, KeyCode.S);
         assertEquals(Ball.NORMAL_BALL_SPEED + Ball.SPEED_INCREASE, myBall.getVelocity());

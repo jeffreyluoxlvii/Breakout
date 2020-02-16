@@ -59,7 +59,7 @@ public class BreakoutGame extends Application {
         myStage = stage;
         // attach scene to the stage and display it
 
-        myScene = setupGame(TEST_PATH);
+        myScene = setupGame(REAL_PATH);
 
         stage.setScene(myScene);
         stage.setTitle(TITLE);
@@ -121,6 +121,7 @@ public class BreakoutGame extends Application {
         Text myLevel = myGameManager.getLevel();
         Text highScore = myGameManager.getHighScore();
         Text myLives = myGameManager.getLives();
+        Text slowActive = myGameManager.getSlowActive();
 
         root.getChildren().add(myPlatform);
         root.getChildren().add(myBall);
@@ -129,6 +130,7 @@ public class BreakoutGame extends Application {
         root.getChildren().add(highScore);
         root.getChildren().add(myLevel);
         root.getChildren().add(myLives);
+        root.getChildren().add(slowActive);
 
         // create a place to see the shapes
         Scene scene = new Scene(root, BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, BreakoutGame.BACKGROUND);

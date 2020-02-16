@@ -14,7 +14,7 @@ public class PowerupGenerator {
 
     public static Powerup getRandomPowerup(double x, double y)
     {
-        Powerup[] POWERUP_LIST = new Powerup[] { new LifeUpPowerup(x, y), new PlatformExtenderPowerup(x, y)};
+        Powerup[] POWERUP_LIST = new Powerup[] { new LifeUpPowerup(x, y), new PlatformExtenderPowerup(x, y), new SlowPowerup(x, y)};
         Random generator = new Random();
         int randomIndex = generator.nextInt(POWERUP_LIST.length);
         return POWERUP_LIST[randomIndex];
