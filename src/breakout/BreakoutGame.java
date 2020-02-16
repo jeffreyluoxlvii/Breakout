@@ -321,6 +321,7 @@ public class BreakoutGame extends Application {
      * Start the program.
      */
     public static void main (String[] args) {
+        Scorer.writeScore(90);
         launch(args);
     }
 }
