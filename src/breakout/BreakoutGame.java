@@ -37,8 +37,8 @@ public class BreakoutGame extends Application {
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public static final Paint BACKGROUND = Color.AZURE;
-    public static final int BALL_STARTING_X = 30;
-    public static final int BALL_STARTING_Y = 300;
+    public static final double BALL_STARTING_X = GAME_WIDTH / 2;
+    public static final double BALL_STARTING_Y = GAME_HEIGHT * (1 - Platform.PLATFORM_DISTANCE_FROM_BOTTOM);
 
     public static final String TEST_PATH = "test";
     public static final String REAL_PATH = "level";
@@ -185,6 +185,7 @@ public class BreakoutGame extends Application {
         CollisionManager.handlePlatformCollision(myBall, myPlatform);
         hitBricks = CollisionManager.handleBrickCollision(myBall, ((Group)scene.getRoot()).getChildren().iterator());
         myGameManager.addScore(hitBricks.size());
+        myGameManager.updateHighScore();
         myBricks.removeAll(hitBricks);
         for(Brick b: hitBricks) {
             Powerup temp = PowerupGenerator.getPowerup(b.getX() + b.getWidth() / 2, b.getY() + b.getHeight(), Math.random());
@@ -268,6 +269,12 @@ public class BreakoutGame extends Application {
                 timer.schedule(task, SLOW_TIME);
             }
         }
+        // Cheat key gives instant slow ability
+        if(code == KeyCode.W) {
+            if(!myGameManager.getCanSlow()) {
+                myGameManager.toggleCanSlow();
+            }
+        }
     }
 
     private void skipToLevel(int level) {
@@ -296,7 +303,7 @@ public class BreakoutGame extends Application {
     private void resetBall(Ball ball) {
         ball.setCenterX(BALL_STARTING_X);
         ball.setCenterY(BALL_STARTING_Y);
-        ball.moveDown();
+        ball.moveUp();
         ball.moveRight();
     }
 

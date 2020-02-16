@@ -2,6 +2,8 @@ package breakout;
 
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+
 // Class to keep track of scoring and lives and ball
 public class GameManager {
     private int lives;
@@ -25,6 +27,7 @@ public class GameManager {
         lives = STARTING_LIVES;
         score = 0;
         level = 0;
+        //gameHighScore = Reader.getHighScore();
         gameHighScore = 0;
         myScore = new Text("SCORE: " + score);
         myScore.setX(20);
@@ -36,6 +39,7 @@ public class GameManager {
         slowActive = new Text("SLOW: " + SLOW_NOT_READY);
         slowActive.setX(BreakoutGame.GAME_WIDTH / 2 - 30);
         slowActive.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP + 15);
+        slowActive.setId("slow");
         myLevel = new Text("LEVEL: " + level);
         myLevel.setX(BreakoutGame.GAME_WIDTH / 2 - 20);
         myLevel.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
@@ -87,7 +91,7 @@ public class GameManager {
         myScore.setText("SCORE: " + score);
     }
 
-    private void updateHighScore() {
+    public void updateHighScore() {
         gameHighScore = Math.max(gameHighScore, score);
         highScore.setText("HIGH SCORE: " + gameHighScore);
     }

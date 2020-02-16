@@ -23,22 +23,22 @@ public class Ball extends Circle {
      * @param x - x coordinate
      * @param y - y coordinate
      */
-    public Ball(int x, int y) {
+    public Ball(double x, double y) {
         super(x, y, BALL_RADIUS);
         this.setFill(Color.RED);
         xDirection = 1;
-        yDirection = 1;
+        yDirection = -1;
         this.velocity = NORMAL_BALL_SPEED;
         this.normalvelocity = NORMAL_BALL_SPEED;
         this.slowvelocity = NORMAL_BALL_SPEED / 2;
         this.setId("ball");
     }
 
-    public Ball(int x, int y, int velocity) {
+    public Ball(double x, double y, int velocity) {
         super(x, y, BALL_RADIUS);
         this.setFill(Color.RED);
         xDirection = 1;
-        yDirection = 1;
+        yDirection = -1;
         this.velocity = velocity;
         this.normalvelocity = velocity;
         this.slowvelocity = velocity / 2;
