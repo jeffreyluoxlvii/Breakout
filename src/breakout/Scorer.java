@@ -8,9 +8,10 @@ import java.util.Scanner;
 
 public class Scorer {
     public static final String SCORE_FILE = "data/scores";
+    public static final String SCORE_RESOURCE = "scores";
     public static int getHighScore() {
         try {
-            Scanner scanner = new Scanner(Scorer.class.getClassLoader().getResourceAsStream(SCORE_FILE));
+            Scanner scanner = new Scanner(Scorer.class.getClassLoader().getResourceAsStream(SCORE_RESOURCE));
             List<Integer> scores = new ArrayList<>();
             while (scanner.hasNext()) {
                 if (scanner.hasNextInt()) {
@@ -29,7 +30,7 @@ public class Scorer {
     public static void writeScore(int score) {
         try {
             // This doesn't work yet
-            PrintWriter writer = new PrintWriter((new FileWriter("data/scores")));
+            PrintWriter writer = new PrintWriter((new FileWriter(SCORE_FILE)));
             writer.println(score);
             writer.close();
             //Files.writeString((Path) Scorer.class.getClassLoader().getResourceAsStream(SCORE_FILE), String.valueOf(score));

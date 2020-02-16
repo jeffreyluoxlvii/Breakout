@@ -96,6 +96,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     public void testBallBouncesCorrectly() {
         myBall.setCenterX(myPlatform.getX() + myPlatform.getWidth() / 2 - myBall.getVelocity() * 0.2);
         myBall.setCenterY(myPlatform.getY() - myBall.getVelocity() * 0.2);
+        myBall.moveDown();
         myGame.step(myScene, 0.2);
         myGame.step(myScene, 0.2);
         assertEquals(myPlatform.getX() + myPlatform.getWidth() / 2 + myBall.getVelocity() * 0.2, myBall.getCenterX());
@@ -104,8 +105,9 @@ public class BreakoutGameTest extends DukeApplicationTest {
 
     @Test
     public void testBallReset() {
-        myBall.setCenterX(BreakoutGame.GAME_WIDTH  - 1);
+        myBall.setCenterX(BreakoutGame.GAME_WIDTH);
         myBall.setCenterY(BreakoutGame.GAME_HEIGHT - 1);
+        myBall.moveDown();
         myGame.step(myScene, 1);
         assertEquals(BreakoutGame.BALL_STARTING_X, myBall.getCenterX());
         assertEquals(BreakoutGame.BALL_STARTING_Y, myBall.getCenterY());
@@ -114,8 +116,9 @@ public class BreakoutGameTest extends DukeApplicationTest {
     // Check that life gets lost when hitting bottom wall
     @Test
     public void testLostLife() {
-        myBall.setCenterX(BreakoutGame.GAME_WIDTH  - 1);
-        myBall.setCenterY(BreakoutGame.GAME_HEIGHT - 1);
+        myBall.setCenterX(BreakoutGame.GAME_WIDTH);
+        myBall.setCenterY(BreakoutGame.GAME_HEIGHT);
+        myBall.moveDown();
         myGame.step(myScene, 1);
         assertEquals("LIVES: 2", myLives.getText());
     }
@@ -125,6 +128,7 @@ public class BreakoutGameTest extends DukeApplicationTest {
     public void testAddScore() {
         myBall.setCenterX(myBrick_0.getX() + myBrick_0.getWidth() / 2 - myBall.getVelocity() * 1);
         myBall.setCenterY(myBrick_0.getY() - myBall.getVelocity() * 1);
+        myBall.moveDown();
         javafxRun(() -> myGame.step(myScene, 1));
         assertEquals("SCORE: 1", myScore.getText());
         // check that brick was deleted

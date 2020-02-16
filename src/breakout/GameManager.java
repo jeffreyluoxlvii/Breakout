@@ -27,8 +27,7 @@ public class GameManager {
         lives = STARTING_LIVES;
         score = 0;
         level = 0;
-        //gameHighScore = Reader.getHighScore();
-        gameHighScore = 0;
+        gameHighScore = Scorer.getHighScore();
         myScore = new Text("SCORE: " + score);
         myScore.setX(20);
         myScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
@@ -142,4 +141,8 @@ public class GameManager {
     }
 
     public int getCurrentScore() { return score; }
+
+    public int getGameHighScore() {
+        return gameHighScore;
+    }
 }
