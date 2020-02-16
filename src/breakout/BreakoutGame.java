@@ -15,6 +15,8 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -249,6 +251,19 @@ public class BreakoutGame extends Application {
         }
         if(code == KeyCode.DIGIT3 || code == KeyCode.NUMPAD3) {
             skipToLevel(3);
+        }
+        if(code == KeyCode.Q) {
+            if(myGameManager.getCanSlow()) {
+                myGameManager.toggleCanSlow();
+                myBall.halfSpeed();
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    public void run() {
+                        myBall.fullSpeed();
+                    }
+                };
+                timer.schedule(task, 3000l);
+            }
         }
     }
 

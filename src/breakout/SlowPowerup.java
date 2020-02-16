@@ -16,7 +16,6 @@ public class SlowPowerup extends Powerup {
     public void usePowerUp(Scene scene, GameManager manager) {
         if(!manager.getCanSlow()) {
             manager.toggleCanSlow();
-            manager.updateSlowActive();
         }
     }
 }

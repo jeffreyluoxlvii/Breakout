@@ -14,6 +14,7 @@ public class GameManager {
     private Text highScore;
     private Text slowActive;
     private boolean canSlow;
+    private Ball myBall;
 
     public static final double TEXT_DISTANCE_FROM_TOP = 0.05;
     public static final int STARTING_LIVES = 3;
@@ -109,7 +110,7 @@ public class GameManager {
         return slowActive;
     }
 
-    public void updateSlowActive() {
+    private void updateSlowActive() {
         if(canSlow) {
             slowActive.setText("SLOW: " + SLOW_READY);
         }
@@ -129,6 +130,7 @@ public class GameManager {
 
     public void toggleCanSlow() {
         canSlow = !canSlow;
+        updateSlowActive();
     }
 
     public boolean getCanSlow() {
