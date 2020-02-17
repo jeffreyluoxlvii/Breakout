@@ -222,16 +222,20 @@ public class BreakoutGame extends Application {
         checkLevelFinished();
     }
 
+    private void checkAllLevelsFinished() {
+        if(myGameManager.getCurrentLevel() == LevelCreator.getNumLevels()) {
+            myStage.setScene(finishGame(new WinningScreen(myGameManager)));
+            Scorer.writeScore(myGameManager.getGameHighScore());
+        }
+        else {
+            myStage.setScene(levelTransition());
+        }
+    }
+
     private void checkLevelFinished() {
         if(myBricks.isEmpty()) {
             animation.stop();
-            if(myGameManager.getCurrentLevel() == LevelCreator.getNumLevels()) {
-                myStage.setScene(finishGame(new WinningScreen(myGameManager)));
-                Scorer.writeScore(myGameManager.getGameHighScore());
-            }
-            else {
-                myStage.setScene(levelTransition());
-            }
+            checkAllLevelsFinished();
         }
         else if(myGameManager.checkGameOver()) {
             animation.stop();
