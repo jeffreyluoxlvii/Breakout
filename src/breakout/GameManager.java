@@ -16,7 +16,6 @@ public class GameManager {
     private Text highScore;
     private Text slowActive;
     private boolean canSlow;
-    private Ball myBall;
 
     public static final double TEXT_DISTANCE_FROM_TOP = 0.05;
     public static final int STARTING_LIVES = 3;
