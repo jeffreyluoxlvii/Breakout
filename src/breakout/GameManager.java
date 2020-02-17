@@ -2,8 +2,6 @@ package breakout;
 
 import javafx.scene.text.Text;
 
-import java.io.IOException;
-
 // Class to keep track of scoring and lives and ball
 public class GameManager {
     private int lives;
@@ -17,6 +15,10 @@ public class GameManager {
     private Text slowActive;
     private boolean canSlow;
 
+    public static final int RIGHT_X_OFFSET = 30;
+    public static final int SIDE_X_OFFSET = 20;
+    public static final int TOP_Y_OFFSET = 15;
+    public static final int MIDDLE_X_OFFSET = 80;
     public static final double TEXT_DISTANCE_FROM_TOP = 0.05;
     public static final int STARTING_LIVES = 3;
     public static final String SLOW_READY = "AVAILABLE";
@@ -32,21 +34,22 @@ public class GameManager {
         level = 0;
         gameHighScore = Scorer.getHighScore();
         myScore = new Text("SCORE: " + score);
-        myScore.setX(20);
+        myScore.setX(SIDE_X_OFFSET);
         myScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
         myScore.setId("score");
         highScore = new Text("HIGH SCORE: " + gameHighScore);
-        highScore.setX(20);
-        highScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP + 15);
-        slowActive = new Text("SLOW: " + SLOW_NOT_READY);
-        slowActive.setX(BreakoutGame.GAME_WIDTH / 2 - 30);
-        slowActive.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP + 15);
+        highScore.setX(SIDE_X_OFFSET);
+        highScore.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP + TOP_Y_OFFSET);
+        slowActive = new Text();
+        setSlowNotReady();
+        slowActive.setX(BreakoutGame.GAME_WIDTH / 2 - RIGHT_X_OFFSET);
+        slowActive.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP + TOP_Y_OFFSET);
         slowActive.setId("slow");
         myLevel = new Text("LEVEL: " + level);
-        myLevel.setX(BreakoutGame.GAME_WIDTH / 2 - 20);
+        myLevel.setX(BreakoutGame.GAME_WIDTH / 2 - SIDE_X_OFFSET);
         myLevel.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
         myLives = new Text("LIVES: " + lives);
-        myLives.setX(BreakoutGame.GAME_WIDTH - 80);
+        myLives.setX(BreakoutGame.GAME_WIDTH - MIDDLE_X_OFFSET);
         myLives.setY(BreakoutGame.GAME_HEIGHT * TEXT_DISTANCE_FROM_TOP);
         myLives.setId("lives");
     }
@@ -169,11 +172,19 @@ public class GameManager {
      */
     private void updateSlowActive() {
         if(canSlow) {
-            slowActive.setText("SLOW: " + SLOW_READY);
+            setSlowReady();
         }
         else {
-            slowActive.setText("SLOW: " + SLOW_NOT_READY);
+            setSlowNotReady();
         }
+    }
+
+    private void setSlowReady() {
+        slowActive.setText("SLOW: " + SLOW_READY);
+    }
+
+    private void setSlowNotReady() {
+        slowActive.setText("SLOW: " + SLOW_NOT_READY);
     }
 
     /**

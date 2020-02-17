@@ -283,23 +283,27 @@ public class BreakoutGame extends Application {
             skipToLevel(3);
         }
         if(code == KeyCode.Q) {
-            if(myGameManager.getCanSlow()) {
-                myGameManager.toggleCanSlow();
-                myBall.halfSpeed();
-                Timer timer = new Timer();
-                TimerTask task = new TimerTask() {
-                    public void run() {
-                        myBall.fullSpeed();
-                    }
-                };
-                timer.schedule(task, SLOW_TIME);
-            }
+            slowBall();
         }
         // Cheat key gives instant slow ability
         if(code == KeyCode.W) {
             if(!myGameManager.getCanSlow()) {
                 myGameManager.toggleCanSlow();
             }
+        }
+    }
+
+    private void slowBall() {
+        if(myGameManager.getCanSlow()) {
+            myGameManager.toggleCanSlow();
+            myBall.halfSpeed();
+            Timer timer = new Timer();
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    myBall.fullSpeed();
+                }
+            };
+            timer.schedule(task, SLOW_TIME);
         }
     }
 
