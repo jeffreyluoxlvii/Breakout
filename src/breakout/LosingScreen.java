@@ -1,10 +1,11 @@
 package breakout;
 
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
+/**
+ * The screen after a player loses all of their lives.
+ * @author roy
+ */
 public class LosingScreen extends NonLevelScreen {
 
     private GameManager myGameManager;
@@ -17,23 +18,16 @@ public class LosingScreen extends NonLevelScreen {
     public LosingScreen(GameManager myGameManager) {
         this.myGameManager = myGameManager;
         this.myLevel = myGameManager.getCurrentLevel();
+        addLosingText();
     }
 
-    private Text getLosingText() {
+    private void addLosingText() {
         Text text = new Text();
         String myString = PROMPT + SPACE + myLevel + EXCLAMATION + NEWLINE +
                 SCORE_UPDATE + SPACE + myGameManager.getCurrentScore();
         text.setText(myString);
         text = setTextLocation(text);
-        return text;
+        addTextToScreen(text);
     }
 
-    @Override
-    public Scene getScene() {
-        Group root = new Group();
-        root.getChildren().add(getLosingText());
-        root.getChildren().add(getNextScreenText());
-        Scene scene = new Scene(root, BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, BreakoutGame.BACKGROUND);
-        return scene;
-    }
 }

@@ -1,10 +1,12 @@
 package breakout;
 
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+/**
+ * Transition screen between levels.
+ * @author roy
+ */
 public class TransitionScreen extends NonLevelScreen {
 
     private int myLevel;
@@ -15,9 +17,10 @@ public class TransitionScreen extends NonLevelScreen {
     public TransitionScreen(GameManager myGameManager) {
         this.myGameManager = myGameManager;
         this.myLevel = myGameManager.getCurrentLevel();
+        addCongratulatoryText();
     }
 
-    private Text getCongratulatoryText() {
+    private void addCongratulatoryText() {
         Text text = new Text();
         String myString = PROMPT + SPACE + myLevel;
         myString += NEWLINE;
@@ -29,15 +32,6 @@ public class TransitionScreen extends NonLevelScreen {
         text.setTextAlignment(TextAlignment.CENTER);
         text.setX(BreakoutGame.GAME_WIDTH / 2 - text.getLayoutBounds().getWidth() / 2);
         text.setY(BreakoutGame.GAME_HEIGHT * INSTRUCTIONS_STARTING_Y);
-        return text;
-    }
-
-    @Override
-    public Scene getScene() {
-        Group root = new Group();
-        root.getChildren().add(getCongratulatoryText());
-        root.getChildren().add(getNextScreenText());
-        Scene scene = new Scene(root, BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, BreakoutGame.BACKGROUND);
-        return scene;
+        addTextToScreen(text);
     }
 }

@@ -1,10 +1,11 @@
 package breakout;
 
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
+/**
+ * The winning screen displayed at the end of the game.
+ * @author roy
+ */
 public class WinningScreen extends NonLevelScreen {
 
     private GameManager myGameManager;
@@ -13,23 +14,15 @@ public class WinningScreen extends NonLevelScreen {
 
     public WinningScreen(GameManager myGameManager) {
         this.myGameManager = myGameManager;
+        addWinningText();
     }
 
-    private Text getWinningText() {
+    private void addWinningText() {
         Text text = new Text();
         String myString = PROMPT + NEWLINE + SCORE_UPDATE + SPACE + myGameManager.getCurrentScore();
         text.setText(myString);
         text = setTextLocation(text);
-        return text;
-    }
-
-    @Override
-    public Scene getScene() {
-        Group root = new Group();
-        root.getChildren().add(getWinningText());
-        root.getChildren().add(getNextScreenText());
-        Scene scene = new Scene(root, BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, BreakoutGame.BACKGROUND);
-        return scene;
+        addTextToScreen(text);
     }
 
 }
