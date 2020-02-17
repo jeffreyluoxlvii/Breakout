@@ -20,15 +20,13 @@ import java.util.TimerTask;
 
 
 /**
- * A basic example JavaFX program for the first lab.
+ * The main class that runs the breakout game.
  *
- * @author Robert C. Duvall
+ * @author roy, jeffrey
  */
 public class BreakoutGame extends Application {
 
     public static final String TITLE = "Breakout";
-    public static final String WIN_MESSAGE = "Congratulations, you winner!";
-    public static final String LOSE_MESSAGE = "Maybe next time you will be a winner.";
 
     public static final long SLOW_TIME = 3000l;
     public static final int GAME_WIDTH = 400;
@@ -78,6 +76,9 @@ public class BreakoutGame extends Application {
         return temp;
     }
 
+    /**
+     * Returns the scene between the current level and the next level.
+     */
     public Scene levelTransition() {
         TransitionScreen screen = new TransitionScreen(myGameManager);
         myScene = screen.getScene();
@@ -85,12 +86,19 @@ public class BreakoutGame extends Application {
         return myScene;
     }
 
+    /**
+     * Return the ending screen (losing or winning).
+     * @param screen the given ending screen (losing or winning).
+     */
     public Scene finishGame(NonLevelScreen screen) {
         myScene = screen.getScene();
         myScene.setOnKeyPressed(e -> handleKeyInputForFinishingScreen(myScene, e.getCode()));
         return myScene;
     }
 
+    /**
+     * Return the next level that the player is on.
+     */
     public Scene goToNextLevel() {
         myGameManager.advanceLevel();
         myScene = getSceneForLevel(myGameManager.getCurrentLevel());
@@ -106,12 +114,18 @@ public class BreakoutGame extends Application {
         animation.play();
     }
 
+    /**
+     * Restart the game to the very beginning.
+     */
     public void restartGame() {
         myGameManager.restartGame();
         myScene = getStartingScene();
         myStage.setScene(myScene);
     }
 
+    /**
+     * Return the scene associated with a given level.
+     */
     Scene getSceneForLevel(int level) {
         LevelCreator myLevelCreator = new LevelCreator(level, myLevelPath);
 
@@ -144,7 +158,9 @@ public class BreakoutGame extends Application {
         return scene;
     }
 
-    // Create the game's "scene": what shapes will be in the game and their starting properties
+    /**
+     * Returns the starting scene, and initializes the game to read its level files from the given path.
+     */
     Scene setupGame (String path) {
 
         myGameManager = new GameManager(path);
@@ -153,6 +169,9 @@ public class BreakoutGame extends Application {
         return getStartingScene();
     }
 
+    /**
+     * Return the number of power-ups currently in the game.
+     */
     public int getNumPowerups() {
         return myPowerups.size();
     }
@@ -167,8 +186,9 @@ public class BreakoutGame extends Application {
         ((Group)scene.getRoot()).getChildren().add(p);
     }
 
-    // Change properties of shapes in small ways to animate them over time
-    // Note, there are more sophisticated ways to animate shapes, but these simple ways work fine to start
+    /**
+     * Change properties of shapes in small ways to animate them over time
+     */
     void step (Scene scene, double elapsedTime) {
         myBall.move(elapsedTime);
 
@@ -316,6 +336,9 @@ public class BreakoutGame extends Application {
         }
     }
 
+    /**
+     * Return the game manager associated with the game.
+     */
     public GameManager getMyGameManager() {
         return myGameManager;
     }

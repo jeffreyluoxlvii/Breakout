@@ -1,7 +1,5 @@
 package breakout;
 
-import breakout.Ball;
-import breakout.Platform;
 import javafx.scene.Node;
 import javafx.scene.shape.Shape;
 
@@ -9,8 +7,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class CollisionManager {
+/**
+ * This class handles collisions between different types of objects, such as power-ups, the platform,
+ * the ball, and the game's walls.
+ * @author roy, jeffrey
+ */
+public final class CollisionManager {
 
+    /**
+     * Return a list of power-ups that have collided with the platform.
+     * @param powerups the power-ups to consider
+     */
     public static List<Powerup> handlePowerupCollisions(List<Powerup> powerups, Platform platform) {
         List<Powerup> collisionPowerups = new ArrayList<>();
         for(Iterator<Powerup> iter = powerups.iterator(); iter.hasNext();) {
@@ -23,17 +30,25 @@ public class CollisionManager {
         return collisionPowerups;
     }
 
+    /**
+     * Return whether or not there is a collision between a power-up and a platform
+     */
     private static boolean isPowerupCollision(Powerup p, Platform platform) {
         return Shape.intersect(p, platform).getBoundsInLocal().getWidth() != -1;
     }
 
-    // Handle collision between ball and platform
+    /**
+     * Handle collision between ball and platform
+     */
     public static void handlePlatformCollision(Ball ball, Platform platform) {
         if(Shape.intersect(ball, platform).getBoundsInLocal().getWidth() != -1) {
             ball.moveUp();
         }
     }
 
+    /**
+     * Handle collision between ball and walls. Return true iff the ball hits the bottom wall
+     */
     public static boolean handleWallCollision(Ball ball) {
         // hit top wall
         if(ball.getCenterY() - ball.getRadius() <= 0) {
@@ -54,6 +69,9 @@ public class CollisionManager {
         return false;
     }
 
+    /**
+     * Returns a list of the bricks that are colliding with the ball.
+     */
     public static List<Brick> handleBrickCollision(Ball ball, Iterator<Node> iterator) {
         List<Brick> hitBricks = new ArrayList<>();
         while(iterator.hasNext()) {
@@ -69,7 +87,9 @@ public class CollisionManager {
         return hitBricks;
     }
 
-    // Handle a collision between ball and a brick
+    /**
+     * Handle a collision between ball and brick
+     */
     private static boolean isBrickCollision(Ball ball, Brick brick) {
         if(Shape.intersect(ball, brick).getBoundsInLocal().getWidth() != -1) {
             // TODO: Ball needs a damage instance variable
