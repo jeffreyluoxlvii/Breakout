@@ -57,6 +57,10 @@ to be used.
 The scores file holds 1100 as a high score for testing purposes. Remove 1100 from the scores file
 before playing the game.
 
+The levels get harder due to level design (the ball goes through designs that result in more unpredictable bounces), the
+type of bricks in levels (later levels have bricks that must be hit more times), and the faster speed of ball in 
+later levels.
+
 ### Impressions
 
 This project was definitely on a much larger scale than the previous Data project. However, it was also good practice
