@@ -9,6 +9,10 @@ import java.util.Scanner;
 public class Scorer {
     public static final String SCORE_FILE = "data/scores";
     public static final String SCORE_RESOURCE = "scores";
+
+    /**
+     * @return the highest score inside of the scores file
+     */
     public static int getHighScore() {
         try {
             Scanner scanner = new Scanner(Scorer.class.getClassLoader().getResourceAsStream(SCORE_RESOURCE));
@@ -27,13 +31,16 @@ public class Scorer {
             return 0;
         }
     }
+
+    /**
+     * Write a score to the scores file
+     * @param score score to be written
+     */
     public static void writeScore(int score) {
         try {
-            // This doesn't work yet
             PrintWriter writer = new PrintWriter((new FileWriter(SCORE_FILE)));
             writer.println(score);
             writer.close();
-            //Files.writeString((Path) Scorer.class.getClassLoader().getResourceAsStream(SCORE_FILE), String.valueOf(score));
         }
         catch(Exception e) {
             System.out.println("File not found");

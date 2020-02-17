@@ -13,6 +13,9 @@ public class LifeUpPowerup extends Powerup {
     }
 
     @Override
+    /**
+     * give one life to player
+     */
     public void usePowerUp(Scene scene, GameManager manager) {
         manager.addLife();
     }

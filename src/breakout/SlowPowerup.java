@@ -13,6 +13,9 @@ public class SlowPowerup extends Powerup {
     }
 
     @Override
+    /**
+     * Allow the user to use the slow ability
+     */
     public void usePowerUp(Scene scene, GameManager manager) {
         if(!manager.getCanSlow()) {
             manager.toggleCanSlow();
