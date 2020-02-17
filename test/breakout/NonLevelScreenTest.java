@@ -1,11 +1,15 @@
 package breakout;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
+
+import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,8 +36,52 @@ public class NonLevelScreenTest extends DukeApplicationTest {
 
     @Test
     public void testStartingScreen() {
-        press(myScene, KeyCode.SPACE);
-        assertEquals(myGame.getMyGameManager().getCurrentLevel(), 1);
+        assertEquals(0, myGame.getMyGameManager().getCurrentLevel());
+        myGame.goToNextLevel();
+        assertEquals(1, myGame.getMyGameManager().getCurrentLevel());
     }
+
+    @Test
+    public void testWinningScreen() {
+        myGame.goToNextLevel();
+        myGame.goToNextLevel();
+        myScene = myGame.finishGame(new WinningScreen(myGame.getMyGameManager()));
+        assertEquals(true,
+                containsText(myScene.getRoot().getChildrenUnmodifiable(), "Your score was: 0"));
+    }
+
+    private boolean containsText(ObservableList<Node> children, String text) {
+        boolean correctText = false;
+        for(Node n: children) {
+            if(n instanceof Text) {
+                Text temp = (Text)n;
+                if(temp.getText().contains(text)) {
+                    correctText = true;
+                }
+            }
+        }
+        return correctText;
+    }
+
+    @Test
+    public void testLosingScreen() {
+        myGame.goToNextLevel();
+        myGame.goToNextLevel();
+        myScene = myGame.finishGame(new LosingScreen(myGame.getMyGameManager()));
+
+        assertEquals(true,
+                containsText(myScene.getRoot().getChildrenUnmodifiable(), "level 2"));
+    }
+
+    @Test
+    public void testTransitionScreen() {
+        myGame.goToNextLevel();
+        myScene = myGame.levelTransition();
+
+        assertEquals(true,
+                containsText(myScene.getRoot().getChildrenUnmodifiable(), "level 1"));
+    }
+
+
 
 }

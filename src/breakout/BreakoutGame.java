@@ -78,17 +78,17 @@ public class BreakoutGame extends Application {
         return temp;
     }
 
-    private void levelTransition() {
+    public Scene levelTransition() {
         TransitionScreen screen = new TransitionScreen(myGameManager);
         myScene = screen.getScene();
         myScene.setOnKeyPressed(e -> handleKeyInputForTransitionScreen(myScene, e.getCode()));
-        myStage.setScene(myScene);
+        return myScene;
     }
 
-    private void finishGame(NonLevelScreen screen) {
+    public Scene finishGame(NonLevelScreen screen) {
         myScene = screen.getScene();
         myScene.setOnKeyPressed(e -> handleKeyInputForFinishingScreen(myScene, e.getCode()));
-        myStage.setScene(myScene);
+        return myScene;
     }
 
     public Scene goToNextLevel() {
@@ -206,11 +206,11 @@ public class BreakoutGame extends Application {
         if(myBricks.isEmpty()) {
             animation.stop();
             if(myGameManager.getCurrentLevel() == LevelCreator.getNumLevels()) {
-                finishGame(new WinningScreen(myGameManager));
+                myStage.setScene(finishGame(new WinningScreen(myGameManager)));
                 Scorer.writeScore(myGameManager.getGameHighScore());
             }
             else {
-                levelTransition();
+                myStage.setScene(levelTransition());
             }
         }
         else if(myGameManager.checkGameOver()) {

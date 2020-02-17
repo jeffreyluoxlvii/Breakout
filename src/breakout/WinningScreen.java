@@ -9,7 +9,7 @@ public class WinningScreen extends NonLevelScreen {
 
     private GameManager myGameManager;
     public static final String PROMPT = "Congrats, you beat all the levels!\nWhat an achievement...";
-    public static final String SCORE_UPDATE = "Your score was: ";
+    public static final String SCORE_UPDATE = "Your score was:";
 
     public WinningScreen(GameManager myGameManager) {
         this.myGameManager = myGameManager;
