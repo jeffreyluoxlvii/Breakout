@@ -40,4 +40,15 @@ public class LevelCreatorTest {
         assertEquals(2, bricks.get(1).getDurability());
         assertEquals(3, bricks.get(2).getDurability());
     }
+
+    // Test to check that levels speed up the ball speed
+    @Test
+    public void testBallSpeeds() {
+        LevelCreator levelCreator = new LevelCreator(1, BreakoutGame.TEST_PATH);
+        assertEquals(LevelCreator.BALL_SPEEDS_FOR_LEVELS[0], levelCreator.getBall().getVelocity());
+        LevelCreator levelCreator2 = new LevelCreator(2, BreakoutGame.TEST_PATH);
+        assertEquals(LevelCreator.BALL_SPEEDS_FOR_LEVELS[1], levelCreator2.getBall().getVelocity());
+        LevelCreator levelCreator3 = new LevelCreator(3, BreakoutGame.TEST_PATH);
+        assertEquals(LevelCreator.BALL_SPEEDS_FOR_LEVELS[2], levelCreator3.getBall().getVelocity());
+    }
 }
