@@ -215,7 +215,7 @@ public class BreakoutGame extends Application {
         }
         else if(myGameManager.checkGameOver()) {
             animation.stop();
-            finishGame(new LosingScreen(myGameManager));
+            myStage.setScene(finishGame(new LosingScreen(myGameManager)));
             Scorer.writeScore(myGameManager.getGameHighScore());
         }
     }
