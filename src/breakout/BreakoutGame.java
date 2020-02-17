@@ -163,7 +163,7 @@ public class BreakoutGame extends Application {
      */
     Scene setupGame (String path) {
 
-        myGameManager = new GameManager(path);
+        myGameManager = new GameManager();
         myLevelPath = path;
 
         return getStartingScene();

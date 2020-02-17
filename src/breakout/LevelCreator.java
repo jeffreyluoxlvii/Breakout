@@ -20,18 +20,30 @@ public class LevelCreator {
         this.myLevelPath = myLevelPath;
     }
 
+    /**
+     * @return number of levels
+     */
     public static int getNumLevels() {
         return BALL_SPEEDS_FOR_LEVELS.length;
     }
 
+    /**
+     * @return platform in the level
+     */
     public Platform getPlatform() {
         return new Platform(BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, PLATFORM_WIDTHS_FOR_LEVELS[myLevel - 1]);
     }
 
+    /**
+     * @return ball in the level
+     */
     public Ball getBall() {
         return new Ball(BreakoutGame.BALL_STARTING_X, BreakoutGame.BALL_STARTING_Y, BALL_SPEEDS_FOR_LEVELS[myLevel - 1]);
     }
 
+    /**
+     * @return set up bricks in a level
+     */
     public List<Brick> setupBricks() {
         int numRows = getNumberRows(myLevelPath);
         int numColumns = getNumberColumns(myLevelPath);
@@ -54,6 +66,10 @@ public class LevelCreator {
         return bricks;
     }
 
+    /**
+     * @param path of the levels
+     * @return number of rows in the level
+     */
     private int getNumberRows(String path) {
         Scanner scan = getScannerForFile(path);
         int counter = 0;
@@ -63,14 +79,32 @@ public class LevelCreator {
         }
         return counter;
     }
+
+    /**
+     * @param path of the levels
+     * @return number of columns in the level
+     */
     private int getNumberColumns(String path) {
         Scanner scan = getScannerForFile(path);
         return scan.next().length();
     }
+
+    /**
+     * @param path of the levels
+     * @return scanner to read the files
+     */
     private Scanner getScannerForFile(String path) {
         return new Scanner(LevelCreator.class.getClassLoader().getResourceAsStream(path + myLevel));
     }
 
+    /**
+     * @param brickType type of brick (either 1, 2, 3)
+     * @param x position
+     * @param y position
+     * @param width width of brick
+     * @param height height of brick
+     * @return brick with the given properties
+     */
     private Brick createBrick(String brickType, double x, double y, double width, double height) {
         if(brickType.equals("1")) {
             return new WeakBrick(x, y, width, height);

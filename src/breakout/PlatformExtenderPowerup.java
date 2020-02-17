@@ -19,6 +19,9 @@ public class PlatformExtenderPowerup extends Powerup {
     }
 
     @Override
+    /**
+     * extend the length of the platform
+     */
     public void usePowerUp(Scene scene, GameManager manager) {
         for(Node n: ((Group)scene.getRoot()).getChildren()) {
             if(n instanceof Platform) {
