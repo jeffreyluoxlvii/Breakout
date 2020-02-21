@@ -14,7 +14,7 @@ import javafx.scene.text.TextAlignment;
  *
  * @author roy
  */
-public abstract class NonLevelScreen {
+public class NonLevelScreen {
 
     public static final String GO_TO_NEXT_SCREEN_TEXT = "Press the [spacebar] to continue";
     public static final double NEXT_SCREEN_TEXT_Y = 0.8;
@@ -26,15 +26,15 @@ public abstract class NonLevelScreen {
     public static final String ADD = "+";
     public static final String EQUALS = "=";
 
-    protected Scene myScene;
+    private Scene myScene;
 
     /**
      * Construct a new NonLevelScreen. Initializes the Scene object with a prompt at the bottom to continue.
      */
     public NonLevelScreen() {
         Group root = new Group();
-        root.getChildren().add(getNextScreenText());
         myScene = new Scene(root, BreakoutGame.GAME_WIDTH, BreakoutGame.GAME_HEIGHT, BreakoutGame.BACKGROUND);
+        addTextToScreen(getNextScreenText());
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class NonLevelScreen {
     /**
      * Returns the given text centered in the screen.
      */
-    public Text setTextLocation(Text text) {
+    protected Text setTextLocation(Text text) {
         text.setTextAlignment(TextAlignment.CENTER);
         text.setX(BreakoutGame.GAME_WIDTH / 2 - text.getLayoutBounds().getWidth() / 2);
         text.setY(BreakoutGame.GAME_HEIGHT * INSTRUCTIONS_STARTING_Y);
